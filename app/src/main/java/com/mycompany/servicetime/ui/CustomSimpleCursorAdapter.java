@@ -84,13 +84,14 @@ public class CustomSimpleCursorAdapter extends SimpleCursorAdapter {
 
     private String daysToText(String days) {
         String[] weekText = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-        String[] daysText = new String[days.length()];
+        StringBuffer daysText = new StringBuffer();
         for (int i = 0; i < days.length(); i++) {
-            daysText[i] = weekText[Character.getNumericValue(days.charAt(i))];
+            if (Character.getNumericValue(days.charAt(i)) == 1)
+                daysText.append(weekText[i]).append(",");
         }
-        String daysOutTemp = Arrays.toString(daysText);
-        daysOutTemp = daysOutTemp.substring(1, daysOutTemp.length() - 1);
+        if (daysText.length() > 0)
+            daysText.deleteCharAt(daysText.length() - 1);
 
-        return daysOutTemp;
+        return daysText.toString();
     }
 }

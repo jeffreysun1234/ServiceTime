@@ -1,14 +1,26 @@
 package com.mycompany.servicetime.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.mycompany.servicetime.R;
+import com.mycompany.servicetime.provider.CHServiceTimeContract;
+import com.mycompany.servicetime.provider.CHServiceTimeDAO;
 
 
 /**
@@ -30,6 +42,11 @@ public class TimeSlotFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private Activity mActivity;
+    private char[] days = "0000000".toCharArray();
+    private TimePicker beginTimeTP;
+    private TimePicker endTimeTP;
+
 
     public TimeSlotFragment() {
         // Required empty public constructor
@@ -69,6 +86,61 @@ public class TimeSlotFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_time_slot, container, false);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mActivity = this.getActivity();
+        initViews();
+    }
+
+    private void initViews() {
+        beginTimeTP = (TimePicker) mActivity.findViewById(R.id.beginTimePicker);
+        endTimeTP = (TimePicker) mActivity.findViewById(R.id.endTimePicker);
+        beginTimeTP.setIs24HourView(true);
+        endTimeTP.setIs24HourView(true);
+        ((ToggleButton) mActivity.findViewById(R.id.day0InWeekToggleButton))
+                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(0));
+        ((ToggleButton) mActivity.findViewById(R.id.day1InWeekToggleButton))
+                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(1));
+        ((ToggleButton) mActivity.findViewById(R.id.day2InWeekToggleButton))
+                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(2));
+        ((ToggleButton) mActivity.findViewById(R.id.day3InWeekToggleButton))
+                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(3));
+        ((ToggleButton) mActivity.findViewById(R.id.day4InWeekToggleButton))
+                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(4));
+        ((ToggleButton) mActivity.findViewById(R.id.day5InWeekToggleButton))
+                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(5));
+        ((ToggleButton) mActivity.findViewById(R.id.day6InWeekToggleButton))
+                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(6));
+
+        Button saveButton = (Button) mActivity.findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveTimeSlot();
+            }
+        });
+    }
+
+    private void saveTimeSlot() {
+
+        String name = ((TextView) mActivity.findViewById(R.id.timeSlotNameEditText)).getText()
+                .toString().trim();
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(getContext(), "You must input a Name.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String beginTime = beginTimeTP.getCurrentHour() + ":" + beginTimeTP.getCurrentMinute();
+        String endTime = endTimeTP.getCurrentHour() + ":" + endTimeTP.getCurrentMinute();
+        int repeatFlag = ((CheckBox) mActivity.findViewById(R.id.repeatWeeklyCheckBox))
+                .isChecked() ? 1 : 0;
+
+        CHServiceTimeDAO.create(getContext()).addTimeSlot(name, beginTime, endTime,
+                String.copyValueOf(days), repeatFlag);
+
+
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -106,5 +178,23 @@ public class TimeSlotFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    class daysOnCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
+        int currentDayIndex;
+
+        daysOnCheckedChangeListener(int dayIndex) {
+            currentDayIndex = dayIndex;
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            if (isChecked) {
+                days[currentDayIndex] = '1';
+            } else {
+                days[currentDayIndex] = '0';
+            }
+
+        }
     }
 }

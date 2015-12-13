@@ -24,11 +24,16 @@ public class CHServiceTimeDAO {
         return new CHServiceTimeDAO(context);
     }
 
-    public void addWatchSymbol(String name) {
+    public void addTimeSlot(String name, String beginTime, String endTime, String days, int
+            repeatFlag) {
         String nameTemp = name.toUpperCase();
         ContentValues values = new ContentValues();
         values.put(TimeSlots.TIME_SLOT_ID, TimeSlots.generateTimeSlotId(nameTemp));
         values.put(TimeSlots.NAME, name);
+        values.put(TimeSlots.BEGIN_TIME, beginTime);
+        values.put(TimeSlots.END_TIME, endTime);
+        values.put(TimeSlots.DAYS, days);
+        values.put(TimeSlots.REPEAT_FLAG, repeatFlag);
 
         Uri uri = mContext.getContentResolver().insert(TimeSlots.CONTENT_URI, values);
     }

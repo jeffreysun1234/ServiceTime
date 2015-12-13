@@ -1,61 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/nameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="School Time"
-            android:id="@+id/nameTextView"/>
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         <Switch
+            android:id="@+id/activeSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:gravity="right"
-            android:id="@+id/activeSwitch"/>
+            android:gravity="right"/>
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/timeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="09:00 --- 14:30"
-            android:id="@+id/timeTextView"/>
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <TextView
+            android:id="@+id/repeatWeeklyTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:gravity="left"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Mon Sat"
-            android:id="@+id/daysTextView"/>
+            android:text="Repeat weekly"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
     </LinearLayout>
+
     <TextView
+        android:id="@+id/daysTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="2"
         android:gravity="left"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Repeat weekly"
-        android:id="@+id/repeatWeeklyTextView"/>
+        android:text="Mon Sat"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
 
 </LinearLayout>

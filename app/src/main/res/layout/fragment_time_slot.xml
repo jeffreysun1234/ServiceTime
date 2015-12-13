@@ -19,7 +19,7 @@
 
         <EditText
             android:id="@+id/timeSlotNameEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
     </LinearLayout>
@@ -56,14 +56,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/BeginTimePicker"
+            android:id="@+id/beginTimePicker"
             android:timePickerMode="spinner"/>
 
         <TimePicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/EndtimePicker"
+            android:id="@+id/endTimePicker"
             android:timePickerMode="spinner"/>
     </LinearLayout>
 
@@ -146,8 +146,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:id="@+id/CancelButton"
+            android:text="Delete"
+            android:id="@+id/deleteButton"
             android:layout_weight="1"/>
 
         <Button
