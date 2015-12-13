@@ -3,10 +3,14 @@ package com.mycompany.servicetime.ui;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -25,6 +29,12 @@ public class MainActivityFragment extends Fragment implements
     SimpleCursorAdapter mAdapter;
 
     public MainActivityFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -53,6 +63,29 @@ public class MainActivityFragment extends Fragment implements
                 null, TimeSlots.DEFAULT_PROJECTION, null, 0);
 
         mListView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main_fragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.time_slot_list_add: {
+                TimeSlotFragment timeSlotFragment = new TimeSlotFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment, timeSlotFragment)
+                        .addToBackStack(null)
+                        .commit();
+                return true;
+            }
+            default:
+                return false;
+        }
     }
 
     @Override
