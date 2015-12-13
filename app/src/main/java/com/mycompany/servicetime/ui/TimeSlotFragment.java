@@ -112,10 +112,10 @@ public class TimeSlotFragment extends Fragment {
         if (!TextUtils.isEmpty(mTimeSlotId)) {
             TimeSlot timeSlot = CHServiceTimeDAO.create(getContext()).getTimeSlot(mTimeSlotId);
             nameEditText.setText(timeSlot.name);
-            beginTimeTP.setCurrentHour(Integer.parseInt(timeSlot.beginTime.split(":")[0]));
-            beginTimeTP.setCurrentMinute(Integer.parseInt(timeSlot.beginTime.split(":")[1]));
-            endTimeTP.setCurrentHour(Integer.parseInt(timeSlot.beginTime.split(":")[0]));
-            endTimeTP.setCurrentMinute(Integer.parseInt(timeSlot.beginTime.split(":")[1]));
+            beginTimeTP.setCurrentHour(timeSlot.beginTimeHour);
+            beginTimeTP.setCurrentMinute(timeSlot.beginTimeMinute);
+            endTimeTP.setCurrentHour(timeSlot.endTimeHour);
+            endTimeTP.setCurrentMinute(timeSlot.endTimeMinute);
             days = timeSlot.days.toCharArray();
             day0ToggleButton.setChecked(days[0] == '1');
             day1ToggleButton.setChecked(days[1] == '1');
@@ -155,28 +155,29 @@ public class TimeSlotFragment extends Fragment {
     }
 
     private void saveTimeSlot() {
-
         String name = ((TextView) mActivity.findViewById(R.id.timeSlotNameEditText)).getText()
                 .toString().trim();
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(getContext(), "You must input a Name.", Toast.LENGTH_LONG).show();
             return;
         }
-        String beginTime = beginTimeTP.getCurrentHour() + ":" + beginTimeTP.getCurrentMinute();
-        String endTime = endTimeTP.getCurrentHour() + ":" + endTimeTP.getCurrentMinute();
-        int repeatFlag = ((CheckBox) mActivity.findViewById(R.id.repeatWeeklyCheckBox))
-                .isChecked() ? 1 : 0;
+        boolean repeatFlag = ((CheckBox) mActivity.findViewById(R.id.repeatWeeklyCheckBox))
+                .isChecked();
 
-        CHServiceTimeDAO.create(getContext()).addTimeSlot(name, beginTime, endTime,
-                String.copyValueOf(days), repeatFlag);
-
-
+        CHServiceTimeDAO.create(getContext()).addOrUpdateTimeSlot(mTimeSlotId, name,
+                beginTimeTP.getCurrentHour(), beginTimeTP.getCurrentMinute(),
+                endTimeTP.getCurrentHour(), endTimeTP.getCurrentMinute(), String.copyValueOf(days),
+                repeatFlag);
+        closeCurrentFragment();
     }
 
     private void deleteTimeSlot() {
         CHServiceTimeDAO.create(getContext()).deleteTimeSlot(mTimeSlotId);
+        closeCurrentFragment();
+    }
 
-
+    private void closeCurrentFragment() {
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

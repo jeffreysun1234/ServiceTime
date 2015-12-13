@@ -4,10 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.mycompany.servicetime.model.TimeSlot;
 import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
 
+import static com.mycompany.servicetime.util.LogUtils.LOGD;
 import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
 
 /**
@@ -26,18 +28,26 @@ public class CHServiceTimeDAO {
         return new CHServiceTimeDAO(context);
     }
 
-    public void addTimeSlot(String name, String beginTime, String endTime, String days, int
-            repeatFlag) {
-        String nameTemp = name.toUpperCase();
+    public void addOrUpdateTimeSlot(String timeSlotId, String name, int beginTimeHour, int
+            beginTimeMinute, int endTimeHour, int endTimeMinute, String days, boolean repeatFlag) {
         ContentValues values = new ContentValues();
-        values.put(TimeSlots.TIME_SLOT_ID, TimeSlots.generateTimeSlotId(nameTemp));
-        values.put(TimeSlots.NAME, name);
-        values.put(TimeSlots.BEGIN_TIME, beginTime);
-        values.put(TimeSlots.END_TIME, endTime);
-        values.put(TimeSlots.DAYS, days);
-        values.put(TimeSlots.REPEAT_FLAG, repeatFlag);
 
-        Uri uri = mContext.getContentResolver().insert(TimeSlots.CONTENT_URI, values);
+        values.put(TimeSlots.NAME, name);
+        values.put(TimeSlots.BEGIN_TIME_HOUR, beginTimeHour);
+        values.put(TimeSlots.BEGIN_TIME_MINUTE, beginTimeMinute);
+        values.put(TimeSlots.END_TIME_HOUR, endTimeHour);
+        values.put(TimeSlots.END_TIME_MINUTE, endTimeMinute);
+        values.put(TimeSlots.DAYS, days);
+        values.put(TimeSlots.REPEAT_FLAG, repeatFlag ? 1 : 0);
+
+        if (TextUtils.isEmpty(timeSlotId)) {
+            values.put(TimeSlots.TIME_SLOT_ID, TimeSlots.generateTimeSlotId());
+            mContext.getContentResolver().insert(TimeSlots.CONTENT_URI, values);
+        } else {
+            mContext.getContentResolver()
+                    .update(TimeSlots.buildTimeSlotUri(timeSlotId), values, null, null);
+        }
+
     }
 
     public void deleteTimeSlot(String timeSlotId) {
@@ -60,12 +70,26 @@ public class CHServiceTimeDAO {
         timeSlot.name = cursor.getString(cursor.getColumnIndex(TimeSlots.NAME));
         timeSlot.serviceFlag = cursor.getInt(cursor.getColumnIndex(TimeSlots.SERVICE_FLAG)) == 1 ?
                 true : false;
-        timeSlot.beginTime = cursor.getString(cursor.getColumnIndex(TimeSlots.BEGIN_TIME));
-        timeSlot.endTime = cursor.getString(cursor.getColumnIndex(TimeSlots.END_TIME));
+        timeSlot.beginTimeHour = cursor.getInt(cursor.getColumnIndex(TimeSlots.BEGIN_TIME_HOUR));
+        timeSlot.beginTimeMinute = cursor
+                .getInt(cursor.getColumnIndex(TimeSlots.BEGIN_TIME_MINUTE));
+        timeSlot.endTimeHour = cursor.getInt(cursor.getColumnIndex(TimeSlots.END_TIME_HOUR));
+        timeSlot.endTimeMinute = cursor.getInt(cursor.getColumnIndex(TimeSlots.END_TIME_MINUTE));
         timeSlot.days = cursor.getString(cursor.getColumnIndex(TimeSlots.DAYS));
         timeSlot.repeatFlag = cursor.getInt(cursor.getColumnIndex(TimeSlots.REPEAT_FLAG)) == 1
                 ? true : false;
 
         return timeSlot;
+    }
+
+    public void updateServiceFlag(String timeSlotId, boolean serviceFlag) {
+        LOGD(TAG, "updateServiceFlag: timeSlotId=" + timeSlotId + ", serviceFlag=" + serviceFlag);
+        ContentValues values = new ContentValues();
+        values.put(TimeSlots.SERVICE_FLAG, serviceFlag ? 1 : 0);
+
+        if (!TextUtils.isEmpty(timeSlotId)) {
+            mContext.getContentResolver()
+                    .update(TimeSlots.buildTimeSlotUri(timeSlotId), values, null, null);
+        }
     }
 }

@@ -21,6 +21,8 @@ import android.provider.BaseColumns;
 
 import com.mycompany.servicetime.util.ParserUtils;
 
+import java.util.Date;
+
 /**
  * Contract class for interacting with {@link CHServiceTimeProvider}. Unless otherwise noted, all
  * time-based fields are milliseconds since epoch and can be compared against
@@ -46,8 +48,10 @@ public final class CHServiceTimeContract {
         String TIME_SLOT_ID = "time_slot_id";
         String NAME = "name";
         String SERVICE_FLAG = "service_flag"; // true means runing.
-        String BEGIN_TIME = "begin_time";
-        String END_TIME = "end_time";
+        String BEGIN_TIME_HOUR = "begin_time_hour";
+        String BEGIN_TIME_MINUTE = "begin_time_minute";
+        String END_TIME_HOUR = "end_time_hour";
+        String END_TIME_MINUTE = "end_time_minute";
         String DAYS = "days";
         String REPEAT_FLAG = "repeat_flag";
     }
@@ -105,8 +109,8 @@ public final class CHServiceTimeContract {
         }
 
 
-        public static String generateTimeSlotId(String name) {
-            return ParserUtils.sanitizeId(name);
+        public static String generateTimeSlotId() {
+            return ParserUtils.sanitizeId(Long.toString(new Date().getTime()));
         }
 
         public static final String[] DEFAULT_PROJECTION = new String[]{
@@ -114,8 +118,10 @@ public final class CHServiceTimeContract {
                 TIME_SLOT_ID,
                 NAME,
                 SERVICE_FLAG,
-                BEGIN_TIME,
-                END_TIME,
+                BEGIN_TIME_HOUR,
+                BEGIN_TIME_MINUTE,
+                END_TIME_HOUR,
+                END_TIME_MINUTE,
                 DAYS,
                 REPEAT_FLAG
         };

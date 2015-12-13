@@ -76,8 +76,10 @@ public class CHServiceTimeDatabase extends SQLiteOpenHelper {
                 + TimeSlots.TIME_SLOT_ID + " TEXT NOT NULL,"
                 + TimeSlots.NAME + " TEXT NOT NULL,"
                 + TimeSlots.SERVICE_FLAG + " INTEGER NOT NULL DEFAULT 0,"
-                + TimeSlots.BEGIN_TIME + " TEXT NOT NULL,"
-                + TimeSlots.END_TIME + " TEXT NOT NULL,"
+                + TimeSlots.BEGIN_TIME_HOUR + " INTEGER NOT NULL,"
+                + TimeSlots.BEGIN_TIME_MINUTE + " INTEGER NOT NULL,"
+                + TimeSlots.END_TIME_HOUR + " INTEGER NOT NULL,"
+                + TimeSlots.END_TIME_MINUTE + " INTEGER NOT NULL,"
                 + TimeSlots.DAYS + " TEXT NOT NULL,"
                 + TimeSlots.REPEAT_FLAG + " INTEGER NOT NULL DEFAULT 0,"
                 + "UNIQUE (" + TimeSlots.TIME_SLOT_ID + ") ON CONFLICT REPLACE)");

@@ -5,12 +5,15 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
+import com.mycompany.servicetime.provider.CHServiceTimeDAO;
 
 import java.util.Arrays;
 
@@ -32,12 +35,22 @@ public class CustomSimpleCursorAdapter extends SimpleCursorAdapter {
         TextView daysTextView;
         TextView repeatWeeklyTextView;
 
+        String currentTimeSlotId;
+
         ViewHolder(View v) {
             nameTextView = (TextView) v.findViewById(R.id.nameTextView);
             activeSwitch = (Switch) v.findViewById(R.id.activeSwitch);
             timeTextView = (TextView) v.findViewById(R.id.timeTextView);
             daysTextView = (TextView) v.findViewById(R.id.daysTextView);
             repeatWeeklyTextView = (TextView) v.findViewById(R.id.repeatWeeklyTextView);
+
+            activeSwitch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CHServiceTimeDAO.create(mContext).updateServiceFlag(currentTimeSlotId,
+                            activeSwitch.isChecked());
+                }
+            });
         }
     }
 
@@ -66,10 +79,15 @@ public class CustomSimpleCursorAdapter extends SimpleCursorAdapter {
         String name = cursor.getString(cursor.getColumnIndex(TimeSlots.NAME));
         boolean serviceFlag = cursor.getInt(cursor.getColumnIndex(TimeSlots.SERVICE_FLAG)) == 1 ?
                 true : false;
-        String time = cursor.getString(cursor.getColumnIndex(TimeSlots.BEGIN_TIME)) + " --- " +
-                cursor.getString(cursor.getColumnIndex(TimeSlots.END_TIME));
+        String time = cursor.getString(cursor.getColumnIndex(TimeSlots.BEGIN_TIME_HOUR))
+                + ":"
+                + cursor.getString(cursor.getColumnIndex(TimeSlots.BEGIN_TIME_MINUTE))
+                + " --- "
+                + cursor.getString(cursor.getColumnIndex(TimeSlots.END_TIME_HOUR))
+                + ":"
+                + cursor.getString(cursor.getColumnIndex(TimeSlots.END_TIME_MINUTE));
         String days = cursor.getString(cursor.getColumnIndex(TimeSlots.DAYS));
-        String repeat = cursor.getInt(cursor.getColumnIndex(TimeSlots.REPEAT_FLAG)) == 1
+        String repeatFlag = cursor.getInt(cursor.getColumnIndex(TimeSlots.REPEAT_FLAG)) == 1
                 ? "Repeat weekly" : "";
 
 
@@ -79,7 +97,8 @@ public class CustomSimpleCursorAdapter extends SimpleCursorAdapter {
         vh.activeSwitch.setChecked(serviceFlag);
         vh.timeTextView.setText(time);
         vh.daysTextView.setText(daysToText(days));
-        vh.repeatWeeklyTextView.setText(repeat);
+        vh.repeatWeeklyTextView.setText(repeatFlag);
+        vh.currentTimeSlotId = cursor.getString(cursor.getColumnIndex(TimeSlots.TIME_SLOT_ID));
     }
 
     private String daysToText(String days) {
@@ -87,10 +106,10 @@ public class CustomSimpleCursorAdapter extends SimpleCursorAdapter {
         StringBuffer daysText = new StringBuffer();
         for (int i = 0; i < days.length(); i++) {
             if (Character.getNumericValue(days.charAt(i)) == 1)
-                daysText.append(weekText[i]).append(",");
+                daysText.append(weekText[i]).append(", ");
         }
         if (daysText.length() > 0)
-            daysText.deleteCharAt(daysText.length() - 1);
+            daysText.deleteCharAt(daysText.length() - 2);
 
         return daysText.toString();
     }

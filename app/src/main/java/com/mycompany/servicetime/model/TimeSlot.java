@@ -6,8 +6,10 @@ package com.mycompany.servicetime.model;
 public class TimeSlot {
     public String timeSlotId;
     public String name;
-    public String beginTime;
-    public String endTime;
+    public int beginTimeHour;
+    public int beginTimeMinute;
+    public int endTimeHour;
+    public int endTimeMinute;
     public String days;
     public boolean repeatFlag;
     public boolean serviceFlag;
