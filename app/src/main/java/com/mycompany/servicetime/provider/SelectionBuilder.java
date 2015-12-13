@@ -170,7 +170,7 @@ public class SelectionBuilder {
     public String toString() {
         return "SelectionBuilder[table=" + mTable + ", selection=" + getSelection()
                 + ", selectionArgs=" + Arrays.toString(getSelectionArgs())
-                + "projectionMap = " + mProjectionMap + " ]";
+                + ", projectionMap = " + mProjectionMap + " ]";
     }
 
     /**

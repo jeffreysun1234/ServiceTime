@@ -13,8 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
@@ -57,12 +59,31 @@ public class MainActivityFragment extends Fragment implements
         mListView = (ListView) getActivity().findViewById(R.id.listView);
         mListView.setEmptyView(getActivity().findViewById(android.R.id.empty));
 
-        mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         mAdapter = new CustomSimpleCursorAdapter(getContext(), R.layout.list_item,
                 null, TimeSlots.DEFAULT_PROJECTION, null, 0);
 
         mListView.setAdapter(mAdapter);
+
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long
+                    id) {
+                Cursor cursor = (Cursor) mListView.getItemAtPosition(position);
+                String timeSlotId = cursor.getString(cursor.getColumnIndex(TimeSlots.TIME_SLOT_ID));
+                TimeSlotFragment timeSlotFragment = TimeSlotFragment.newInstance(timeSlotId);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment, timeSlotFragment)
+                        .addToBackStack(null)
+                        .commit();
+
+                return true;
+            }
+        });
+
     }
 
     @Override

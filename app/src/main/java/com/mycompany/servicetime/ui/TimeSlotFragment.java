@@ -2,6 +2,7 @@ package com.mycompany.servicetime.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,14 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ListView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.mycompany.servicetime.R;
-import com.mycompany.servicetime.provider.CHServiceTimeContract;
+import com.mycompany.servicetime.model.TimeSlot;
 import com.mycompany.servicetime.provider.CHServiceTimeDAO;
 
 
@@ -32,40 +33,38 @@ import com.mycompany.servicetime.provider.CHServiceTimeDAO;
  * create an instance of this fragment.
  */
 public class TimeSlotFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_TIME_SLOT_ID = "time_slot_id";
+
+    private String mTimeSlotId;
 
     private OnFragmentInteractionListener mListener;
     private Activity mActivity;
     private char[] days = "0000000".toCharArray();
+
+    private EditText nameEditText;
     private TimePicker beginTimeTP;
     private TimePicker endTimeTP;
-
+    private CheckBox repeatFlagCheckBox;
+    private ToggleButton day0ToggleButton;
+    private ToggleButton day1ToggleButton;
+    private ToggleButton day2ToggleButton;
+    private ToggleButton day3ToggleButton;
+    private ToggleButton day4ToggleButton;
+    private ToggleButton day5ToggleButton;
+    private ToggleButton day6ToggleButton;
+    private Button deleteButton;
+    private Button saveButton;
 
     public TimeSlotFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TimeSlotFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TimeSlotFragment newInstance(String param1, String param2) {
+    public static TimeSlotFragment newInstance(String timeSlotId) {
         TimeSlotFragment fragment = new TimeSlotFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_TIME_SLOT_ID, timeSlotId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,8 +73,7 @@ public class TimeSlotFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mTimeSlotId = getArguments().getString(ARG_TIME_SLOT_ID);
         }
     }
 
@@ -94,26 +92,60 @@ public class TimeSlotFragment extends Fragment {
     }
 
     private void initViews() {
+        nameEditText = (EditText) mActivity.findViewById(R.id.timeSlotNameEditText);
         beginTimeTP = (TimePicker) mActivity.findViewById(R.id.beginTimePicker);
         endTimeTP = (TimePicker) mActivity.findViewById(R.id.endTimePicker);
         beginTimeTP.setIs24HourView(true);
         endTimeTP.setIs24HourView(true);
-        ((ToggleButton) mActivity.findViewById(R.id.day0InWeekToggleButton))
-                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(0));
-        ((ToggleButton) mActivity.findViewById(R.id.day1InWeekToggleButton))
-                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(1));
-        ((ToggleButton) mActivity.findViewById(R.id.day2InWeekToggleButton))
-                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(2));
-        ((ToggleButton) mActivity.findViewById(R.id.day3InWeekToggleButton))
-                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(3));
-        ((ToggleButton) mActivity.findViewById(R.id.day4InWeekToggleButton))
-                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(4));
-        ((ToggleButton) mActivity.findViewById(R.id.day5InWeekToggleButton))
-                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(5));
-        ((ToggleButton) mActivity.findViewById(R.id.day6InWeekToggleButton))
-                .setOnCheckedChangeListener(new daysOnCheckedChangeListener(6));
+        day0ToggleButton = (ToggleButton) mActivity.findViewById(R.id.day0InWeekToggleButton);
+        day1ToggleButton = (ToggleButton) mActivity.findViewById(R.id.day1InWeekToggleButton);
+        day2ToggleButton = (ToggleButton) mActivity.findViewById(R.id.day2InWeekToggleButton);
+        day3ToggleButton = (ToggleButton) mActivity.findViewById(R.id.day3InWeekToggleButton);
+        day4ToggleButton = (ToggleButton) mActivity.findViewById(R.id.day4InWeekToggleButton);
+        day5ToggleButton = (ToggleButton) mActivity.findViewById(R.id.day5InWeekToggleButton);
+        day6ToggleButton = (ToggleButton) mActivity.findViewById(R.id.day6InWeekToggleButton);
+        repeatFlagCheckBox = (CheckBox) mActivity.findViewById(R.id.repeatWeeklyCheckBox);
 
-        Button saveButton = (Button) mActivity.findViewById(R.id.saveButton);
+        deleteButton = (Button) mActivity.findViewById(R.id.deleteButton);
+        saveButton = (Button) mActivity.findViewById(R.id.saveButton);
+
+        if (!TextUtils.isEmpty(mTimeSlotId)) {
+            TimeSlot timeSlot = CHServiceTimeDAO.create(getContext()).getTimeSlot(mTimeSlotId);
+            nameEditText.setText(timeSlot.name);
+            beginTimeTP.setCurrentHour(Integer.parseInt(timeSlot.beginTime.split(":")[0]));
+            beginTimeTP.setCurrentMinute(Integer.parseInt(timeSlot.beginTime.split(":")[1]));
+            endTimeTP.setCurrentHour(Integer.parseInt(timeSlot.beginTime.split(":")[0]));
+            endTimeTP.setCurrentMinute(Integer.parseInt(timeSlot.beginTime.split(":")[1]));
+            days = timeSlot.days.toCharArray();
+            day0ToggleButton.setChecked(days[0] == '1');
+            day1ToggleButton.setChecked(days[1] == '1');
+            day2ToggleButton.setChecked(days[2] == '1');
+            day3ToggleButton.setChecked(days[3] == '1');
+            day4ToggleButton.setChecked(days[4] == '1');
+            day5ToggleButton.setChecked(days[5] == '1');
+            day6ToggleButton.setChecked(days[6] == '1');
+            repeatFlagCheckBox.setChecked(timeSlot.repeatFlag);
+
+            deleteButton.setVisibility(View.VISIBLE);
+        } else {
+            deleteButton.setVisibility(View.INVISIBLE);
+        }
+
+        day0ToggleButton.setOnCheckedChangeListener(new daysOnCheckedChangeListener(0));
+        day1ToggleButton.setOnCheckedChangeListener(new daysOnCheckedChangeListener(1));
+        day2ToggleButton.setOnCheckedChangeListener(new daysOnCheckedChangeListener(2));
+        day3ToggleButton.setOnCheckedChangeListener(new daysOnCheckedChangeListener(3));
+        day4ToggleButton.setOnCheckedChangeListener(new daysOnCheckedChangeListener(4));
+        day5ToggleButton.setOnCheckedChangeListener(new daysOnCheckedChangeListener(5));
+        day6ToggleButton.setOnCheckedChangeListener(new daysOnCheckedChangeListener(6));
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteTimeSlot();
+            }
+        });
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,6 +169,12 @@ public class TimeSlotFragment extends Fragment {
 
         CHServiceTimeDAO.create(getContext()).addTimeSlot(name, beginTime, endTime,
                 String.copyValueOf(days), repeatFlag);
+
+
+    }
+
+    private void deleteTimeSlot() {
+        CHServiceTimeDAO.create(getContext()).deleteTimeSlot(mTimeSlotId);
 
 
     }
