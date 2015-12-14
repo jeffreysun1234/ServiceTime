@@ -161,6 +161,20 @@ public class TimeSlotFragment extends Fragment {
             Toast.makeText(getContext(), "You must input a Name.", Toast.LENGTH_LONG).show();
             return;
         }
+
+        if (beginTimeTP.getCurrentHour() * 100 + beginTimeTP.getCurrentMinute() >=
+                endTimeTP.getCurrentHour() * 100 + endTimeTP.getCurrentMinute()) {
+            Toast.makeText(getContext(), "Begin Time must be less than End Time.", Toast
+                    .LENGTH_LONG).show();
+            return;
+        }
+
+        if ("0000000".equals(String.copyValueOf(days))) {
+            Toast.makeText(getContext(), "You must set at least one day.", Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+
         boolean repeatFlag = ((CheckBox) mActivity.findViewById(R.id.repeatWeeklyCheckBox))
                 .isChecked();
 

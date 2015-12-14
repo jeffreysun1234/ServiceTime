@@ -21,7 +21,11 @@
             android:id="@+id/timeSlotNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLength="15"
+            android:maxLines="1"/>
     </LinearLayout>
 
     <LinearLayout
@@ -33,37 +37,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center_horizontal"
             android:text="Begin"
-            android:gravity="center_horizontal"/>
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center_horizontal"
             android:text="End"
-            android:gravity="center_horizontal"/>
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="left">
+        android:gravity="left"
+        android:orientation="horizontal">
 
         <TimePicker
+            android:id="@+id/beginTimePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/beginTimePicker"
             android:timePickerMode="spinner"/>
 
         <TimePicker
+            android:id="@+id/endTimePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/endTimePicker"
             android:timePickerMode="spinner"/>
     </LinearLayout>
 
@@ -73,90 +77,103 @@
         android:orientation="horizontal">
 
         <ToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/day0InWeekToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@drawable/toggle_button_color"
             android:textOff="Su"
-            android:textOn="Su"
-            android:layout_weight="1"/>
+            android:textOn="Su"/>
+
         <ToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/day1InWeekToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@drawable/toggle_button_color"
             android:textOff="Mo"
-            android:textOn="Mo"
-            android:layout_weight="1"/>
+            android:textOn="Mo"/>
+
         <ToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/day2InWeekToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@drawable/toggle_button_color"
             android:textOff="Tu"
-            android:textOn="Tu"
-            android:layout_weight="1"/>
+            android:textOn="Tu"/>
+
         <ToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/day3InWeekToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@drawable/toggle_button_color"
             android:textOff="We"
-            android:textOn="We"
-            android:layout_weight="1"/>
+            android:textOn="We"/>
+
         <ToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/day4InWeekToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@drawable/toggle_button_color"
             android:textOff="Th"
-            android:textOn="Th"
-            android:layout_weight="1"/>
+            android:textOn="Th"/>
+
         <ToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/day5InWeekToggleButton"
-            android:textOff="Fr"
-            android:textOn="Fr"
-            android:layout_weight="1"/>
-        <ToggleButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@drawable/toggle_button_color"
+            android:textOff="Fr"
+            android:textOn="Fr"/>
+
+        <ToggleButton
             android:id="@+id/day6InWeekToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@drawable/toggle_button_color"
             android:textOff="Sa"
-            android:textOn="Sa"
-            android:layout_weight="1"/>
+            android:textOn="Sa"/>
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right">
+        android:gravity="right"
+        android:orientation="horizontal">
 
         <CheckBox
+            android:id="@+id/repeatWeeklyCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Repeat weekly"
-            android:id="@+id/repeatWeeklyCheckBox"
             />
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <Button
+            android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete"
-            android:id="@+id/deleteButton"
             android:layout_weight="1"
+            android:text="Delete"
             />
 
         <Button
+            android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save"
-            android:id="@+id/saveButton"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="Save"/>
     </LinearLayout>
 
 </LinearLayout>
