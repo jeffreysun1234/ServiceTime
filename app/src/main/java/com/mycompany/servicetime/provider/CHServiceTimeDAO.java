@@ -10,7 +10,9 @@ import com.mycompany.servicetime.model.TimeSlot;
 import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 
 import static com.mycompany.servicetime.util.LogUtils.LOGD;
 import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
@@ -103,14 +105,15 @@ public class CHServiceTimeDAO {
         calendar.setTimeInMillis(System.currentTimeMillis());
         int currentDayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
-        Cursor cursor;
         int beginTimeHour, beginTimeMinute, endTimeHour, endTimeMinute;
+        ArrayList<int[]> silentTimeSlotListTemp = new ArrayList<int[]>();
         ArrayList<int[]> silentTimeSlotList = new ArrayList<int[]>();
         ArrayList<int[]> normalTimeSlotList = new ArrayList<int[]>();
+        int[] timeSlotTemp;
 
-        cursor = mContext.getContentResolver().query(TimeSlots.buildTimeSlotsUri(),
+        Cursor cursor = mContext.getContentResolver().query(TimeSlots.buildTimeSlotsUri(),
                 TimeSlots.DEFAULT_PROJECTION,
-                "substr(" + TimeSlots.DAYS + "," + currentDayInWeek + ",1)",
+                "substr(" + TimeSlots.DAYS + "," + currentDayInWeek + ",1) = ?",
                 new String[]{"1"},
                 TimeSlots.BEGIN_TIME_HOUR + "," + TimeSlots.BEGIN_TIME_MINUTE + ","
                         + TimeSlots.END_TIME_HOUR + "," + TimeSlots.END_TIME_MINUTE);
@@ -122,22 +125,42 @@ public class CHServiceTimeDAO {
                         .getInt(cursor.getColumnIndex(TimeSlots.BEGIN_TIME_MINUTE));
                 endTimeHour = cursor.getInt(cursor.getColumnIndex(TimeSlots.END_TIME_HOUR));
                 endTimeMinute = cursor.getInt(cursor.getColumnIndex(TimeSlots.END_TIME_MINUTE));
-                silentTimeSlotList.add(new int[]{
+                silentTimeSlotListTemp.add(new int[]{
                         beginTimeHour * 100 + beginTimeMinute, endTimeHour * 100 + endTimeMinute});
             }
+
+            // arrange timeSlotList
+            timeSlotTemp = new int[2];
+            timeSlotTemp[0] = silentTimeSlotListTemp.get(0)[0];
+            timeSlotTemp[1] = silentTimeSlotListTemp.get(0)[1];
+            for (int i = 1; i < silentTimeSlotListTemp.size(); i++) {
+                if (silentTimeSlotListTemp.get(i)[0] <= timeSlotTemp[1]) {
+                    if (timeSlotTemp[1] < silentTimeSlotListTemp.get(i)[1]) {
+                        timeSlotTemp[1] = silentTimeSlotListTemp.get(i)[1];
+                    }
+                } else {
+                    silentTimeSlotList.add(timeSlotTemp);
+                    timeSlotTemp = new int[2];
+                    timeSlotTemp[0] = silentTimeSlotListTemp.get(i)[0];
+                    timeSlotTemp[1] = silentTimeSlotListTemp.get(i)[1];
+                }
+            }
+            silentTimeSlotList.add(timeSlotTemp);
 
             if (silentFlag) {
                 nextAlarmTime = getTimePoint(silentTimeSlotList, calendar);
             } else {
-                int[] timeSlotTemp = new int[2];
+                timeSlotTemp = new int[2];
                 timeSlotTemp[0] = 0;
                 timeSlotTemp[1] = silentTimeSlotList.get(0)[0];
                 normalTimeSlotList.add(timeSlotTemp);
                 for (int i = 1; i < silentTimeSlotList.size(); i++) {
+                    timeSlotTemp = new int[2];
                     timeSlotTemp[0] = silentTimeSlotList.get(i - 1)[1];
                     timeSlotTemp[1] = silentTimeSlotList.get(i)[0];
                     normalTimeSlotList.add(timeSlotTemp);
                 }
+                timeSlotTemp = new int[2];
                 timeSlotTemp[0] = silentTimeSlotList.get(silentTimeSlotList.size() - 1)[1];
                 timeSlotTemp[1] = 2359;
                 normalTimeSlotList.add(timeSlotTemp);
@@ -149,6 +172,8 @@ public class CHServiceTimeDAO {
     }
 
     private long getTimePoint(ArrayList<int[]> timeSlotList, Calendar calendar) {
+        LOGD(TAG, "TimeSlotList: " + Arrays.deepToString(timeSlotList.toArray()));
+
         long timePoint = 0L;
 
         calendar.setTimeInMillis(System.currentTimeMillis());

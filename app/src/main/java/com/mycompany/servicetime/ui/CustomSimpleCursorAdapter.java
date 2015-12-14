@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
 import com.mycompany.servicetime.provider.CHServiceTimeDAO;
+import com.mycompany.servicetime.schedule.SchedulingIntentService;
 
 import java.util.Arrays;
 
@@ -47,8 +48,10 @@ public class CustomSimpleCursorAdapter extends SimpleCursorAdapter {
             activeSwitch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CHServiceTimeDAO.create(mContext).updateServiceFlag(currentTimeSlotId,
-                            activeSwitch.isChecked());
+                    boolean vSilentFlag = activeSwitch.isChecked();
+                    CHServiceTimeDAO.create(mContext)
+                            .updateServiceFlag(currentTimeSlotId, vSilentFlag);
+                    SchedulingIntentService.startActionSetAlarm(mContext, vSilentFlag);
                 }
             });
         }
