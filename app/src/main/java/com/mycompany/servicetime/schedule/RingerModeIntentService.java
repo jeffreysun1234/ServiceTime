@@ -47,7 +47,7 @@ public class RingerModeIntentService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
 
-            LOGD(TAG, "RingerModeIntentService Action="+ action);
+            LOGD(TAG, "RingerModeIntentService Action=" + action);
 
             if (ACTION_SET_RINGER_MODE.equals(action)) {
                 final boolean silentFlag = intent.getBooleanExtra(SchedulingIntentService
@@ -65,14 +65,19 @@ public class RingerModeIntentService extends IntentService {
      * parameters.
      */
     private void handleActionSetRingerMode(boolean silentFlag) {
+        LOGD(TAG, "RingerModeIntentService silentFlag=" + silentFlag);
+
         AudioManager audioManager =
                 (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-        if (silentFlag)
+        if (silentFlag) {
+            LOGD(TAG, "set ringer mode: RINGER_MODE_VIBRATE");
             audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-        else
+        } else {
+            LOGD(TAG, "set ringer mode: RINGER_MODE_NORMAL");
             audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        }
 
-        LOGD(TAG, "Current ringer mode: "+ audioManager.getRingerMode());
+        LOGD(TAG, "Current ringer mode: " + audioManager.getRingerMode());
         sendNotification("Success");
     }
 

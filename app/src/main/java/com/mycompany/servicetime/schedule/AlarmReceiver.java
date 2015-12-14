@@ -9,7 +9,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
+import static com.mycompany.servicetime.util.LogUtils.LOGD;
+import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
+
 public class AlarmReceiver extends WakefulBroadcastReceiver {
+    public static final String TAG = makeLogTag(AlarmReceiver.class);
+
     public AlarmReceiver() {
     }
 
@@ -30,18 +35,13 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         startWakefulService(context, (intent.setComponent(comp)));
     }
 
-    /**
-     * Sets a repeating alarm that runs once a day at approximately 8:30 a.m. When the
-     * alarm fires, the app broadcasts an Intent to this WakefulBroadcastReceiver.
-     *
-     * @param context
-     */
     public void setAlarm(Context context, boolean silentFlag, long timePoint) {
         alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.setAction(RingerModeIntentService.ACTION_SET_RINGER_MODE);
         intent.putExtra(SchedulingIntentService.EXTRA_SILENT_FLAG, silentFlag);
-        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        alarmIntent = PendingIntent
+                .getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // Set the alarm to fire at approximately a time point, according to the device's
         // clock.

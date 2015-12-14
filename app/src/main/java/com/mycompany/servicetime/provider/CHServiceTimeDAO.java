@@ -113,12 +113,18 @@ public class CHServiceTimeDAO {
 
         Cursor cursor = mContext.getContentResolver().query(TimeSlots.buildTimeSlotsUri(),
                 TimeSlots.DEFAULT_PROJECTION,
-                "substr(" + TimeSlots.DAYS + "," + currentDayInWeek + ",1) = ?",
-                new String[]{"1"},
+                "substr(" + TimeSlots.DAYS + "," + currentDayInWeek + ",1) = ? and "
+                        + TimeSlots.SERVICE_FLAG + " = ? ",
+                new String[]{"1", "1"},
                 TimeSlots.BEGIN_TIME_HOUR + "," + TimeSlots.BEGIN_TIME_MINUTE + ","
                         + TimeSlots.END_TIME_HOUR + "," + TimeSlots.END_TIME_MINUTE);
 
         if (cursor != null) {
+            // all time slots are unactive.
+            if (cursor.getCount() == 0) {
+                return calendar.getTimeInMillis();
+            }
+
             while (cursor.moveToNext()) {
                 beginTimeHour = cursor.getInt(cursor.getColumnIndex(TimeSlots.BEGIN_TIME_HOUR));
                 beginTimeMinute = cursor
