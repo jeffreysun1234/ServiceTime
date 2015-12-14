@@ -110,7 +110,7 @@ public final class CHServiceTimeContract {
 
 
         public static String generateTimeSlotId() {
-            return ParserUtils.sanitizeId(Long.toString(new Date().getTime()));
+            return ParserUtils.sanitizeId(Long.toString(System.currentTimeMillis()));
         }
 
         public static final String[] DEFAULT_PROJECTION = new String[]{
