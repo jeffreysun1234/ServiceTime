@@ -19,7 +19,7 @@ public class PreferenceSupport {
 
     public static final String BAR_LIMIT = "bar_limit";
     public static final String TIME_FRAME = "time_frame";
-    public static final String CURRENT_SYMBOL = "current_symbol";
+    public static final String NEXT_ALARM_DETAIL = "next_alarm_detail";
     public static final String FETCH_DAYS = "fetch_days";
     public static final String PREF_APP_VERSION = "app_version";
     /**
@@ -61,15 +61,15 @@ public class PreferenceSupport {
         return sp.getString(TIME_FRAME, "5 Mins");
     }
 
-    /*--- current_symbol ---*/
-    public static void setCurrentSymbol(final Context context, final String symbol) {
+    /*--- next_alarm_detail ---*/
+    public static void setNextAlarmDetail(final Context context, final String alarmDetail) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putString(CURRENT_SYMBOL, symbol).commit();
+        sp.edit().putString(NEXT_ALARM_DETAIL, alarmDetail).commit();
     }
 
-    public static String getCurrentSymbol(final Context context) {
+    public static String getNextAlarmDetail(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getString(CURRENT_SYMBOL, "");
+        return sp.getString(NEXT_ALARM_DETAIL, "");
     }
 
     /*--- fetch_days ---*/

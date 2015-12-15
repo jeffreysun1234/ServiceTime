@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.content.Context;
 import android.text.format.DateUtils;
 
+import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.provider.CHServiceTimeDAO;
+import com.mycompany.servicetime.support.PreferenceSupport;
 import com.mycompany.servicetime.util.DateUtil;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import static com.mycompany.servicetime.util.LogUtils.LOGD;
 import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
@@ -78,7 +81,7 @@ public class SchedulingIntentService extends IntentService {
                 handleActionSetAlarm(silentFlag);
             } else if (ACTION_STOP_ALARM.equals(action)) {
                 handleActionStopAlarm();
-            } else if (ACTION_INIT_ALARM.equals(action)){
+            } else if (ACTION_INIT_ALARM.equals(action)) {
                 handleActionInitAlarm();
             }
         }
@@ -101,8 +104,26 @@ public class SchedulingIntentService extends IntentService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if (timePoint != 0)
+
+        // save alarm text for display.
+        String alarmText;
+        if (timePoint != 0) {
             new AlarmReceiver().setAlarm(getApplicationContext(), silentFlag, timePoint);
+
+            StringBuffer sb = new StringBuffer();
+            if (silentFlag) {
+                sb.append("Vibrate");
+            } else {
+                sb.append("Sound");
+            }
+            sb.append(" setting at ")
+                    .append(new SimpleDateFormat("MMM dd, HH:mm 'on' EEE").format(timePoint));
+            alarmText = sb.toString();
+        } else {
+            alarmText = getString(R.string.next_operation_no);
+        }
+        PreferenceSupport.setNextAlarmDetail(getApplicationContext(), alarmText);
+
     }
 
     /**

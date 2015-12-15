@@ -9,36 +9,37 @@
                 tools:context=".ui.MainActivityFragment">
 
     <TextView
+        android:id="@+id/nextOperationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/service_current_status"
-        android:id="@+id/serviceCurrentStatusTextView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:text="@string/next_operation"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <TextView
+        android:id="@+id/nextOperationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/next_operation"
-        android:id="@+id/nextOperationTextView"
-        android:layout_below="@+id/serviceCurrentStatusTextView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/nextOperationTitle"
+        android:text="@string/next_operation_no"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <ProgressBar
-        style="?android:attr/progressBarStyleSmall"
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
+        android:progress="100"
         android:layout_below="@+id/nextOperationTextView"
         />
 
     <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/progressBar"/>

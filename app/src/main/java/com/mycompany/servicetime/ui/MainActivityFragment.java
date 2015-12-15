@@ -1,7 +1,10 @@
 package com.mycompany.servicetime.ui;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -16,21 +19,25 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
 import com.mycompany.servicetime.schedule.InitAlarmIntentService;
 import com.mycompany.servicetime.schedule.SchedulingIntentService;
+import com.mycompany.servicetime.support.PreferenceSupport;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
 
     ListView mListView;
     SimpleCursorAdapter mAdapter;
+    TextView mNextAlarmTextView;
+    SharedPreferences sp;
 
     public MainActivityFragment() {
     }
@@ -39,6 +46,7 @@ public class MainActivityFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        sp = PreferenceManager.getDefaultSharedPreferences(getContext());
     }
 
     @Override
@@ -51,13 +59,26 @@ public class MainActivityFragment extends Fragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initViews();
-        //initViewListeners();
 
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
         getLoaderManager().initLoader(0, null, this);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        sp.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        sp.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
     private void initViews() {
+        mNextAlarmTextView = (TextView) getActivity().findViewById(R.id.nextOperationTextView);
+
         mListView = (ListView) getActivity().findViewById(R.id.listView);
         mListView.setEmptyView(getActivity().findViewById(android.R.id.empty));
 
@@ -128,5 +149,13 @@ public class MainActivityFragment extends Fragment implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(PreferenceSupport.NEXT_ALARM_DETAIL)) {
+            mNextAlarmTextView.setText(PreferenceSupport.getNextAlarmDetail(getContext()));
+        }
+
     }
 }
