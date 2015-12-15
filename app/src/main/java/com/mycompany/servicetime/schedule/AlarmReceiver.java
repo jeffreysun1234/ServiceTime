@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
+import java.util.Calendar;
+
 import static com.mycompany.servicetime.util.LogUtils.LOGD;
 import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
 
@@ -25,10 +27,16 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // If your receiver intent includes extras that need to be passed along to the service,
-        // use setComponent() to indicate that the service should handle the receiver's intent.
-        ComponentName comp = new ComponentName(context.getPackageName(),
-                RingerModeIntentService.class.getName());
+        ComponentName comp ;
+        if (InitAlarmIntentService.ACTION_INIT.equals(intent.getAction())) {
+            comp = new ComponentName(context.getPackageName(),
+                    InitAlarmIntentService.class.getName());
+        } else {
+            // If your receiver intent includes extras that need to be passed along to the service,
+            // use setComponent() to indicate that the service should handle the receiver's intent.
+            comp = new ComponentName(context.getPackageName(),
+                    RingerModeIntentService.class.getName());
+        }
         // This intent passed in this call will include the wake lock extra as well as
         // the receiver intent contents.
         // Start the service, keeping the device awake while it is launching.
@@ -38,8 +46,10 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
     public void setAlarm(Context context, boolean silentFlag, long timePoint) {
         alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
-        intent.setAction(RingerModeIntentService.ACTION_SET_RINGER_MODE);
-        intent.putExtra(SchedulingIntentService.EXTRA_SILENT_FLAG, silentFlag);
+        if (silentFlag)
+            intent.setAction(RingerModeIntentService.ACTION_SET_RINGER_MODE_VIBRATE);
+        else
+            intent.setAction(RingerModeIntentService.ACTION_SET_RINGER_MODE_NORMAL);
         alarmIntent = PendingIntent
                 .getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -76,5 +86,28 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         pm.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                 PackageManager.DONT_KILL_APP);
+    }
+
+    /**
+     * Sets a repeating alarm that runs once a day at approximately 0:01 a.m. When the
+     * alarm fires, the app broadcasts an Intent to this WakefulBroadcastReceiver.
+     *
+     * @param context
+     */
+    public void InitAlarm(Context context) {
+        alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.setAction(InitAlarmIntentService.ACTION_INIT);
+        alarmIntent = PendingIntent
+                .getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        // Set the alarm's trigger time to 00:01 a.m.
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 01);
+
+        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
     }
 }

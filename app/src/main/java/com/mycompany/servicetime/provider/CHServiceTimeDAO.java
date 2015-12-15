@@ -120,9 +120,12 @@ public class CHServiceTimeDAO {
                         + TimeSlots.END_TIME_HOUR + "," + TimeSlots.END_TIME_MINUTE);
 
         if (cursor != null) {
-            // all time slots are unactive.
+            // all time slots are unactivated on today.
             if (cursor.getCount() == 0) {
-                return calendar.getTimeInMillis();
+                if (silentFlag)
+                    return 0;
+                else
+                    return calendar.getTimeInMillis();
             }
 
             while (cursor.moveToNext()) {

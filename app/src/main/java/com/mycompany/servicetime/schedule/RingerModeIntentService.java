@@ -24,8 +24,10 @@ import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
 public class RingerModeIntentService extends IntentService {
     public static final String TAG = makeLogTag(RingerModeIntentService.class);
 
-    public static final String ACTION_SET_RINGER_MODE = "com.mycompany.servicetime.schedule" +
-            ".action.SET_RINGER_MODE";
+    public static final String ACTION_SET_RINGER_MODE_NORMAL =
+            "com.mycompany.servicetime.schedule.action.SET_RINGER_MODE_NORMAL";
+    public static final String ACTION_SET_RINGER_MODE_VIBRATE =
+            "com.mycompany.servicetime.schedule.action.SET_RINGER_MODE_VIBRATE";
 
     public static final int NOTIFICATION_ID = 1;
     private NotificationManager mNotificationManager;
@@ -35,10 +37,9 @@ public class RingerModeIntentService extends IntentService {
         super("RingerModeIntentService");
     }
 
-    public static void startActionSetRingerMode(Context context, boolean silentFlag) {
+    public static void startActionSetRingerMode(Context context, String action) {
         Intent intent = new Intent(context, RingerModeIntentService.class);
-        intent.setAction(ACTION_SET_RINGER_MODE);
-        intent.putExtra(SchedulingIntentService.EXTRA_SILENT_FLAG, silentFlag);
+        intent.setAction(action);
         context.startService(intent);
     }
 
@@ -49,10 +50,9 @@ public class RingerModeIntentService extends IntentService {
 
             LOGD(TAG, "RingerModeIntentService Action=" + action);
 
-            if (ACTION_SET_RINGER_MODE.equals(action)) {
-                final boolean silentFlag = intent.getBooleanExtra(SchedulingIntentService
-                        .EXTRA_SILENT_FLAG, true);
-                handleActionSetRingerMode(silentFlag);
+            if (ACTION_SET_RINGER_MODE_NORMAL.equals(action) ||
+                    ACTION_SET_RINGER_MODE_VIBRATE.equals(action)) {
+                handleActionSetRingerMode(action);
             }
 
             // Release the wake lock provided by the BroadcastReceiver.
@@ -64,21 +64,25 @@ public class RingerModeIntentService extends IntentService {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private void handleActionSetRingerMode(boolean silentFlag) {
-        LOGD(TAG, "RingerModeIntentService silentFlag=" + silentFlag);
-
+    private void handleActionSetRingerMode(String action) {
         AudioManager audioManager =
                 (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-        if (silentFlag) {
+        if (ACTION_SET_RINGER_MODE_VIBRATE.equals(action)) {
             LOGD(TAG, "set ringer mode: RINGER_MODE_VIBRATE");
             audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-        } else {
+
+            //set the next alarm. for normal
+            SchedulingIntentService.startActionSetAlarm(getApplicationContext(), false);
+        } else if (ACTION_SET_RINGER_MODE_NORMAL.equals(action)) {
             LOGD(TAG, "set ringer mode: RINGER_MODE_NORMAL");
             audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+
+            //set the next alarm. for vibrate
+            SchedulingIntentService.startActionSetAlarm(getApplicationContext(), true);
         }
 
         LOGD(TAG, "Current ringer mode: " + audioManager.getRingerMode());
-        sendNotification("Success");
+        //sendNotification("Success");
     }
 
     // Post a notification indicating whether a ringer mode changed.

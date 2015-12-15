@@ -21,16 +21,24 @@ public class SchedulingIntentService extends IntentService {
     public static final String TAG = makeLogTag(SchedulingIntentService.class);
 
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    private static final String ACTION_SET_ALARM = "com.mycompany.servicetime.schedule.action" +
-            ".SET_ALARM";
-    private static final String ACTION_STOP_ALARM = "com.mycompany.servicetime.schedule.action" +
-            ".STOP_ALARM";
+    private static final String ACTION_SET_ALARM =
+            "com.mycompany.servicetime.schedule.action.SET_ALARM";
+    private static final String ACTION_STOP_ALARM =
+            "com.mycompany.servicetime.schedule.action.STOP_ALARM";
+    private static final String ACTION_INIT_ALARM =
+            "com.mycompany.servicetime.schedule.action.INIT_ALARM";
 
     public static final String EXTRA_SILENT_FLAG = "com.mycompany.servicetime.schedule.extra" +
             ".SILENT_FLAG";
 
     public SchedulingIntentService() {
         super("SchedulingIntentService");
+    }
+
+    public static void startActionInitAlarm(Context context) {
+        Intent intent = new Intent(context, SchedulingIntentService.class);
+        intent.setAction(ACTION_INIT_ALARM);
+        context.startService(intent);
     }
 
     /**
@@ -63,15 +71,21 @@ public class SchedulingIntentService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
 
-            LOGD(TAG, "SchedulingIntentService Action="+ action);
+            LOGD(TAG, "SchedulingIntentService Action=" + action);
 
             if (ACTION_SET_ALARM.equals(action)) {
                 final boolean silentFlag = intent.getBooleanExtra(EXTRA_SILENT_FLAG, true);
                 handleActionSetAlarm(silentFlag);
             } else if (ACTION_STOP_ALARM.equals(action)) {
                 handleActionStopAlarm();
+            } else if (ACTION_INIT_ALARM.equals(action)){
+                handleActionInitAlarm();
             }
         }
+    }
+
+    private void handleActionInitAlarm() {
+        new AlarmReceiver().InitAlarm(getApplicationContext());
     }
 
     /**

@@ -51,7 +51,6 @@ public class CustomSimpleCursorAdapter extends SimpleCursorAdapter {
                     boolean vSilentFlag = activeSwitch.isChecked();
                     CHServiceTimeDAO.create(mContext)
                             .updateServiceFlag(currentTimeSlotId, vSilentFlag);
-                    SchedulingIntentService.startActionSetAlarm(mContext, vSilentFlag);
                 }
             });
         }

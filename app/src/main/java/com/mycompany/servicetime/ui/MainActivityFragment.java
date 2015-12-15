@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
+import com.mycompany.servicetime.schedule.InitAlarmIntentService;
+import com.mycompany.servicetime.schedule.SchedulingIntentService;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -118,6 +120,9 @@ public class MainActivityFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.swapCursor(data);
+
+        // Send the open and close sound alarms based on the current data.
+        InitAlarmIntentService.startActionInit(getContext());
     }
 
     @Override
