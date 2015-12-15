@@ -81,13 +81,17 @@ public class CustomSimpleCursorAdapter extends SimpleCursorAdapter {
         String name = cursor.getString(cursor.getColumnIndex(TimeSlots.NAME));
         boolean serviceFlag = cursor.getInt(cursor.getColumnIndex(TimeSlots.SERVICE_FLAG)) == 1 ?
                 true : false;
-        String time = cursor.getString(cursor.getColumnIndex(TimeSlots.BEGIN_TIME_HOUR))
+        String time = String.format("%02d",
+                cursor.getInt(cursor.getColumnIndex(TimeSlots.BEGIN_TIME_HOUR)))
                 + ":"
-                + cursor.getString(cursor.getColumnIndex(TimeSlots.BEGIN_TIME_MINUTE))
+                + String.format("%02d",
+                cursor.getInt(cursor.getColumnIndex(TimeSlots.BEGIN_TIME_MINUTE)))
                 + " --- "
-                + cursor.getString(cursor.getColumnIndex(TimeSlots.END_TIME_HOUR))
+                + String.format("%02d",
+                cursor.getInt(cursor.getColumnIndex(TimeSlots.END_TIME_HOUR)))
                 + ":"
-                + cursor.getString(cursor.getColumnIndex(TimeSlots.END_TIME_MINUTE));
+                + String.format("%02d",
+                cursor.getInt(cursor.getColumnIndex(TimeSlots.END_TIME_MINUTE)));
         String days = cursor.getString(cursor.getColumnIndex(TimeSlots.DAYS));
         String repeatFlag = cursor.getInt(cursor.getColumnIndex(TimeSlots.REPEAT_FLAG)) == 1
                 ? "Repeat weekly" : "";

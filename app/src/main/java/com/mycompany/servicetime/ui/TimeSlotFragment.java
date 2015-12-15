@@ -23,6 +23,8 @@ import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.model.TimeSlot;
 import com.mycompany.servicetime.provider.CHServiceTimeDAO;
 
+import java.util.Calendar;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -129,6 +131,10 @@ public class TimeSlotFragment extends Fragment {
             deleteButton.setVisibility(View.VISIBLE);
         } else {
             deleteButton.setVisibility(View.INVISIBLE);
+            // fix android bug in 4.1
+            int currentHourIn24 = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            beginTimeTP.setCurrentHour(currentHourIn24);
+            endTimeTP.setCurrentHour(currentHourIn24);
         }
 
         day0ToggleButton.setOnCheckedChangeListener(new daysOnCheckedChangeListener(0));
