@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
 import android.media.AudioManager;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 
 import com.mycompany.servicetime.R;
@@ -76,6 +77,11 @@ public class RingerModeIntentService extends IntentService {
         } else if (ACTION_SET_RINGER_MODE_NORMAL.equals(action)) {
             LOGD(TAG, "set ringer mode: RINGER_MODE_NORMAL");
             audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+            Settings.System.putInt(this.getContentResolver(), Settings.System.VIBRATE_ON, 1);
+            audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER,
+                    AudioManager.VIBRATE_SETTING_ON);
+            audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION,
+                    AudioManager.VIBRATE_SETTING_ON);
 
             //set the next alarm. for vibrate
             SchedulingIntentService.startActionSetAlarm(getApplicationContext(), true);
