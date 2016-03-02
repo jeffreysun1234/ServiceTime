@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.mycompany.servicetime.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment, mainActivityFragment)
                 .commit();
+
+        // Add AdView
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                //.addTestDevice(getString(R.string.ad_test_device_id))
+                .build();
+        mAdView.loadAd(adRequest);
+
     }
 
     @Override
