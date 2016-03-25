@@ -3,7 +3,6 @@ package com.mycompany.servicetime.ui;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,11 +21,21 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+import com.mycompany.servicetime.firebase.FirebaseConstants;
 import com.mycompany.servicetime.R;
+import com.mycompany.servicetime.firebase.FirebaseDAO;
+import com.mycompany.servicetime.firebase.FirebaseRestDAO;
 import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
+import com.mycompany.servicetime.firebase.FirebaseEndpointInterface;
 import com.mycompany.servicetime.schedule.InitAlarmIntentService;
-import com.mycompany.servicetime.schedule.SchedulingIntentService;
 import com.mycompany.servicetime.support.PreferenceSupport;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -125,6 +134,50 @@ public class MainActivityFragment extends Fragment implements
                         .replace(R.id.fragment, timeSlotFragment)
                         .addToBackStack(null)
                         .commit();
+                return true;
+            }
+            case R.id.backup_time_slot_list: {
+                FirebaseRestDAO.create().backupTimeSlotList();
+
+                Toast.makeText(getContext(), "Backup done.", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            case R.id.restore_time_slot_list: {
+
+
+//                Call<String> message = service.getTest();
+//                message.enqueue(new Callback<String>() {
+//                    @Override
+//                    public void onResponse(Call<String> call, Response<String> response) {
+//                        if (response.isSuccessful()) {
+//                            Toast.makeText(getContext(), response.body(),
+//                                    Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            // error response, no access to resource?
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<String> call, Throwable t) {
+//
+//                    }
+//                });
+
+
+//                Firebase myFirebaseRef = new Firebase(FirebaseConstants.FIREBASE_URL);
+//                myFirebaseRef.child("message").addValueEventListener(new ValueEventListener() {
+//
+//                    @Override
+//                    public void onDataChange(DataSnapshot snapshot) {
+//                        Toast.makeText(getContext(), (String) snapshot.getValue(),
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(FirebaseError error) {
+//                    }
+//
+//                });
                 return true;
             }
             default:

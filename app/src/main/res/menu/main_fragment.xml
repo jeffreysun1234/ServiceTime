@@ -2,8 +2,18 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/time_slot_list_add"
-        android:title="Add"
-        android:orderInCategory="100"
         android:icon="@android:drawable/ic_input_add"
+        android:orderInCategory="100"
+        android:title="Add"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/backup_time_slot_list"
+        android:orderInCategory="200"
+        android:title="Backup"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/restore_time_slot_list"
+        android:orderInCategory="200"
+        android:title="Restore"
+        app:showAsAction="never"/>
 </menu>

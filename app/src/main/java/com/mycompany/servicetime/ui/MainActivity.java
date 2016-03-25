@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
 
         // Add AdView
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                //.addTestDevice(getString(R.string.ad_test_device_id))
-                .build();
-        mAdView.loadAd(adRequest);
+//        AdView mAdView = (AdView) findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder()
+//                //.addTestDevice(getString(R.string.ad_test_device_id))
+//                .build();
+//        mAdView.loadAd(adRequest);
 
     }
 

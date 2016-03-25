@@ -59,6 +59,12 @@ public class CHServiceTimeDAO {
         mContext.getContentResolver().delete(TimeSlots.buildTimeSlotUri(timeSlotId), null, null);
     }
 
+    public Cursor getAllTimeSlot() {
+        Cursor cursor = mContext.getContentResolver().query(TimeSlots.CONTENT_URI,
+                TimeSlots.DEFAULT_PROJECTION, null, null, null);
+        return cursor;
+    }
+
     /**
      * @param timeSlotId
      * @return null if not found.

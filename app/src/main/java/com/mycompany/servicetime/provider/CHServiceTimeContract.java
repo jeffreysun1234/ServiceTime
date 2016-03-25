@@ -35,7 +35,7 @@ import java.util.Date;
  */
 public final class CHServiceTimeContract {
 
-    public static final String CONTENT_TYPE_APP_BASE = "chservicetime.";
+    public static final String CONTENT_TYPE_APP_BASE = "servicetime.";
 
     public static final String CONTENT_TYPE_BASE = "vnd.android.cursor.dir/vnd."
             + CONTENT_TYPE_APP_BASE;
@@ -56,7 +56,7 @@ public final class CHServiceTimeContract {
         String REPEAT_FLAG = "repeat_flag";
     }
 
-    public static final String CONTENT_AUTHORITY = "com.mycompany.chservicetime";
+    public static final String CONTENT_AUTHORITY = "com.mycompany.servicetime";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 

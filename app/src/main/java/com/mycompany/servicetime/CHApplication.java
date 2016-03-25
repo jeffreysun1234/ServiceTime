@@ -19,11 +19,13 @@ package com.mycompany.servicetime;
 import android.app.Application;
 import android.content.Context;
 
+import com.firebase.client.Firebase;
+
 import static com.mycompany.servicetime.util.LogUtils.LOGD;
 import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
 
-public class AppApplication extends Application {
-    private static final String TAG = makeLogTag(AppApplication.class);
+public class CHApplication extends Application {
+    private static final String TAG = makeLogTag(CHApplication.class);
 
     // Global context used in this app
     private static Context context = null;
@@ -38,5 +40,9 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = this.getApplicationContext();
+
+        // initialize Firebase
+        Firebase.setAndroidContext(this);
+
     }
 }

@@ -1,0 +1,89 @@
+package com.mycompany.servicetime.firebase.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.firebase.client.ServerValue;
+import com.mycompany.servicetime.firebase.FirebaseConstants;
+import com.mycompany.servicetime.firebase.FirebaseHelper;
+
+import java.util.HashMap;
+
+/**
+ * Created by szhx on 3/24/2016.
+ */
+public class TimeSlotList {
+    private String listName;
+    private String owner;
+    private HashMap<String, Object> timestampLastChanged;
+    private HashMap<String, Object> timestampCreated;
+
+    /**
+     * Required public constructor
+     */
+    public TimeSlotList() {
+    }
+
+    /**
+     * Use this constructor to create new TimeSlotLists.
+     * Takes TimeSlot list listName and owner. Set's the last changed time to what is stored in
+     * ServerValue.TIMESTAMP
+     *
+     * @param listName
+     * @param owner
+     */
+    public TimeSlotList(String listName, String owner, HashMap<String, Object> timestampCreated) {
+        this.listName = listName;
+        this.owner = owner;
+        this.timestampCreated = timestampCreated;
+        this.timestampLastChanged = FirebaseHelper.getTimestampNowObject();
+    }
+
+    public String getListName() {
+        return listName;
+    }
+
+    public void setListName(String listName) {
+        this.listName = listName;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public HashMap<String, Object> getTimestampCreated() {
+        return timestampCreated;
+    }
+
+    public void setTimestampCreated(
+            HashMap<String, Object> timestampCreated) {
+        this.timestampCreated = timestampCreated;
+    }
+
+    public HashMap<String, Object> getTimestampLastChanged() {
+        return timestampLastChanged;
+    }
+
+    public void setTimestampLastChanged(
+            HashMap<String, Object> timestampLastChanged) {
+        this.timestampLastChanged = timestampLastChanged;
+    }
+
+    @JsonIgnore
+    public long getTimestampLastChangedLong() {
+        return (long) timestampLastChanged.get(FirebaseConstants.FIREBASE_PROPERTY_TIMESTAMP);
+    }
+
+    @JsonIgnore
+    public long getTimestampCreatedLong() {
+        return (long) timestampLastChanged.get(FirebaseConstants.FIREBASE_PROPERTY_TIMESTAMP);
+    }
+
+    public void setTimestampLastChangedToNow() {
+        HashMap<String, Object> timestampNowObject = new HashMap<String, Object>();
+        timestampNowObject.put(FirebaseConstants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
+        this.timestampLastChanged = timestampNowObject;
+    }
+}
