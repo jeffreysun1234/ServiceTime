@@ -3,7 +3,7 @@ package com.mycompany.servicetime.firebase.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.firebase.client.ServerValue;
 import com.mycompany.servicetime.firebase.FirebaseConstants;
-import com.mycompany.servicetime.firebase.FirebaseHelper;
+import com.mycompany.servicetime.firebase.FirebaseUtils;
 
 import java.util.HashMap;
 
@@ -34,7 +34,7 @@ public class TimeSlotList {
         this.listName = listName;
         this.owner = owner;
         this.timestampCreated = timestampCreated;
-        this.timestampLastChanged = FirebaseHelper.getTimestampNowObject();
+        this.timestampLastChanged = FirebaseUtils.getTimestampNowObject();
     }
 
     public String getListName() {

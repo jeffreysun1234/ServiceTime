@@ -3,7 +3,6 @@ package com.mycompany.servicetime.firebase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ServerValue;
 import com.mycompany.servicetime.firebase.model.TimeSlotList;
 
 import java.util.ArrayList;
@@ -30,10 +29,10 @@ public class FirebaseDAO {
 
         /* Build the TimeSlot list */
         TimeSlotList newTimeSlotList1 = new TimeSlotList("Temp Name", "owner@gmail.com",
-                FirebaseHelper.getTimestampNowObject());
+                FirebaseUtils.getTimestampNowObject());
 
         TimeSlotList newTimeSlotList2 = new TimeSlotList("Big Name", "myself@gmail.com",
-                FirebaseHelper.getTimestampNowObject());
+                FirebaseUtils.getTimestampNowObject());
 
         HashMap<String, Object> shoppingListMap1 = (HashMap<String, Object>)
                 new ObjectMapper().convertValue(newTimeSlotList1, Map.class);

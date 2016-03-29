@@ -53,7 +53,7 @@ public class FirebaseRestDAO {
     public void addTimeSlotList() {
         /* build a TimeSlot list */
         TimeSlotList newTimeSlotList1 = new TimeSlotList("Temp Name", "owner@gmail.com",
-                FirebaseHelper.getTimestampNowObject());
+                FirebaseUtils.getTimestampNowObject());
         HashMap<String, Object> shoppingListMap1 = (HashMap<String, Object>)
                 new ObjectMapper().convertValue(newTimeSlotList1, Map.class);
 

@@ -17,9 +17,12 @@ import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
 public class PreferenceSupport {
     private static final String TAG = makeLogTag("PreferenceSupport");
 
-    public static final String BAR_LIMIT = "bar_limit";
-    public static final String TIME_FRAME = "time_frame";
+    public static final String PROVIDER = "provider";
+    public static final String ENCODED_EMAIL = "encoded_email";
+    public static final String SIGNUP_EMAIL = "signup_email";
+
     public static final String NEXT_ALARM_DETAIL = "next_alarm_detail";
+
     public static final String FETCH_DAYS = "fetch_days";
     public static final String PREF_APP_VERSION = "app_version";
     /**
@@ -28,37 +31,37 @@ public class PreferenceSupport {
      */
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
-    /*--- bar_limit ---*/
-    public static void setBarLimit(final Context context, final int barLimit) {
+    /*--- provider ---*/
+    public static void setProvider(final Context context, final String provider) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putInt(BAR_LIMIT, barLimit).commit();
+        sp.edit().putString(PROVIDER, provider).commit();
     }
 
-    public static int getBarLimit(final Context context) {
+    public static String getProvider(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getInt(BAR_LIMIT, 100);
+        return sp.getString(PROVIDER, null);
     }
 
-    /*--- app_version ---*/
-    public static void setAppVersion(final Context context, final int appVersion) {
+    /*--- signup_email ---*/
+    public static void setSignupEmail(final Context context, final String signupEmail) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putInt(PREF_APP_VERSION, appVersion).commit();
+        sp.edit().putString(SIGNUP_EMAIL, signupEmail).commit();
     }
 
-    public static int getAppVersion(final Context context) {
+    public static String getSignupEmail(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getInt(PREF_APP_VERSION, Integer.MIN_VALUE);
+        return sp.getString(SIGNUP_EMAIL, null);
     }
 
-    /*--- time_frame ---*/
-    public static void setTimeFrame(final Context context, final String timeFrame) {
+    /*--- encoded_email ---*/
+    public static void setEncodedEmail(final Context context, final String encodeEmail) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putString(TIME_FRAME, timeFrame).commit();
+        sp.edit().putString(ENCODED_EMAIL, encodeEmail).commit();
     }
 
-    public static String getTimeFrame(final Context context) {
+    public static String getEncodedEmail(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getString(TIME_FRAME, "5 Mins");
+        return sp.getString(ENCODED_EMAIL, null);
     }
 
     /*--- next_alarm_detail ---*/
