@@ -241,6 +241,7 @@ public class LoginActivity extends BaseActivity {
                 /* Save provider name and encodedEmail for later use and start MainActivity */
                 PreferenceSupport.setProvider(LoginActivity.this, authData.getProvider());
                 PreferenceSupport.setEncodedEmail(LoginActivity.this, mEncodedEmail);
+                PreferenceSupport.setAuthToken(LoginActivity.this, authData.getToken());
 
                 /* Go to main activity */
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);

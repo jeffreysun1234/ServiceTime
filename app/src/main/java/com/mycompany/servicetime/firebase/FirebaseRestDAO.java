@@ -13,7 +13,6 @@ import com.mycompany.servicetime.support.PreferenceSupport;
 import com.mycompany.servicetime.util.ModelConverter;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -60,13 +59,14 @@ public class FirebaseRestDAO {
      */
     public void addTimeSlotList(String userEmail) {
         /* build a TimeSlot list */
-        TimeSlotList newTimeSlotList1 = new TimeSlotList("My List", userEmail,
+        TimeSlotList newTimeSlotList = new TimeSlotList("My List", userEmail,
                 FirebaseUtils.getTimestampNowObject());
-        HashMap<String, Object> shoppingListMap1 = (HashMap<String, Object>)
-                new ObjectMapper().convertValue(newTimeSlotList1, Map.class);
+        HashMap<String, Object> timeSlotListMap = (HashMap<String, Object>)
+                new ObjectMapper().convertValue(newTimeSlotList, Map.class);
 
         /* access firebase database */
-        Call<String> message = mService.addTimeSlotList(userEmail, shoppingListMap1);
+        Call<String> message = mService.addTimeSlotList(userEmail, timeSlotListMap,
+                PreferenceSupport.getAuthToken(mContext));
         message.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -99,6 +99,28 @@ public class FirebaseRestDAO {
         // add a TimeSlotList to Firebase
         addTimeSlotList(encodedEmail);
 
+        // clear TimeSlotItems on Firebase
+        if (cursor.getCount() > 0) {
+            Call<String> message = mService.deleteTimeSlotItems(encodedEmail,
+                    PreferenceSupport.getAuthToken(mContext));
+            message.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.isSuccessful()) {
+                        LOGD(TAG, "successful clear TimeSlotItems on Firebase.");
+
+                    } else {
+                        // error response, no access to resource?
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                }
+            });
+        }
+
         ColumnIndexCache columnIndexCache = new ColumnIndexCache();
         TimeSlotItem timeSlotItem;
         HashMap<String, Object> timeSlotItemMap;
@@ -113,7 +135,8 @@ public class FirebaseRestDAO {
                     new ObjectMapper().convertValue(timeSlotItem, Map.class);
 
             // save to Firebase
-            Call<String> message = mService.addTimeSlotItemList(encodedEmail, timeSlotItemMap);
+            Call<String> message = mService.addTimeSlotItemList(encodedEmail, timeSlotItemMap,
+                    PreferenceSupport.getAuthToken(mContext));
             message.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
@@ -141,7 +164,8 @@ public class FirebaseRestDAO {
     public void restoreTimeSlotItemList() {
         String encodedEmail = PreferenceSupport.getEncodedEmail(mContext);
 
-        Call<HashMap<String, TimeSlotItem>> message = mService.getTimeSlotItemList(encodedEmail);
+        Call<HashMap<String, TimeSlotItem>> message = mService
+                .getTimeSlotItemList(encodedEmail, PreferenceSupport.getAuthToken(mContext));
         message.enqueue(new Callback<HashMap<String, TimeSlotItem>>() {
             @Override
             public void onResponse(Call<HashMap<String, TimeSlotItem>> call,

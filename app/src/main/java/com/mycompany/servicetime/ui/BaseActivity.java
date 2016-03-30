@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -45,6 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                         /* Clear out shared preferences */
                         PreferenceSupport.setEncodedEmail(BaseActivity.this, null);
                         PreferenceSupport.setProvider(BaseActivity.this, null);
+                        PreferenceSupport.setAuthToken(BaseActivity.this, null);
 
                         // Set option menu to login or logout
                         isLogin = false;
@@ -124,6 +126,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    protected void showLoginHint() {
+        if (!isLogin)
+            Toast.makeText(BaseActivity.this, "Please Login at first.", Toast.LENGTH_SHORT).show();
     }
 
 }

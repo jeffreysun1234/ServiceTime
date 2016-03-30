@@ -127,16 +127,23 @@ public class MainActivityFragment extends Fragment implements
                 return true;
             }
             case R.id.backup_time_slot_list: {
-                FirebaseRestDAO.create().backupTimeSlotItemList();
+                if (((BaseActivity) getActivity()).isLogin) {
+                    FirebaseRestDAO.create().backupTimeSlotItemList();
 
-                Toast.makeText(getContext(), "Backup done.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Backup done.", Toast.LENGTH_SHORT).show();
+                } else {
+                    ((BaseActivity) getActivity()).showLoginHint();
+                }
                 return true;
             }
             case R.id.restore_time_slot_list: {
-                FirebaseRestDAO.create().restoreTimeSlotItemList();
+                if (((BaseActivity) getActivity()).isLogin) {
+                    FirebaseRestDAO.create().restoreTimeSlotItemList();
 
-                Toast.makeText(getContext(), "Restore done.", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getContext(), "Restore done.", Toast.LENGTH_SHORT).show();
+                } else {
+                    ((BaseActivity) getActivity()).showLoginHint();
+                }
                 return true;
             }
             default:

@@ -81,7 +81,7 @@ public class CreateAccountActivity extends BaseActivity {
         mAuthProgressDialog = new ProgressDialog(this);
         mAuthProgressDialog.setTitle(getResources().getString(R.string.progress_dialog_loading));
         mAuthProgressDialog
-                .setMessage(getResources().getString(R.string.progress_dialog_check_inbox));
+                .setMessage(getResources().getString(R.string.progress_dialog_creating_user_with_firebase));
         mAuthProgressDialog.setCancelable(false);
     }
 

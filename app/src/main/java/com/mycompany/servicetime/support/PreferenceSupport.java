@@ -23,7 +23,7 @@ public class PreferenceSupport {
 
     public static final String NEXT_ALARM_DETAIL = "next_alarm_detail";
 
-    public static final String FETCH_DAYS = "fetch_days";
+    public static final String AUTH_TOKEN = "auth_token";
     public static final String PREF_APP_VERSION = "app_version";
     /**
      * Per the design guidelines, you should show the drawer on launch until the user
@@ -75,15 +75,15 @@ public class PreferenceSupport {
         return sp.getString(NEXT_ALARM_DETAIL, "");
     }
 
-    /*--- fetch_days ---*/
-    public static void setFetchDays(final Context context, final String days) {
+    /*--- auth_token ---*/
+    public static void setAuthToken(final Context context, final String authToken) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putString(FETCH_DAYS, days).commit();
+        sp.edit().putString(AUTH_TOKEN, authToken).commit();
     }
 
-    public static String getFetchDays(final Context context) {
+    public static String getAuthToken(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getString(FETCH_DAYS, "1");
+        return sp.getString(AUTH_TOKEN, null);
     }
 
     /*--- navigation_drawer_learned ---*/
