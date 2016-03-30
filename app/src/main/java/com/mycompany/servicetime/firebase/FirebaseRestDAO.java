@@ -1,5 +1,6 @@
 package com.mycompany.servicetime.firebase;
 
+import android.content.Context;
 import android.database.Cursor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,9 +9,11 @@ import com.mycompany.servicetime.firebase.model.TimeSlotItem;
 import com.mycompany.servicetime.firebase.model.TimeSlotList;
 import com.mycompany.servicetime.provider.CHServiceTimeDAO;
 import com.mycompany.servicetime.provider.ColumnIndexCache;
+import com.mycompany.servicetime.support.PreferenceSupport;
 import com.mycompany.servicetime.util.ModelConverter;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -30,6 +33,8 @@ public class FirebaseRestDAO {
 
     private static FirebaseEndpointInterface mService;
 
+    private static Context mContext;
+
     private FirebaseRestDAO() {
         if (mService == null) {
             /* build a retrofit instance */
@@ -41,6 +46,9 @@ public class FirebaseRestDAO {
             /* get the interface of restful service */
             mService = retrofit.create(FirebaseEndpointInterface.class);
         }
+
+        if (mContext == null)
+            mContext = CHApplication.getContext();
     }
 
     public static FirebaseRestDAO create() {
@@ -50,15 +58,15 @@ public class FirebaseRestDAO {
     /**
      * Add new TimeSlot list
      */
-    public void addTimeSlotList() {
+    public void addTimeSlotList(String userEmail) {
         /* build a TimeSlot list */
-        TimeSlotList newTimeSlotList1 = new TimeSlotList("Temp Name", "owner@gmail.com",
+        TimeSlotList newTimeSlotList1 = new TimeSlotList("My List", userEmail,
                 FirebaseUtils.getTimestampNowObject());
         HashMap<String, Object> shoppingListMap1 = (HashMap<String, Object>)
                 new ObjectMapper().convertValue(newTimeSlotList1, Map.class);
 
         /* access firebase database */
-        Call<String> message = mService.addTimeSlotList(shoppingListMap1);
+        Call<String> message = mService.addTimeSlotList(userEmail, shoppingListMap1);
         message.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -80,11 +88,16 @@ public class FirebaseRestDAO {
     /**
      * Backup TimeSlot list
      */
-    public void backupTimeSlotList() {
+    public void backupTimeSlotItemList() {
         // Get all TimeSlot from DB
-        Cursor cursor = CHServiceTimeDAO.create(CHApplication.getContext()).getAllTimeSlot();
+        Cursor cursor = CHServiceTimeDAO.create(mContext).getAllTimeSlot();
         if (cursor == null)
             return;
+
+        String encodedEmail = PreferenceSupport.getEncodedEmail(mContext);
+
+        // add a TimeSlotList to Firebase
+        addTimeSlotList(encodedEmail);
 
         ColumnIndexCache columnIndexCache = new ColumnIndexCache();
         TimeSlotItem timeSlotItem;
@@ -100,8 +113,7 @@ public class FirebaseRestDAO {
                     new ObjectMapper().convertValue(timeSlotItem, Map.class);
 
             // save to Firebase
-            Call<String> message = mService.addTimeSlotItemList("-KDeiOhCyfYj2PHzfI1e",
-                    timeSlotItemMap);
+            Call<String> message = mService.addTimeSlotItemList(encodedEmail, timeSlotItemMap);
             message.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
@@ -121,5 +133,48 @@ public class FirebaseRestDAO {
         }
 
         cursor.close();
+    }
+
+    /**
+     * restore TimeSlot list
+     */
+    public void restoreTimeSlotItemList() {
+        String encodedEmail = PreferenceSupport.getEncodedEmail(mContext);
+
+        Call<HashMap<String, TimeSlotItem>> message = mService.getTimeSlotItemList(encodedEmail);
+        message.enqueue(new Callback<HashMap<String, TimeSlotItem>>() {
+            @Override
+            public void onResponse(Call<HashMap<String, TimeSlotItem>> call,
+                                   Response<HashMap<String, TimeSlotItem>> response) {
+                LOGD(TAG, "response body: " + response.body());
+
+                if (response.isSuccessful()) {
+                    HashMap<String, TimeSlotItem> body = response.body();
+                    if (body != null && body.values().size() > 0) {
+                        String currentTimeSlotId;
+                        CHServiceTimeDAO dao = CHServiceTimeDAO.create(mContext);
+                        // clear DB
+                        dao.deleteAllTimeSlot();
+                        for (TimeSlotItem tsItem : body.values()) {
+                            // add a timeslot, timeSlotId will be a new value.
+                            currentTimeSlotId = dao.addOrUpdateTimeSlot("", tsItem.getName(),
+                                    tsItem.getBeginTimeHour(), tsItem.getBeginTimeMinute(),
+                                    tsItem.getEndTimeHour(), tsItem.getEndTimeMinute(),
+                                    tsItem.getDays(), tsItem.isRepeatFlag());
+                            // restore the service flag
+                            dao.updateServiceFlag(currentTimeSlotId, tsItem.isServiceFlag());
+                        }
+                    }
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HashMap<String, TimeSlotItem>> call, Throwable t) {
+                LOGD(TAG, "Failure: " + t.getMessage());
+            }
+        });
+
     }
 }

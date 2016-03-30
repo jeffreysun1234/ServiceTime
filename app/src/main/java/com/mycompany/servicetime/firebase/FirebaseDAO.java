@@ -12,6 +12,10 @@ import java.util.Map;
 /**
  * Created by szhx on 3/24/2016.
  */
+
+/**
+ * This class is not used.
+ */
 public class FirebaseDAO {
 
     /**

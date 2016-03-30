@@ -128,6 +128,8 @@ public class CreateAccountActivity extends BaseActivity {
                         LOGD(TAG,
                                 "Successfully created user account with uid: " + result.get("uid"));
 
+                        mAuthProgressDialog.dismiss();
+
                         /**
                          * Save name and email to sharedPreferences to create User database record
                          * when the registered user will sign in for the first time

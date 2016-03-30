@@ -33,8 +33,13 @@ public class CHServiceTimeDAO {
         return new CHServiceTimeDAO(context);
     }
 
-    public void addOrUpdateTimeSlot(String timeSlotId, String name, int beginTimeHour, int
+    /**
+     * @return timeSlotId
+     */
+    public String addOrUpdateTimeSlot(String timeSlotId, String name, int beginTimeHour, int
             beginTimeMinute, int endTimeHour, int endTimeMinute, String days, boolean repeatFlag) {
+        String returnTimeSlotId;
+
         ContentValues values = new ContentValues();
 
         values.put(TimeSlots.NAME, name);
@@ -46,17 +51,25 @@ public class CHServiceTimeDAO {
         values.put(TimeSlots.REPEAT_FLAG, repeatFlag ? 1 : 0);
 
         if (TextUtils.isEmpty(timeSlotId)) {
-            values.put(TimeSlots.TIME_SLOT_ID, TimeSlots.generateTimeSlotId());
+            returnTimeSlotId = TimeSlots.generateTimeSlotId();
+            values.put(TimeSlots.TIME_SLOT_ID, returnTimeSlotId);
             mContext.getContentResolver().insert(TimeSlots.CONTENT_URI, values);
         } else {
+            returnTimeSlotId = timeSlotId;
             mContext.getContentResolver()
                     .update(TimeSlots.buildTimeSlotUri(timeSlotId), values, null, null);
         }
 
+        return returnTimeSlotId;
     }
 
     public void deleteTimeSlot(String timeSlotId) {
         mContext.getContentResolver().delete(TimeSlots.buildTimeSlotUri(timeSlotId), null, null);
+    }
+
+
+    public void deleteAllTimeSlot() {
+        mContext.getContentResolver().delete(TimeSlots.CONTENT_URI, null, null);
     }
 
     public Cursor getAllTimeSlot() {
@@ -208,4 +221,5 @@ public class CHServiceTimeDAO {
 
         return timePoint;
     }
+
 }

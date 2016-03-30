@@ -18,6 +18,8 @@ public final class FirebaseConstants {
     public static final String FIREBASE_LOCATION_LISTS_SHARED_WITH = "sharedWith";
     public static final String FIREBASE_LOCATION_UID_MAPPINGS = "uidMappings";
     public static final String FIREBASE_LOCATION_OWNER_MAPPINGS = "ownerMappings";
+    //TODO: a temporary name
+    public static final String FIREBASE_LOCATION_DEVICE_ID = "phoneIMEI";
 
     /**
      * Constants for Firebase object properties
@@ -61,4 +63,5 @@ public final class FirebaseConstants {
      * Constants for the replacement variable in URL
      */
     public static final String PATH_UNIIQUE_ID = "uniqueId";
+    public static final String PATH_USER_EMAIL = "userEmail";
 }
