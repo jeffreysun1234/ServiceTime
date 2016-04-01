@@ -85,6 +85,9 @@ public class RestCallTest {
 
             String timeSlotItemListRestURL = FirebaseConstants
                     .timeSlotItemListRestURL(userEmailPath);
+            String timeSlotListRestURL = FirebaseConstants.timeSlotListRestURL(
+                    userEmailPath);
+
             String getTimeSlotItemListURLResponse = "{\"-KE8oUN5U5BGgBMey02U\":{\"beginTimeHour" +
                     "\":17,\"beginTimeMinute\":5,\"days\":\"0100000\",\"endTimeHour\":17," +
                     "\"endTimeMinute\":6,\"name\":\"test\",\"repeatFlag\":true," +
@@ -100,8 +103,9 @@ public class RestCallTest {
 
             String addTimeSlotItemListURLResponse = "{\"name\":\"-JSOpn9ZC54A4P4RoqVa\"}";
 
-            String timeSlotListRestURL = FirebaseConstants.timeSlotListRestURL(
-                    userEmailPath);
+            String addTimeSlotListURLResponse = "{\"listName\":\"My List\",\"owner\":\"a@a," +
+                    "com\",\"timestampCreated\":{\"timestamp\":1459512599670}," +
+                    "\"timestampLastChanged\":{\"timestamp\":1459512599670}}";
 
             if (request.getPath().equals(MOCK_SERVER_URL + "example.json")) {
                 return new MockResponse().setResponseCode(200).setBody("\"Hi\"");
@@ -120,7 +124,7 @@ public class RestCallTest {
             } else if (request.getPath().equals(MOCK_SERVER_URL + timeSlotListRestURL)
                     && request.getMethod().equals("PUT")) {
                 return new MockResponse().setResponseCode(200)
-                        .setBody("\"Ok\"");
+                        .setBody(addTimeSlotListURLResponse);
             }
             return new MockResponse().setResponseCode(404);
         }
@@ -196,10 +200,10 @@ public class RestCallTest {
         HashMap<String, Object> timeSlotListMap = (HashMap<String, Object>)
                 new ObjectMapper().convertValue(newTimeSlotList, Map.class);
 
-        Response<String> response = mService
+        Response<TimeSlotList> response = mService
                 .addTimeSlotList(FirebaseConstants.timeSlotListRestURL(userEmailPath),
                         timeSlotListMap, null).execute();
         assertThat(response.isSuccessful(), is(true));
-        assertThat(response.body(), is(equalTo("Ok")));
+        assertThat(((TimeSlotList)response.body()).getListName(), is(equalTo("My List")));
     }
 }

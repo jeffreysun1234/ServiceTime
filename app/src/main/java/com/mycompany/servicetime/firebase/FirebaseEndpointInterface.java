@@ -3,6 +3,7 @@ package com.mycompany.servicetime.firebase;
 import com.mycompany.servicetime.firebase.model.TimeSlotItem;
 import com.mycompany.servicetime.firebase.model.TimeSlotList;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,9 +34,9 @@ public interface FirebaseEndpointInterface {
      * FirebaseConstants.timeSlotListRestURL();
      */
     @PUT
-    Call<String> addTimeSlotList(@Url String url,
-                                 @Body HashMap<String, Object> timeSlotListJson,
-                                 @Query("auth") String auth);
+    Call<TimeSlotList> addTimeSlotList(@Url String url,
+                                       @Body HashMap<String, Object> timeSlotListJson,
+                                       @Query("auth") String auth);
 
     /**
      * FirebaseConstants.timeSlotItemListRestURL();

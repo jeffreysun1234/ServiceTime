@@ -6,13 +6,25 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mycompany.servicetime.firebase.FirebaseConstants;
+import com.mycompany.servicetime.firebase.model.TimeSlotItem;
 import com.mycompany.servicetime.model.TimeSlot;
 import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
+import com.mycompany.servicetime.support.PreferenceSupport;
+import com.mycompany.servicetime.util.ModelConverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.mycompany.servicetime.util.LogUtils.LOGD;
 import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
@@ -222,4 +234,43 @@ public class CHServiceTimeDAO {
         return timePoint;
     }
 
+    public void restoreAllTimeSlots(Collection<TimeSlotItem> timeSlotItems) {
+        String currentTimeSlotId;
+
+        // clear DB
+        deleteAllTimeSlot();
+        for (TimeSlotItem tsItem : timeSlotItems) {
+            // add a timeslot, timeSlotId will be a new value.
+            currentTimeSlotId = addOrUpdateTimeSlot("", tsItem.getName(),
+                    tsItem.getBeginTimeHour(), tsItem.getBeginTimeMinute(),
+                    tsItem.getEndTimeHour(), tsItem.getEndTimeMinute(),
+                    tsItem.getDays(), tsItem.isRepeatFlag());
+            // restore the service flag
+            updateServiceFlag(currentTimeSlotId, tsItem.isServiceFlag());
+        }
+    }
+
+    public ArrayList<TimeSlotItem> backupAllTimeSlots() {
+        // Get all TimeSlot from DB
+        Cursor cursor = CHServiceTimeDAO.create(mContext).getAllTimeSlot();
+        if (cursor == null)
+            return null;
+
+        ArrayList<TimeSlotItem> timeSlotItems = new ArrayList<TimeSlotItem>();
+
+        ColumnIndexCache columnIndexCache = new ColumnIndexCache();
+        TimeSlotItem tsItem;
+
+        cursor.moveToPosition(-1);
+        while (cursor.moveToNext()) {
+            // convert cursor to TimeSlotItem model
+            tsItem = ModelConverter.cursorToTimeSlotItem(cursor, columnIndexCache);
+
+            timeSlotItems.add(tsItem);
+        }
+
+        cursor.close();
+
+        return timeSlotItems;
+    }
 }

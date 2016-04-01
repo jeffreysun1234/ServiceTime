@@ -27,6 +27,8 @@ import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
 import com.mycompany.servicetime.schedule.InitAlarmIntentService;
 import com.mycompany.servicetime.support.PreferenceSupport;
 
+import java.io.IOException;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -128,7 +130,11 @@ public class MainActivityFragment extends Fragment implements
             }
             case R.id.backup_time_slot_list: {
                 if (((BaseActivity) getActivity()).isLogin) {
-                    FirebaseRestDAO.create().backupTimeSlotItemList();
+                    try {
+                        FirebaseRestDAO.create().backupTimeSlotItemList();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     Toast.makeText(getContext(), "Backup done.", Toast.LENGTH_SHORT).show();
                 } else {
