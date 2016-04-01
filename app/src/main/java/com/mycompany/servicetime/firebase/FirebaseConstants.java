@@ -5,7 +5,7 @@ import com.mycompany.servicetime.BuildConfig;
 /**
  * Created by szhx on 3/23/2016.
  */
-public final class FirebaseConstants {
+public class FirebaseConstants {
     /**
      * Constants related to locations in Firebase, such as the name of the node
      * where user lists are stored (ie "userLists")
@@ -51,4 +51,22 @@ public final class FirebaseConstants {
      */
     public static final String PATH_UNIIQUE_ID = "uniqueId";
     public static final String PATH_USER_EMAIL = "userEmail";
+
+    /**
+     * Methods for Firebase REST URL
+     */
+    // example: timeSlotLists/a@a.com/phoneIMEI/timeSlotItems.json
+    public static String timeSlotItemListRestURL(String userEmailPath) {
+        return FIREBASE_LOCATION_TIMESLOT_LISTS +
+                "/" + userEmailPath + "/" +
+                FIREBASE_LOCATION_DEVICE_ID + "/" +
+                FIREBASE_LOCATION_TIMESLOT_ITEMS + ".json";
+    }
+
+    // example: timeSlotLists/a@a.com/phoneIMEI.json
+    public static String timeSlotListRestURL(String userEmailPath) {
+        return FIREBASE_LOCATION_TIMESLOT_LISTS +
+                "/" + userEmailPath + "/" +
+                FIREBASE_LOCATION_DEVICE_ID + ".json";
+    }
 }

@@ -15,6 +15,8 @@ import com.mycompany.servicetime.util.ModelConverter;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,9 +39,18 @@ public class FirebaseRestDAO {
     private FirebaseRestDAO() {
         if (mService == null) {
             /* build a retrofit instance */
+            // set logging
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            // set your desired log level
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+            httpClient.addInterceptor(logging);
+
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(FirebaseConstants.FIREBASE_URL)
                     .addConverterFactory(JacksonConverterFactory.create())
+                    .client(httpClient.build())
                     .build();
 
             /* get the interface of restful service */
@@ -57,15 +68,16 @@ public class FirebaseRestDAO {
     /**
      * Add new TimeSlot list
      */
-    public void addTimeSlotList(String userEmail) {
+    public void addTimeSlotList(String encodedUserEmail) {
         /* build a TimeSlot list */
-        TimeSlotList newTimeSlotList = new TimeSlotList("My List", userEmail,
+        TimeSlotList newTimeSlotList = new TimeSlotList("My List", encodedUserEmail,
                 FirebaseUtils.getTimestampNowObject());
         HashMap<String, Object> timeSlotListMap = (HashMap<String, Object>)
                 new ObjectMapper().convertValue(newTimeSlotList, Map.class);
 
         /* access firebase database */
-        Call<String> message = mService.addTimeSlotList(userEmail, timeSlotListMap,
+        Call<String> message = mService.addTimeSlotList(
+                FirebaseConstants.timeSlotListRestURL(encodedUserEmail), timeSlotListMap,
                 PreferenceSupport.getAuthToken(mContext));
         message.enqueue(new Callback<String>() {
             @Override
@@ -101,22 +113,23 @@ public class FirebaseRestDAO {
 
         // clear TimeSlotItems on Firebase
         if (cursor.getCount() > 0) {
-            Call<String> message = mService.deleteTimeSlotItems(encodedEmail,
+            Call<HashMap<String, String>> message = mService.deleteTimeSlotItems(
+                    FirebaseConstants.timeSlotItemListRestURL(encodedEmail),
                     PreferenceSupport.getAuthToken(mContext));
-            message.enqueue(new Callback<String>() {
+            message.enqueue(new Callback<HashMap<String, String>>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
+                public void onResponse(Call<HashMap<String, String>> call,
+                                       Response<HashMap<String, String>> response) {
                     if (response.isSuccessful()) {
                         LOGD(TAG, "successful clear TimeSlotItems on Firebase.");
-
                     } else {
-                        // error response, no access to resource?
+                        LOGD(TAG, "fail to clear TimeSlotItems on Firebase.");
                     }
                 }
 
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
-
+                public void onFailure(Call<HashMap<String, String>> call, Throwable t) {
+                    LOGD(TAG, t.getMessage());
                 }
             });
         }
@@ -135,22 +148,23 @@ public class FirebaseRestDAO {
                     new ObjectMapper().convertValue(timeSlotItem, Map.class);
 
             // save to Firebase
-            Call<String> message = mService.addTimeSlotItemList(encodedEmail, timeSlotItemMap,
+            Call<HashMap<String, String>> message = mService.addTimeSlotItemList(
+                    FirebaseConstants.timeSlotItemListRestURL(encodedEmail), timeSlotItemMap,
                     PreferenceSupport.getAuthToken(mContext));
-            message.enqueue(new Callback<String>() {
+            message.enqueue(new Callback<HashMap<String, String>>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
+                public void onResponse(Call<HashMap<String, String>> call,
+                                       Response<HashMap<String, String>> response) {
                     if (response.isSuccessful()) {
-                        LOGD(TAG, response.body());
-
+                        LOGD(TAG, ((HashMap<String, String>) response.body()).get("name"));
                     } else {
-                        // error response, no access to resource?
+                        LOGD(TAG, response.toString());
                     }
                 }
 
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
-
+                public void onFailure(Call<HashMap<String, String>> call, Throwable t) {
+                    LOGD(TAG, t.getMessage());
                 }
             });
         }
@@ -165,7 +179,8 @@ public class FirebaseRestDAO {
         String encodedEmail = PreferenceSupport.getEncodedEmail(mContext);
 
         Call<HashMap<String, TimeSlotItem>> message = mService
-                .getTimeSlotItemList(encodedEmail, PreferenceSupport.getAuthToken(mContext));
+                .getTimeSlotItemList(FirebaseConstants.timeSlotItemListRestURL(encodedEmail),
+                        PreferenceSupport.getAuthToken(mContext));
         message.enqueue(new Callback<HashMap<String, TimeSlotItem>>() {
             @Override
             public void onResponse(Call<HashMap<String, TimeSlotItem>> call,
