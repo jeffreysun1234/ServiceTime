@@ -60,9 +60,6 @@ public class FirebaseRestDAO {
             /* get the interface of restful service */
             mService = retrofit.create(FirebaseEndpointInterface.class);
         }
-
-//        if (mContext == null)
-//            mContext = CHApplication.getContext();
     }
 
     public static FirebaseRestDAO create() {
@@ -89,126 +86,6 @@ public class FirebaseRestDAO {
         } else {
             return null;
         }
-    }
-
-    /**
-     * Backup TimeSlot list
-     */
-    public void backupTimeSlotItemList() throws IOException {
-        // Get all TimeSlot from DB
-        Cursor cursor = CHServiceTimeDAO.create(mContext).getAllTimeSlot();
-        if (cursor == null)
-            return;
-
-        String encodedEmail = PreferenceSupport.getEncodedEmail(mContext);
-
-        // add a TimeSlotList to Firebase
-        addTimeSlotList(encodedEmail, PreferenceSupport.getAuthToken(mContext));
-
-        // clear TimeSlotItems on Firebase
-        if (cursor.getCount() > 0) {
-            Call<HashMap<String, String>> message = mService.deleteTimeSlotItems(
-                    FirebaseConstants.timeSlotItemListRestURL(encodedEmail),
-                    PreferenceSupport.getAuthToken(mContext));
-            message.enqueue(new Callback<HashMap<String, String>>() {
-                @Override
-                public void onResponse(Call<HashMap<String, String>> call,
-                                       Response<HashMap<String, String>> response) {
-                    if (response.isSuccessful()) {
-                        LOGD(TAG, "successful clear TimeSlotItems on Firebase.");
-                    } else {
-                        LOGD(TAG, "fail to clear TimeSlotItems on Firebase.");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<HashMap<String, String>> call, Throwable t) {
-                    LOGD(TAG, t.getMessage());
-                }
-            });
-        }
-
-        ColumnIndexCache columnIndexCache = new ColumnIndexCache();
-        TimeSlotItem timeSlotItem;
-        HashMap<String, Object> timeSlotItemMap;
-
-        cursor.moveToPosition(-1);
-        while (cursor.moveToNext()) {
-            // convert cursor to TimeSlotItem model
-            timeSlotItem = ModelConverter.cursorToTimeSlotItem(cursor, columnIndexCache);
-
-            // convert TimeSlotItem model to HashMap object
-            timeSlotItemMap = (HashMap<String, Object>)
-                    new ObjectMapper().convertValue(timeSlotItem, Map.class);
-
-            // save to Firebase
-            Call<HashMap<String, String>> message = mService.addTimeSlotItemList(
-                    FirebaseConstants.timeSlotItemListRestURL(encodedEmail), timeSlotItemMap,
-                    PreferenceSupport.getAuthToken(mContext));
-            message.enqueue(new Callback<HashMap<String, String>>() {
-                @Override
-                public void onResponse(Call<HashMap<String, String>> call,
-                                       Response<HashMap<String, String>> response) {
-                    if (response.isSuccessful()) {
-                        LOGD(TAG, ((HashMap<String, String>) response.body()).get("name"));
-                    } else {
-                        LOGD(TAG, response.toString());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<HashMap<String, String>> call, Throwable t) {
-                    LOGD(TAG, t.getMessage());
-                }
-            });
-        }
-
-        cursor.close();
-    }
-
-    /**
-     * restore TimeSlot list
-     */
-    public void restoreTimeSlotItemList() {
-        String encodedEmail = PreferenceSupport.getEncodedEmail(mContext);
-
-        Call<HashMap<String, TimeSlotItem>> message = mService
-                .getTimeSlotItemList(FirebaseConstants.timeSlotItemListRestURL(encodedEmail),
-                        PreferenceSupport.getAuthToken(mContext));
-        message.enqueue(new Callback<HashMap<String, TimeSlotItem>>() {
-            @Override
-            public void onResponse(Call<HashMap<String, TimeSlotItem>> call,
-                                   Response<HashMap<String, TimeSlotItem>> response) {
-                LOGD(TAG, "response body: " + response.body());
-
-                if (response.isSuccessful()) {
-                    HashMap<String, TimeSlotItem> body = response.body();
-                    if (body != null && body.values().size() > 0) {
-                        String currentTimeSlotId;
-                        CHServiceTimeDAO dao = CHServiceTimeDAO.create(mContext);
-                        // clear DB
-                        dao.deleteAllTimeSlot();
-                        for (TimeSlotItem tsItem : body.values()) {
-                            // add a timeslot, timeSlotId will be a new value.
-                            currentTimeSlotId = dao.addOrUpdateTimeSlot("", tsItem.getName(),
-                                    tsItem.getBeginTimeHour(), tsItem.getBeginTimeMinute(),
-                                    tsItem.getEndTimeHour(), tsItem.getEndTimeMinute(),
-                                    tsItem.getDays(), tsItem.isRepeatFlag());
-                            // restore the service flag
-                            dao.updateServiceFlag(currentTimeSlotId, tsItem.isServiceFlag());
-                        }
-                    }
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<HashMap<String, TimeSlotItem>> call, Throwable t) {
-                LOGD(TAG, "Failure: " + t.getMessage());
-            }
-        });
-
     }
 
     /**
