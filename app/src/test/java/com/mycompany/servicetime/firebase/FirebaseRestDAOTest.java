@@ -47,7 +47,7 @@ import static org.mockito.Mockito.mock;
  * security rules on Firebase, and set authToken to null.
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.KITKAT)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class FirebaseRestDAOTest {
 
     @Before
@@ -75,7 +75,7 @@ public class FirebaseRestDAOTest {
                 .restoreTimeSlotItemList(encodedUserEmail, authToken);
 
         assertThat(response, is(notNullValue()));
-        assertThat(response.size(), is(3));
+        assertThat(response.size(), is(2));
     }
 
     @Test

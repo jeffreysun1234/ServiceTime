@@ -30,6 +30,14 @@ public class CHApplication extends Application {
     // Global context used in this app
     private static Context context = null;
 
+    /**
+     * If you want to mock context, then override this method in your mock subclass off
+     * CHApplication.
+     */
+    protected Context createContext() {
+        return this.getApplicationContext();
+    }
+
     public static Context getContext() {
         if (context == null)
             LOGD(TAG, "Application context is NULL.");
@@ -39,7 +47,8 @@ public class CHApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this.getApplicationContext();
+
+        context = createContext();
 
         // initialize Firebase
         Firebase.setAndroidContext(this);
