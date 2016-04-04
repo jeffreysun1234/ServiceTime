@@ -1,5 +1,12 @@
 {
   "rules": {
+    //".read": true,
+    //".write": true,
+
+    "example":{
+      ".read": true,
+      ".write": true
+    },
     "uidMappings": {
       "$uid": {
         ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9,_%+-]+@[A-Z0-9,-]+,[A-Z]{2,4}$/i)",
