@@ -8,6 +8,7 @@ import android.text.format.DateUtils;
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.provider.CHServiceTimeDAO;
 import com.mycompany.servicetime.support.PreferenceSupport;
+import com.mycompany.servicetime.support.TimeSlotSupport;
 import com.mycompany.servicetime.util.DateUtil;
 
 import java.text.ParseException;
@@ -96,8 +97,15 @@ public class SchedulingIntentService extends IntentService {
      * parameters.
      */
     private void handleActionSetAlarm(boolean silentFlag) {
-        long timePoint = CHServiceTimeDAO.create(getApplicationContext())
-                .getNextAlarmTime(silentFlag);
+        long timePoint = 0;
+        try {
+            timePoint = TimeSlotSupport.getNextAlarmTime(
+                    CHServiceTimeDAO.create(getApplicationContext()).getNextAlarmTime(silentFlag),
+                    silentFlag, DateUtil.getHHmm(System.currentTimeMillis()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         try {
             LOGD(TAG, "Set Alarm: timePoint=" + timePoint + "[" + DateUtil.format(timePoint)
                     + "], silentFlag = " + silentFlag);

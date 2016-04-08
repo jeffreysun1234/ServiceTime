@@ -129,7 +129,40 @@ public class CHServiceTimeDAO {
         }
     }
 
-    public long getNextAlarmTime(boolean silentFlag) {
+    public ArrayList<int[]> getNextAlarmTime(boolean silentFlag) {
+        ArrayList<int[]> timeSectors = new ArrayList<int[]>();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        int currentDayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        Cursor cursor = mContext.getContentResolver().query(TimeSlots.buildTimeSlotsUri(),
+                TimeSlots.DEFAULT_PROJECTION,
+                "substr(" + TimeSlots.DAYS + "," + currentDayInWeek + ",1) = ? and "
+                        + TimeSlots.SERVICE_FLAG + " = ? ",
+                new String[]{"1", "1"},
+                TimeSlots.BEGIN_TIME_HOUR + "," + TimeSlots.BEGIN_TIME_MINUTE + ","
+                        + TimeSlots.END_TIME_HOUR + "," + TimeSlots.END_TIME_MINUTE);
+        if (cursor != null) {
+            int beginTimeHour;
+            int beginTimeMinute;
+            int endTimeHour;
+            int endTimeMinute;
+            while (cursor.moveToNext()) {
+                beginTimeHour = cursor.getInt(cursor.getColumnIndex(TimeSlots.BEGIN_TIME_HOUR));
+                beginTimeMinute = cursor
+                        .getInt(cursor.getColumnIndex(TimeSlots.BEGIN_TIME_MINUTE));
+                endTimeHour = cursor.getInt(cursor.getColumnIndex(TimeSlots.END_TIME_HOUR));
+                endTimeMinute = cursor.getInt(cursor.getColumnIndex(TimeSlots.END_TIME_MINUTE));
+                timeSectors.add(new int[]{
+                        beginTimeHour * 100 + beginTimeMinute, endTimeHour * 100 + endTimeMinute});
+            }
+        }
+
+        return timeSectors;
+    }
+
+    public long getNextAlarmTimeOld(boolean silentFlag) {
         long nextAlarmTime = 0L;
 
         Calendar calendar = Calendar.getInstance();
