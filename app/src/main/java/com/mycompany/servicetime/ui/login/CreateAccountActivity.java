@@ -3,17 +3,14 @@ package com.mycompany.servicetime.ui.login;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ServerValue;
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.firebase.FirebaseConstants;
 import com.mycompany.servicetime.firebase.FirebaseUtils;
@@ -21,7 +18,6 @@ import com.mycompany.servicetime.firebase.model.User;
 import com.mycompany.servicetime.support.PreferenceSupport;
 import com.mycompany.servicetime.ui.BaseActivity;
 
-import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;

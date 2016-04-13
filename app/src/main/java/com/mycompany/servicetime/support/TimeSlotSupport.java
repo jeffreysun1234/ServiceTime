@@ -1,9 +1,5 @@
 package com.mycompany.servicetime.support;
 
-import android.database.Cursor;
-
-import com.mycompany.servicetime.model.TimeSlot;
-import com.mycompany.servicetime.provider.CHServiceTimeContract;
 import com.mycompany.servicetime.util.DateUtil;
 
 import java.text.ParseException;

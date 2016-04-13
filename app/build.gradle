@@ -8,8 +8,8 @@ android {
         applicationId "com.mycompany.servicetime"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //testInstrumentationRunner "com.mycompany.servicetime.MockTestRunner"
@@ -75,7 +75,16 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:support-v4:23.3.0'
+    compile 'com.android.support:support-annotations:23.3.0'
+    compile 'com.google.android.gms:play-services-ads:8.4.0'
+    compile 'com.firebase:firebase-client-android:2.5.2'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0'
+    compile 'com.squareup.retrofit2:converter-jackson:2.0.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.3'
 
     testCompile 'junit:junit:4.12'
     //testCompile 'org.mockito:mockito-core:1.10.19'
@@ -97,13 +106,5 @@ dependencies {
     //androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
 
 
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:design:23.3.0'
-    compile 'com.android.support:support-v4:23.3.0'
-    compile 'com.android.support:support-annotations:23.3.0'
-    compile 'com.google.android.gms:play-services-ads:8.4.0'
-    compile 'com.firebase:firebase-client-android:2.5.2'
-    compile 'com.squareup.retrofit2:retrofit:2.0.0'
-    compile 'com.squareup.retrofit2:converter-jackson:2.0.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+
 }

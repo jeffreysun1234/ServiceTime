@@ -1,9 +1,8 @@
 package com.mycompany.servicetime.schedule;
 
 import android.app.IntentService;
-import android.content.Intent;
 import android.content.Context;
-import android.text.format.DateUtils;
+import android.content.Intent;
 
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.provider.CHServiceTimeDAO;

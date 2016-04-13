@@ -2,7 +2,6 @@ package com.mycompany.servicetime.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 
 import com.mycompany.servicetime.CHApplication;

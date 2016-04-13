@@ -23,7 +23,7 @@ import android.os.Environment;
 import android.provider.BaseColumns;
 
 import com.mycompany.servicetime.SystemConstants;
-import com.mycompany.servicetime.provider.CHServiceTimeContract.*;
+import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
 import com.mycompany.servicetime.support.AppSystemSupport;
 
 import java.io.File;

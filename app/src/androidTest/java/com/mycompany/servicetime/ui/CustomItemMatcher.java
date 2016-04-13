@@ -1,9 +1,5 @@
 package com.mycompany.servicetime.ui;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-
-
 /**
  * Created by szhx on 4/3/2016.
  */

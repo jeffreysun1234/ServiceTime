@@ -2,7 +2,6 @@ package com.mycompany.servicetime.schedule;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 
 import java.util.Calendar;
 
-import static com.mycompany.servicetime.util.LogUtils.LOGD;
 import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
 
 public class AlarmReceiver extends WakefulBroadcastReceiver {

@@ -1,8 +1,8 @@
 package com.mycompany.servicetime.schedule;
 
 import android.app.IntentService;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 
 public class InitAlarmIntentService extends IntentService {
 
@@ -25,11 +25,11 @@ public class InitAlarmIntentService extends IntentService {
             if (ACTION_INIT.equals(action)) {
                 handleActionInit();
             }
+}
         }
-    }
 
-    private void handleActionInit() {
+private void handleActionInit() {
         SchedulingIntentService.startActionSetAlarm(getApplicationContext(), true);
         SchedulingIntentService.startActionSetAlarm(getApplicationContext(), false);
-    }
-}
+        }
+        }

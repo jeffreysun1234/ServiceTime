@@ -1,28 +1,19 @@
 package com.mycompany.servicetime.firebase;
 
 import android.content.Context;
-import android.database.Cursor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mycompany.servicetime.CHApplication;
 import com.mycompany.servicetime.firebase.model.TimeSlotItem;
 import com.mycompany.servicetime.firebase.model.TimeSlotList;
-import com.mycompany.servicetime.provider.CHServiceTimeDAO;
-import com.mycompany.servicetime.provider.ColumnIndexCache;
-import com.mycompany.servicetime.support.PreferenceSupport;
-import com.mycompany.servicetime.util.ModelConverter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;

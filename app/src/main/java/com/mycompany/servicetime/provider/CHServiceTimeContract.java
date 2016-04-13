@@ -21,8 +21,6 @@ import android.provider.BaseColumns;
 
 import com.mycompany.servicetime.util.ParserUtils;
 
-import java.util.Date;
-
 /**
  * Contract class for interacting with {@link CHServiceTimeProvider}. Unless otherwise noted, all
  * time-based fields are milliseconds since epoch and can be compared against

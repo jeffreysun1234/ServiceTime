@@ -1,44 +1,24 @@
 package com.mycompany.servicetime.firebase;
 
 import android.os.Build;
-import android.util.Log;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.servicetime.BuildConfig;
 import com.mycompany.servicetime.firebase.model.TimeSlotItem;
 import com.mycompany.servicetime.firebase.model.TimeSlotList;
-import com.mycompany.servicetime.support.PreferenceSupport;
-import com.mycompany.servicetime.util.LogUtils;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.annotation.Implements;
 import org.robolectric.shadows.ShadowLog;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
-
-import static com.mycompany.servicetime.util.LogUtils.LOGD;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 /**
  * Created by szhx on 3/24/2016.

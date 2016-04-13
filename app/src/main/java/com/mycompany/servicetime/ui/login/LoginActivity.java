@@ -2,26 +2,19 @@ package com.mycompany.servicetime.ui.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ServerValue;
 import com.firebase.client.ValueEventListener;
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.firebase.FirebaseConstants;
@@ -30,11 +23,6 @@ import com.mycompany.servicetime.firebase.model.User;
 import com.mycompany.servicetime.support.PreferenceSupport;
 import com.mycompany.servicetime.ui.BaseActivity;
 import com.mycompany.servicetime.ui.MainActivity;
-
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.mycompany.servicetime.util.LogUtils.LOGD;
 import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
