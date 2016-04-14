@@ -11,10 +11,12 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -33,12 +35,16 @@ import com.mycompany.servicetime.support.PreferenceSupport;
 
 import java.io.IOException;
 
+import static com.mycompany.servicetime.util.LogUtils.LOGD;
+import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
+
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment implements
         TimeSlotCursorRecyclerAdapter.OnItemClickOfRecycleListener,
         LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
+    private static final String TAG = makeLogTag(MainActivityFragment.class);
 
     RecyclerView mRecyclerView;
     LinearLayout mEmptyView;
@@ -84,6 +90,7 @@ public class MainActivityFragment extends Fragment implements
     }
 
     private void initViews() {
+        mEmptyView = (LinearLayout) getActivity().findViewById(R.id.empty_layout);
         mNextAlarmTextView = (TextView) getActivity().findViewById(R.id.nextOperationTextView);
 
         mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.timeSlotListRecyclerView);
@@ -92,8 +99,6 @@ public class MainActivityFragment extends Fragment implements
 
         mAdapter = new TimeSlotCursorRecyclerAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
-
-        //mEmptyView = (LinearLayout) getActivity().findViewById(R.id.empty_layout);
 
     }
 
@@ -199,7 +204,7 @@ public class MainActivityFragment extends Fragment implements
         mAdapter.changeCursor(data);
 
         // check if show empty view
-        //checkAdapterIsEmpty();
+        checkAdapterIsEmpty();
 
         // Send the open and close sound alarms based on the current data.
         InitAlarmIntentService.startActionInit(getContext());
@@ -226,6 +231,8 @@ public class MainActivityFragment extends Fragment implements
      ******/
     @Override
     public void onItemLongClicked(String timeSlotId) {
+        LOGD(TAG, "onItemLongClicked(): timeSlotId=" + timeSlotId);
+
         TimeSlotFragment timeSlotFragment = TimeSlotFragment.newInstance(timeSlotId);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -236,6 +243,7 @@ public class MainActivityFragment extends Fragment implements
 
     @Override
     public void onActiveFlagSwitchClicked(String timeSlotId, boolean activeFlag) {
+        LOGD(TAG, "onActiveFlagSwitchClicked(): timeSlotId=" + timeSlotId + " ; activeFlag=" + activeFlag);
         CHServiceTimeDAO.create(CHApplication.getContext()).updateServiceFlag(timeSlotId, activeFlag);
     }
 
@@ -247,7 +255,7 @@ public class MainActivityFragment extends Fragment implements
     /**
      * show an empty view with a RecyclerView
      */
-    private void checkAdapterIsEmpty () {
+    private void checkAdapterIsEmpty() {
         if (mAdapter.getItemCount() == 0) {
             mEmptyView.setVisibility(View.VISIBLE);
         } else {

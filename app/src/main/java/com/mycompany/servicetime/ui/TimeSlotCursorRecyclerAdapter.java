@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.model.TimeSlot;
@@ -52,11 +53,9 @@ public class TimeSlotCursorRecyclerAdapter extends RecyclerView.Adapter<TimeSlot
         TextView repeatWeeklyTextView;
 
         String currentTimeSlotId;
-        OnItemClickOfRecycleListener onItemClickOfRecycleListener;
 
-        public TimeSlotViewHolder(View itemView, final OnItemClickOfRecycleListener onItemClickOfRecycleListener) {
+        public TimeSlotViewHolder(View itemView) {
             super(itemView);
-            this.onItemClickOfRecycleListener = onItemClickOfRecycleListener;
 
             nameTextView = (TextView) itemView.findViewById(R.id.nameTextView);
             activeSwitch = (Switch) itemView.findViewById(R.id.activeSwitch);
@@ -75,8 +74,18 @@ public class TimeSlotCursorRecyclerAdapter extends RecyclerView.Adapter<TimeSlot
             this.currentTimeSlotId = timeSlot.timeSlotId;
         }
 
-        public void setListeners() {
+        public void setListeners(final OnItemClickOfRecycleListener onItemClickOfRecycleListener) {
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
 
+
+                @Override
+                public boolean onLongClick(View view) {
+                    if (onItemClickOfRecycleListener != null) {
+                        onItemClickOfRecycleListener.onItemLongClicked(currentTimeSlotId);
+                    }
+                    return true;
+                }
+            });
 
             activeSwitch.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,25 +114,14 @@ public class TimeSlotCursorRecyclerAdapter extends RecyclerView.Adapter<TimeSlot
     public TimeSlotViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
 
-        return new TimeSlotViewHolder(itemView, mOnItemClickOfRecycleListener);
+        return new TimeSlotViewHolder(itemView);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final TimeSlotViewHolder holder, int position) {
         holder.bindData(getItem(position));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View view) {
-                if (mOnItemClickOfRecycleListener != null) {
-                    mOnItemClickOfRecycleListener.onItemLongClicked(holder.currentTimeSlotId);
-                }
-                //return true;
-            }
-        });
-        holder.setListeners();
+        holder.setListeners(mOnItemClickOfRecycleListener);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
