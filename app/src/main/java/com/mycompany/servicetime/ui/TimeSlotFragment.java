@@ -5,8 +5,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -55,8 +59,6 @@ public class TimeSlotFragment extends Fragment {
     private ToggleButton day4ToggleButton;
     private ToggleButton day5ToggleButton;
     private ToggleButton day6ToggleButton;
-    private Button deleteButton;
-    private Button saveButton;
 
     public TimeSlotFragment() {
         // Required empty public constructor
@@ -73,6 +75,7 @@ public class TimeSlotFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             mTimeSlotId = getArguments().getString(ARG_TIME_SLOT_ID);
         }
@@ -92,6 +95,32 @@ public class TimeSlotFragment extends Fragment {
         initViews();
     }
 
+    // cancel login/logout menu item
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.removeItem(R.id.menu_action_login);
+        menu.removeItem(R.id.menu_action_logout);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.time_slot_fragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.time_slot_save: {
+                saveTimeSlot();
+                return true;
+            }
+            default:
+                return false;
+        }
+    }
+
     private void initViews() {
         nameEditText = (EditText) mActivity.findViewById(R.id.timeSlotNameEditText);
         beginTimeTP = (TimePicker) mActivity.findViewById(R.id.beginTimePicker);
@@ -106,9 +135,6 @@ public class TimeSlotFragment extends Fragment {
         day5ToggleButton = (ToggleButton) mActivity.findViewById(R.id.day5InWeekToggleButton);
         day6ToggleButton = (ToggleButton) mActivity.findViewById(R.id.day6InWeekToggleButton);
         repeatFlagCheckBox = (CheckBox) mActivity.findViewById(R.id.repeatWeeklyCheckBox);
-
-        deleteButton = (Button) mActivity.findViewById(R.id.deleteButton);
-        saveButton = (Button) mActivity.findViewById(R.id.saveButton);
 
         if (!TextUtils.isEmpty(mTimeSlotId)) {
             TimeSlot timeSlot = CHServiceTimeDAO.create(getContext()).getTimeSlot(mTimeSlotId);
@@ -126,10 +152,7 @@ public class TimeSlotFragment extends Fragment {
             day5ToggleButton.setChecked(days[5] == '1');
             day6ToggleButton.setChecked(days[6] == '1');
             repeatFlagCheckBox.setChecked(timeSlot.repeatFlag);
-
-            deleteButton.setVisibility(View.VISIBLE);
         } else {
-            deleteButton.setVisibility(View.INVISIBLE);
             // fix android bug in 4.1
             int currentHourIn24 = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
             beginTimeTP.setCurrentHour(currentHourIn24);
@@ -143,20 +166,6 @@ public class TimeSlotFragment extends Fragment {
         day4ToggleButton.setOnCheckedChangeListener(new daysOnCheckedChangeListener(4));
         day5ToggleButton.setOnCheckedChangeListener(new daysOnCheckedChangeListener(5));
         day6ToggleButton.setOnCheckedChangeListener(new daysOnCheckedChangeListener(6));
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteTimeSlot();
-            }
-        });
-
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveTimeSlot();
-            }
-        });
     }
 
     private void saveTimeSlot() {

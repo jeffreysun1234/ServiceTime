@@ -5,16 +5,19 @@ import android.database.DataSetObserver;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.model.TimeSlot;
-import com.mycompany.servicetime.provider.CHServiceTimeContract;
 import com.mycompany.servicetime.provider.ColumnIndexCache;
+import com.mycompany.servicetime.ui.helper.CustomCardView;
 import com.mycompany.servicetime.util.DisplayUtils;
 import com.mycompany.servicetime.util.ModelConverter;
 
@@ -24,11 +27,11 @@ import com.mycompany.servicetime.util.ModelConverter;
  */
 public class TimeSlotCursorRecyclerAdapter extends RecyclerView.Adapter<TimeSlotCursorRecyclerAdapter.TimeSlotViewHolder> {
 
-    private final OnItemClickOfRecycleListener mOnItemClickOfRecycleListener;
+    private final ItemActionListener mItemActionListener;
 
-    public interface OnItemClickOfRecycleListener {
+    public interface ItemActionListener {
         void onItemLongClicked(String timeSlotId);
-
+        void deleteItem(String timeSlotId);
         void onActiveFlagSwitchClicked(String timeSlotId, boolean activeFlag);
     }
 
@@ -46,22 +49,32 @@ public class TimeSlotCursorRecyclerAdapter extends RecyclerView.Adapter<TimeSlot
     final ColumnIndexCache mColumnIndexCache = new ColumnIndexCache();
 
     public static class TimeSlotViewHolder extends RecyclerView.ViewHolder {
+        CustomCardView swipeLayout;
+        LinearLayout upperChildView;
         Switch activeSwitch;
         TextView nameTextView;
         TextView timeTextView;
         TextView daysTextView;
         TextView repeatWeeklyTextView;
+        ImageButton editItemButton;
+        ImageButton deleteItemButton;
 
         String currentTimeSlotId;
 
-        public TimeSlotViewHolder(View itemView) {
+        public TimeSlotViewHolder(View itemView, ItemActionListener itemActionListener) {
             super(itemView);
 
+            swipeLayout = (CustomCardView) itemView.findViewById(R.id.card_view);
+            upperChildView = (LinearLayout) itemView.findViewById(R.id.upper_child_view);
             nameTextView = (TextView) itemView.findViewById(R.id.nameTextView);
             activeSwitch = (Switch) itemView.findViewById(R.id.activeSwitch);
             timeTextView = (TextView) itemView.findViewById(R.id.timeTextView);
             daysTextView = (TextView) itemView.findViewById(R.id.daysTextView);
             repeatWeeklyTextView = (TextView) itemView.findViewById(R.id.repeatWeeklyTextView);
+            editItemButton = (ImageButton) itemView.findViewById(R.id.edit_item_button);
+            deleteItemButton = (ImageButton) itemView.findViewById(R.id.delete_item_button);
+
+            setListeners(itemActionListener);
         }
 
         public void bindData(@NonNull TimeSlot timeSlot) {
@@ -74,14 +87,12 @@ public class TimeSlotCursorRecyclerAdapter extends RecyclerView.Adapter<TimeSlot
             this.currentTimeSlotId = timeSlot.timeSlotId;
         }
 
-        public void setListeners(final OnItemClickOfRecycleListener onItemClickOfRecycleListener) {
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-
-
+        public void setListeners(final ItemActionListener itemActionListener) {
+            upperChildView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    if (onItemClickOfRecycleListener != null) {
-                        onItemClickOfRecycleListener.onItemLongClicked(currentTimeSlotId);
+                    if (itemActionListener != null) {
+                        itemActionListener.onItemLongClicked(currentTimeSlotId);
                     }
                     return true;
                 }
@@ -90,16 +101,51 @@ public class TimeSlotCursorRecyclerAdapter extends RecyclerView.Adapter<TimeSlot
             activeSwitch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (onItemClickOfRecycleListener != null) {
-                        onItemClickOfRecycleListener.onActiveFlagSwitchClicked(currentTimeSlotId, activeSwitch.isChecked());
+                    if (itemActionListener != null) {
+                        itemActionListener.onActiveFlagSwitchClicked(currentTimeSlotId, activeSwitch.isChecked());
+                    }
+                }
+            });
+
+            editItemButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemActionListener != null) {
+                        itemActionListener.onItemLongClicked(currentTimeSlotId);
+                    }
+                }
+            });
+
+            deleteItemButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemActionListener != null) {
+                        itemActionListener.deleteItem(currentTimeSlotId);
                     }
                 }
             });
         }
     }
 
-    public TimeSlotCursorRecyclerAdapter(OnItemClickOfRecycleListener onItemClickOfRecycleListener, Cursor cursor) {
-        this.mOnItemClickOfRecycleListener = onItemClickOfRecycleListener;
+    /**
+     * to show if the item can be deleted,it basically depends on
+     * whether nowOpen is null.BUT the change of the value may be delayed
+     * to avoid user slide a item to right and delete it without ACTION_UP.
+     */
+    private boolean canDelete = true;
+
+    /**
+     * in this situation,we assume that there's only one item
+     * can be at the state OPEN at one time. so when a holder is
+     * opened, we get its instance. and before you do other operations,
+     * the opened item should be closed.
+     */
+    private TimeSlotViewHolder nowOpen = null;
+
+    static CustomCardView.SwipeConfig swipeConfig = new CustomCardView.SwipeConfig(240, 0);
+
+    public TimeSlotCursorRecyclerAdapter(ItemActionListener itemActionListener, Cursor cursor) {
+        this.mItemActionListener = itemActionListener;
         this.mDataCursor = cursor;
         this.mDataValid = cursor != null;
         mTimeSlotIdColumn = mDataValid ? mDataCursor.getColumnIndex("_id") : -1;
@@ -113,17 +159,100 @@ public class TimeSlotCursorRecyclerAdapter extends RecyclerView.Adapter<TimeSlot
     @Override
     public TimeSlotViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+        ((CustomCardView)itemView).configSwipe(swipeConfig);
 
-        return new TimeSlotViewHolder(itemView);
+        return new TimeSlotViewHolder(itemView, mItemActionListener);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final TimeSlotViewHolder holder, int position) {
         holder.bindData(getItem(position));
-        holder.setListeners(mOnItemClickOfRecycleListener);
+
+        /*
+        to manage get more buttons issue and delete issue,we suppose there's only
+        one item open at time.
+         */
+        holder.swipeLayout.setOnOnSwipeListener(new CustomCardView.OnSwipeListener() {
+            @Override
+            public void onStartOpen() {
+                if (nowOpen != null && (nowOpen != holder)) {
+                    nowOpen.swipeLayout.close();
+                    nowOpen = null;
+                }
+            }
+
+            @Override
+            public void onOpen() {
+                nowOpen = holder;
+                canDelete = false;
+
+            }
+
+            @Override
+            public void onStartClose() {
+
+            }
+
+
+            @Override
+            public void onClose() {
+                if (nowOpen == holder) {
+                    nowOpen = null;
+                }
+
+            }
+        });
+
+        /*
+        we use this listener to close any open item before the next action
+        you might notice that the field canDelete IS NOT changed once close the
+        item,it's changed only after the user make an ACTION_DOWN event again,which
+        assure we won't delete the item carelessly
+         */
+        holder.upperChildView.setOnTouchListener(new View.OnTouchListener(){
+
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if(nowOpen!=null) {
+                    nowOpen.swipeLayout.close();
+                    return true;
+                }else{
+                    if(event.getAction() ==  MotionEvent.ACTION_DOWN){
+                        canDelete = true;
+                    }
+
+                }
+                return false;
+            }
+        });
     }
 
+    ////// swipe item //////
+    /**
+     * Since the view is cached when is not seen,we should restore the
+     * state of the view once in cach,that is,we should reset the childlayout
+     * @param holder
+     */
+    @Override
+    public void onViewDetachedFromWindow(TimeSlotViewHolder holder) {
+
+        //if it was once deleted,we should reset the position of its child layout
+        holder.swipeLayout.initialState();
+        super.onViewDetachedFromWindow(holder);
+    }
+
+    /**
+     * to tell the ItemTouchHelper if the item can be deleted
+     * @return
+     */
+    public boolean canDelete(){
+        return canDelete;
+    }
+
+    /////// cursor data //////
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {

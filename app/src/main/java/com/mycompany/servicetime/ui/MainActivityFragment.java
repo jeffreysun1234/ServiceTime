@@ -9,19 +9,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +39,7 @@ import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment implements
-        TimeSlotCursorRecyclerAdapter.OnItemClickOfRecycleListener,
+        TimeSlotCursorRecyclerAdapter.ItemActionListener,
         LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = makeLogTag(MainActivityFragment.class);
 
@@ -100,6 +97,11 @@ public class MainActivityFragment extends Fragment implements
         mAdapter = new TimeSlotCursorRecyclerAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
 
+        // add item animation
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        itemAnimator.setAddDuration(1000);
+        itemAnimator.setRemoveDuration(1000);
+        mRecyclerView.setItemAnimator(itemAnimator);
     }
 
     @Override
@@ -245,6 +247,12 @@ public class MainActivityFragment extends Fragment implements
     public void onActiveFlagSwitchClicked(String timeSlotId, boolean activeFlag) {
         LOGD(TAG, "onActiveFlagSwitchClicked(): timeSlotId=" + timeSlotId + " ; activeFlag=" + activeFlag);
         CHServiceTimeDAO.create(CHApplication.getContext()).updateServiceFlag(timeSlotId, activeFlag);
+    }
+
+    @Override
+    public void deleteItem(String timeSlotId) {
+        LOGD(TAG, "deleteItem(): timeSlotId=" + timeSlotId );
+        CHServiceTimeDAO.create(CHApplication.getContext()).deleteTimeSlot(timeSlotId);
     }
 
     // Here is the method we extract to override in our testable subclass

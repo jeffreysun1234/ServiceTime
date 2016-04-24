@@ -22,4 +22,6 @@
     <dimen name="lists_row_height">70dp</dimen>
     <dimen name="empty_footer_height">80dp</dimen>
     <dimen name="logo_image_size">100dp</dimen>
+
+    <dimen name="touch_item_min_height">60dp</dimen>
 </resources>

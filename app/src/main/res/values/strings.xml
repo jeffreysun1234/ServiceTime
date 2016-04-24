@@ -128,4 +128,12 @@
     <!-- Log Messages -->
     <string name="log_message_password_changed_successfully">Password changed successfully from temporary password to </string>
     <string name="log_message_auth_successful">auth successful.</string>
+
+    <!-- Swipe action -->
+    <string name="swipe_start">start</string>
+    <string name="swipe_end">end</string>
+    <string name="pointer_swipe_enabled">pointer swipe</string>
+    <string name="custom_swipe_enabled">custom swipe</string>
+    <string name="swipe">swipe me</string>
+    <string name="swiping">swiping</string>
 </resources>
