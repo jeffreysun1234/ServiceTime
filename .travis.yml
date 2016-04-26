@@ -4,6 +4,7 @@ language: android
 
 jdk: oraclejdk7
 
+cache: false
 #before_cache:
 #  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 #cache:
@@ -12,8 +13,10 @@ jdk: oraclejdk7
 #    - $HOME/.gradle/wrapper/
 
 env:
-  matrix:
-    - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a
+  global:
+    - ANDROID_ABI=armeabi-v7a
+    - ADB_INSTALL_TIMEOUT=10
+    - ANDROID_TARGET=android-21
 
 android:
   components:
