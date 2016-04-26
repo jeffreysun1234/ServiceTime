@@ -33,7 +33,7 @@ import static org.hamcrest.Matchers.not;
 
 /**
  * Created by szhx on 4/1/2016.
- * <p/>
+ * <p>
  * This test class uses the actual DB
  */
 @RunWith(AndroidJUnit4.class)
@@ -66,10 +66,11 @@ public class MainActivityTest {
         onView(withId(R.id.time_slot_list_add)).perform(click());
 
         // add TimeSlot data
-        onView(withId(R.id.timeSlotNameEditText))
-                .perform(typeText("Espresso Test"), closeSoftKeyboard());
+        onView(withId(R.id.timeSlotNameEditText)).perform(typeText("Espresso Test"));
+
+        closeSoftKeyboard();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
