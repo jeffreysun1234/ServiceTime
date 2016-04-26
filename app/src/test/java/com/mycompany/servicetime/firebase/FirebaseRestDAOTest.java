@@ -26,16 +26,16 @@ import static org.hamcrest.Matchers.notNullValue;
  * This test class accesses the real Firebase. For running successful, we need to prohibit the
  * security rules on Firebase, and set authToken to null.
  */
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
+//@RunWith(RobolectricGradleTestRunner.class)
+//@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class FirebaseRestDAOTest {
 
-    @Before
+    //@Before
     public void setup() {
         ShadowLog.stream = System.out;
     }
 
-    @Test
+    //@Test
     public void testAddTimeSlotList() throws Exception {
         String encodedUserEmail = FirebaseUtils.encodeEmail("test@my.com");
         String authToken = null;
@@ -46,7 +46,7 @@ public class FirebaseRestDAOTest {
         assertThat(response, is(notNullValue()));
     }
 
-    @Test
+    //@Test
     public void testRestoreTimeSlotItemList() throws Exception {
         String encodedUserEmail = FirebaseUtils.encodeEmail("a@a.com");
         String authToken = null;
@@ -58,7 +58,7 @@ public class FirebaseRestDAOTest {
         assertThat(response.size(), is(2));
     }
 
-    @Test
+    //@Test
     public void testBackupTimeSlotItemList() throws Exception {
         String encodedUserEmail = FirebaseUtils.encodeEmail("test@my.com");
         String authToken = null;

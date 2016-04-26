@@ -78,7 +78,7 @@ public class MainActivityTest2 extends ActivityInstrumentationTestCase2<MainActi
         onView(withId(R.id.beginTimePicker)).perform(PickerActions.setTime(9, 30));
         onView(withId(R.id.endTimePicker)).perform(PickerActions.setTime(17, 0));
         onView(withId(R.id.day2InWeekToggleButton)).perform(click());
-        onView(withId(R.id.saveButton)).perform(click());
+        //onView(withId(R.id.saveButton)).perform(click());
 
         // verify the data display correctly
         onData(anything()).atPosition(0).onChildView(withId(R.id.nameTextView))
