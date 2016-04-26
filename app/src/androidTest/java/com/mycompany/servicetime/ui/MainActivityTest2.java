@@ -89,11 +89,11 @@ public class MainActivityTest2{
         onView(withId(R.id.time_slot_list_add)).perform(click());
 
         // add TimeSlot data
-        onView(withId(R.id.timeSlotNameEditText))
-                .perform(typeText("Espresso Test"), closeSoftKeyboard());
-        onView(withId(R.id.beginTimePicker)).perform(PickerActions.setTime(9, 30));
-        onView(withId(R.id.endTimePicker)).perform(PickerActions.setTime(17, 0));
-        onView(withId(R.id.day2InWeekToggleButton)).perform(click());
+//        onView(withId(R.id.timeSlotNameEditText))
+//                .perform(typeText("Espresso Test"), closeSoftKeyboard());
+//        onView(withId(R.id.beginTimePicker)).perform(PickerActions.setTime(9, 30));
+//        onView(withId(R.id.endTimePicker)).perform(PickerActions.setTime(17, 0));
+//        onView(withId(R.id.day2InWeekToggleButton)).perform(click());
         //onView(withId(R.id.saveButton)).perform(click());
 
         // verify the data display correctly
