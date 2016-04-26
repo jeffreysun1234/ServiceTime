@@ -27,29 +27,45 @@ import static org.hamcrest.Matchers.anything;
 /**
  * Created by szhx on 4/1/2016.
  */
-@RunWith(AndroidJUnit4.class)
-public class MainActivityTest2 extends ActivityInstrumentationTestCase2<MainActivity> {
+//@RunWith(AndroidJUnit4.class)
+public class MainActivityTest2{
+//public class MainActivityTest2 extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private MainActivity mActivity;
 
-    public MainActivityTest2() {
-        super(MainActivity.class);
-    }
+//    public MainActivityTest2() {
+//        super(MainActivity.class);
+//    }
 
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
+    //    {
+//        @Override
+//        protected Intent getActivityIntent() {
+//            Context targetContext = InstrumentationRegistry.getInstrumentation()
+// .getTargetContext();
+//
+//            RenamingDelegatingContext mockContext =
+//                    new RenamingDelegatingContext(targetContext, "test_");
+//            mockContext.makeExistingFilesAndDbsAccessible();
+//
+//            Intent result = new Intent(mockContext, MainActivity.class);
+//            return result;
+//        }
+//    };
 
-        // Injecting the Instrumentation instance is required
-        // for your test to run with AndroidJUnitRunner.
-        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-        mActivity = getActivity();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
+//    @Before
+//    public void setUp() throws Exception {
+//        super.setUp();
+//
+//        // Injecting the Instrumentation instance is required
+//        // for your test to run with AndroidJUnitRunner.
+//        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
+//        mActivity = getActivity();
+//    }
+//
+//    @After
+//    public void tearDown() throws Exception {
+//        super.tearDown();
+//    }
 
     /**
      * Only run at the first time.
@@ -60,7 +76,7 @@ public class MainActivityTest2 extends ActivityInstrumentationTestCase2<MainActi
         //onView(withId(R.id.empty_tv)).check(matches(withText("No Time Slots.")));
     }
 
-    @Test
+    //@Test
     public void addTimeSlot() {
 
         RenamingDelegatingContext mockContext =

@@ -3,6 +3,7 @@ package com.mycompany.servicetime.ui;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.test.suitebuilder.annotation.LargeTest;
 
 import com.mycompany.servicetime.R;
 
@@ -31,27 +32,13 @@ import static org.hamcrest.Matchers.anything;
  * This test class uses the actual DB
  */
 @RunWith(AndroidJUnit4.class)
+@LargeTest
 public class MainActivityTest {
 
     private MainActivity mActivity;
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule(MainActivity.class);
-//    {
-//        @Override
-//        protected Intent getActivityIntent() {
-//            Context targetContext = InstrumentationRegistry.getInstrumentation()
-// .getTargetContext();
-//
-//            RenamingDelegatingContext mockContext =
-//                    new RenamingDelegatingContext(targetContext, "test_");
-//            mockContext.makeExistingFilesAndDbsAccessible();
-//
-//            Intent result = new Intent(mockContext, MainActivity.class);
-//            return result;
-//        }
-//    };
-
 
     @Before
     public void setUp() throws Exception {
@@ -61,15 +48,6 @@ public class MainActivityTest {
     @After
     public void tearDown() throws Exception {
 
-    }
-
-    /**
-     * Only run at the first time.
-     */
-    //@Test
-    public void testTimeSlotListIsEmpty() {
-        onView(withId(android.R.id.empty)).check(matches(isDisplayed()));
-        //onView(withId(R.id.empty_tv)).check(matches(withText("No Time Slots.")));
     }
 
     @Test
