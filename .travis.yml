@@ -42,5 +42,5 @@ before_script:
 
 script:
   #- ./gradlew clean build
-  - ./gradlew connectedAndroidTest --stacktrace --debug
+  - ./gradlew connectedAndroidTest --stacktrace --info
   #- ./gradlew testDebugUnitTest --continue --stacktrace --info
