@@ -68,14 +68,14 @@ public class MainActivityTest {
 
         // add TimeSlot dat
         //onView(withId(R.id.timeSlotNameEditText)).perform(typeText("Espresso Test"), closeSoftKeyboard());
-        onView(withId(R.id.timeSlotNameEditText)).perform(replaceText("Espresso Test"));
+        onView(withId(R.id.timeSlotNameEditText)).perform(replaceText("Espresso Test\n"));
         onView(withId(R.id.beginTimePicker)).perform(PickerActions.setTime(9, 30));
         onView(withId(R.id.endTimePicker)).perform(PickerActions.setTime(17, 0));
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         onView(withId(R.id.day2InWeekToggleButton)).perform(click());
         onView(withId(R.id.time_slot_save)).perform(click());
 
