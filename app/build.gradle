@@ -56,8 +56,9 @@ android {
         // Add this statement if 'com.android.support:support-annotations:x.x.x' dependencies was already defined in compile scheme.
         androidTestCompile.exclude group: 'com.android.support', module: 'support-annotations'
         androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
-        androidTestCompile.exclude group: 'com.android.support', module: 'appcompat'
+        androidTestCompile.exclude group: 'com.android.support', module: 'appcompat-v7'
         androidTestCompile.exclude group: 'com.android.support', module: 'recyclerview-v7'
+        androidTestCompile.exclude group: 'com.android.support', module: 'design'
     }
 }
 
@@ -100,10 +101,10 @@ dependencies {
 //        exclude module: "firebase-client-android"
 //    }
 
-    androidTestCompile 'com.android.support.test:runner:0.4.1'
-    androidTestCompile 'com.android.support.test:rules:0.4.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.1'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
     //androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2.2'
     //androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
 

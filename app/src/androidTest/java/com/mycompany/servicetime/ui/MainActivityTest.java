@@ -20,6 +20,7 @@ import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
@@ -66,14 +67,9 @@ public class MainActivityTest {
         onView(withId(R.id.time_slot_list_add)).perform(click());
 
         // add TimeSlot data
-        onView(withId(R.id.timeSlotNameEditText)).perform(typeText("Espresso Test"));
+        //onView(withId(R.id.timeSlotNameEditText)).perform(typeText("Espresso Test"), closeSoftKeyboard());
+        onView(withId(R.id.timeSlotNameEditText)).perform(replaceText("Espresso Test"));
 
-        closeSoftKeyboard();
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         onView(withId(R.id.beginTimePicker)).perform(PickerActions.setTime(9, 30));
         onView(withId(R.id.endTimePicker)).perform(PickerActions.setTime(17, 0));
         onView(withId(R.id.day2InWeekToggleButton)).perform(click());
