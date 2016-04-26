@@ -38,6 +38,6 @@ before_script:
   - adb shell input keyevent 82 &
 
 script:
-  - ./gradlew clean build
+  #- ./gradlew clean build
   - ./gradlew connectedCheck
   #- ./gradlew testDebugUnitTest --continue --stacktrace --info
