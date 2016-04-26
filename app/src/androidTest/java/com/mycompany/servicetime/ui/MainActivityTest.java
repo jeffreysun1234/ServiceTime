@@ -68,6 +68,11 @@ public class MainActivityTest {
         // add TimeSlot data
         onView(withId(R.id.timeSlotNameEditText))
                 .perform(typeText("Espresso Test"), closeSoftKeyboard());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.beginTimePicker)).perform(PickerActions.setTime(9, 30));
         onView(withId(R.id.endTimePicker)).perform(PickerActions.setTime(17, 0));
         onView(withId(R.id.day2InWeekToggleButton)).perform(click());
