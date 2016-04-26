@@ -40,4 +40,4 @@ before_script:
 script:
   #- ./gradlew clean build
   - ./gradlew connectedAndroidTest --continue --stacktrace --info
-  - ./gradlew testDebugUnitTest --continue --stacktrace --info
+  #- ./gradlew testDebugUnitTest --continue --stacktrace --info

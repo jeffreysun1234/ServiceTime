@@ -34,7 +34,7 @@ import static org.hamcrest.Matchers.not;
 
 /**
  * Created by szhx on 4/1/2016.
- * <p>
+ * <p/>
  * This test class uses the actual DB
  */
 @RunWith(AndroidJUnit4.class)
@@ -69,7 +69,6 @@ public class MainActivityTest {
         // add TimeSlot data
         //onView(withId(R.id.timeSlotNameEditText)).perform(typeText("Espresso Test"), closeSoftKeyboard());
         onView(withId(R.id.timeSlotNameEditText)).perform(replaceText("Espresso Test"));
-
         onView(withId(R.id.beginTimePicker)).perform(PickerActions.setTime(9, 30));
         onView(withId(R.id.endTimePicker)).perform(PickerActions.setTime(17, 0));
         onView(withId(R.id.day2InWeekToggleButton)).perform(click());
@@ -91,8 +90,7 @@ public class MainActivityTest {
         onView(withId(R.id.edit_item_button)).perform(click());
 
         // change the name of the item
-        onView(withId(R.id.timeSlotNameEditText))
-                .perform(clearText(), typeText("Name Changed"), closeSoftKeyboard());
+        onView(withId(R.id.timeSlotNameEditText)).perform(clearText(), replaceText("Name Changed"));
         onView(withId(R.id.time_slot_save)).perform(click());
 
         // verify the name of the item to be changed
