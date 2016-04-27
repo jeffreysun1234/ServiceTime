@@ -89,6 +89,11 @@ public class MainActivityTest {
         // click Edit icon
         onView(withId(R.id.edit_item_button)).perform(click());
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // change the name of the item
         onView(withId(R.id.timeSlotNameEditText)).perform(clearText(), replaceText("Name Changed"));
         onView(withId(R.id.time_slot_save)).perform(click());
