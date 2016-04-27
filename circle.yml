@@ -16,6 +16,9 @@ dependencies:
         - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
 
 test:
+    pre:
+        - chmod +x gradlew
+
     override:
         - (./gradlew assemble):
             timeout: 360
