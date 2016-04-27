@@ -2,12 +2,19 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
+
+    /*
+    Test only modules require other artifacts like the classes.jar to be published, so the test can
+    reference the tested java sources and compile them correctly. In order to get all these
+    artifacts published from the tested module publishNonDefault needs to be set to true.
+     */
+    publishNonDefault true
 
     defaultConfig {
         applicationId "com.mycompany.servicetime"
         minSdkVersion 15
-        targetSdkVersion 19
+        targetSdkVersion 23
         versionCode 3
         versionName "1.2"
 
@@ -49,6 +56,7 @@ android {
     }
     dexOptions {
         maxProcessCount = 4
+        dexInProcess false
     }
     configurations {
         // Resolved 'com.android.support:support-annotations' versions for app (23.2.1) and test
@@ -76,18 +84,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:23.3.0'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:design:23.3.0'
-    compile 'com.android.support:cardview-v7:23.3.0'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
-    compile 'com.android.support:support-annotations:23.3.0'
-    compile 'com.google.android.gms:play-services-ads:8.4.0'
-    compile 'com.firebase:firebase-client-android:2.5.2'
-    compile 'com.squareup.retrofit2:retrofit:2.0.0'
-    compile 'com.squareup.retrofit2:converter-jackson:2.0.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.3'
 
     testCompile 'junit:junit:4.12'
     //testCompile 'org.mockito:mockito-core:1.10.19'
@@ -109,5 +105,16 @@ dependencies {
     //androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
 
 
-
+    compile 'com.android.support:support-v4:24.0.0-alpha2'
+    compile 'com.android.support:appcompat-v7:24.0.0-alpha2'
+    compile 'com.android.support:design:24.0.0-alpha2'
+    compile 'com.android.support:cardview-v7:24.0.0-alpha2'
+    compile 'com.android.support:recyclerview-v7:24.0.0-alpha2'
+    compile 'com.android.support:support-annotations:24.0.0-alpha2'
+    compile 'com.google.android.gms:play-services-ads:8.4.0'
+    compile 'com.firebase:firebase-client-android:2.5.2'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0'
+    compile 'com.squareup.retrofit2:converter-jackson:2.0.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.3'
 }

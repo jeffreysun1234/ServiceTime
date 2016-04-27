@@ -26,6 +26,7 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.isTouchable;
+import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -44,7 +45,7 @@ public class MainActivityTest {
     private MainActivity mActivity;
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule(MainActivity.class);
+    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
     @Before
     public void setUp() throws Exception {
@@ -66,12 +67,6 @@ public class MainActivityTest {
         // click add icon
         onView(withId(R.id.time_slot_list_add)).perform(click());
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         // add TimeSlot dat
         onView(withId(R.id.day3InWeekToggleButton)).perform(click());
         onView(withId(R.id.timeSlotNameEditText)).perform(typeText("Espresso Test"), closeSoftKeyboard());
@@ -87,7 +82,7 @@ public class MainActivityTest {
         onView(withId(R.id.nameTextView)).check(matches(withText("Espresso Test")));
 
         // TODO: verify Edit icon is not display
-        //onView(withId(R.id.edit_item_button)).check(matches(not(isDisplayed())));
+        //onView(withId(R.id.edit_item_button)).check(matches(not(isCompletelyDisplayed())));
 
         // swipe
         onView(withId(R.id.nameTextView)).perform(swipeLeft());
@@ -95,11 +90,11 @@ public class MainActivityTest {
         // click Edit icon
         onView(withId(R.id.edit_item_button)).perform(click());
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         // change the name of the item
         onView(withId(R.id.timeSlotNameEditText)).perform(clearText(), replaceText("Name Changed"));
