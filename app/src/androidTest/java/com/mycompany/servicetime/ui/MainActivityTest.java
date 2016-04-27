@@ -66,12 +66,18 @@ public class MainActivityTest {
         // click add icon
         onView(withId(R.id.time_slot_list_add)).perform(click());
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         // add TimeSlot dat
+        onView(withId(R.id.day3InWeekToggleButton)).perform(click());
         onView(withId(R.id.timeSlotNameEditText)).perform(typeText("Espresso Test"), closeSoftKeyboard());
         //onView(withId(R.id.timeSlotNameEditText)).perform(replaceText("Espresso Test\n"));
         onView(withId(R.id.beginTimePicker)).perform(PickerActions.setTime(9, 30));
         onView(withId(R.id.endTimePicker)).perform(PickerActions.setTime(17, 0));
-        onView(withId(R.id.day3InWeekToggleButton)).perform(click());
         onView(withId(R.id.time_slot_save)).perform(click());
 
         // locate to the position 0.
@@ -94,6 +100,7 @@ public class MainActivityTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         // change the name of the item
         onView(withId(R.id.timeSlotNameEditText)).perform(clearText(), replaceText("Name Changed"));
         onView(withId(R.id.time_slot_save)).perform(click());
