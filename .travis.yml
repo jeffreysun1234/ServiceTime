@@ -16,7 +16,7 @@ env:
   global:
     - ANDROID_ABI=armeabi-v7a
     - ADB_INSTALL_TIMEOUT=10
-    - ANDROID_TARGET=android-19
+    - ANDROID_TARGET=android-23
 
 android:
   components:
@@ -28,7 +28,7 @@ android:
     - extra-android-m2repository
     - extra-android-support
     - extra-google-google_play_services
-    - sys-img-armeabi-v7a-android-19
+    - sys-img-armeabi-v7a-android-23
 
 before_install:
   - chmod +x gradlew
