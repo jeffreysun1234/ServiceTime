@@ -14,13 +14,15 @@ cache:
 
 env:
   global:
-    - ANDROID_ABI=armeabi-v7a
     - ADB_INSTALL_TIMEOUT=10
-    - ANDROID_TARGET=android-23
+
+  matrix:
+    - ANDROID_TARGET=android-21
+    - ANDROID_ABI=armeabi-v7a
 
 notifications:
   email:
-    - jeffreysun@rocktmail.com
+    - jeffreysun@rocketmail.com
 
 android:
   components:
@@ -32,7 +34,7 @@ android:
     - extra-android-m2repository
     - extra-android-support
     - extra-google-google_play_services
-    - sys-img-armeabi-v7a-android-23
+    - sys-img-armeabi-v7a-android-21
 
 before_install:
   - chmod +x gradlew
