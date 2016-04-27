@@ -183,11 +183,11 @@ public class TimeSlotFragment extends Fragment {
             return;
         }
 
-//        if ("0000000".equals(String.copyValueOf(days))) {
-//            Toast.makeText(getContext(), "You must set at least one day.", Toast.LENGTH_LONG)
-//                    .show();
-//            return;
-//        }
+        if ("0000000".equals(String.copyValueOf(days))) {
+            Toast.makeText(getContext(), "You must set at least one day.", Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
 
         boolean repeatFlag = ((CheckBox) mActivity.findViewById(R.id.repeatWeeklyCheckBox))
                 .isChecked();
