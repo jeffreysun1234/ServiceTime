@@ -18,6 +18,10 @@ env:
     - ADB_INSTALL_TIMEOUT=10
     - ANDROID_TARGET=android-23
 
+notifications:
+  email:
+    - jeffreysun@rocktmail.com
+
 android:
   components:
     - platform-tools
