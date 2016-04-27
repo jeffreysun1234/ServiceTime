@@ -100,6 +100,8 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-jackson:2.0.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.3'
+    compile "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
+    compile "com.google.guava:guava-base:$rootProject.guavaVersion"
 
     testCompile 'junit:junit:4.12'
     //testCompile 'org.mockito:mockito-core:1.10.19'
@@ -115,8 +117,8 @@ dependencies {
 
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
+    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-contrib:$rootProject.espressoVersion"
     //androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2.2'
     //androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
 }

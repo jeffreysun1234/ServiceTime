@@ -26,4 +26,6 @@ task clean(type: Delete) {
 ext {
     // App dependencies
     supportLibraryVersion = '23.2.1'
+    espressoVersion = '2.2.2'
+    guavaVersion = 'r03'
 }

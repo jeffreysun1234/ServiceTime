@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.mycompany.servicetime.R;
+import com.mycompany.servicetime.util.EspressoIdlingResource;
 
 import org.junit.After;
 import org.junit.Before;
@@ -87,6 +88,8 @@ public class MainActivityTest {
         // swipe
         onView(withId(R.id.nameTextView)).perform(swipeLeft());
 
+        EspressoIdlingResource.increment();
+
         // click Edit icon
         onView(withId(R.id.edit_item_button)).perform(click());
 
@@ -95,6 +98,10 @@ public class MainActivityTest {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
+
+        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+            EspressoIdlingResource.decrement(); // Set app as idle.
+        }
 
         // change the name of the item
         onView(withId(R.id.timeSlotNameEditText)).perform(clearText(), replaceText("Name Changed"));
