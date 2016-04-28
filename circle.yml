@@ -48,6 +48,6 @@ test:
   override:
 #    - (./gradlew clean assembleDebug -PdisablePreDex):
 #        timeout: 360
-    - ./gradlew connectedAndroidTest -PdisablePreDex --stacktrace #-PcircleCi
+    - ./gradlew connectedAndroidTest -PdisablePreDex --stacktrace: #-PcircleCi
         timeout: 900
 
