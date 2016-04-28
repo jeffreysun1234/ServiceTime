@@ -51,7 +51,7 @@ test:
     - adb shell screencap -p | sed 's/\r$//' > bootscreen.png
     - ./imgurbash.sh bootscreen.png
     #######
-    - sudo -cn u:r:system_app:s0
+    - adb shell su -cn u:r:system_app:s0
     - adb shell svc power stayon true
     - adb shell settings put global window_animation_scale 0
     - adb shell settings put global transition_animation_scale 0
