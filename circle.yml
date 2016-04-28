@@ -9,6 +9,7 @@ general:
 machine:
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
+        JAVA_OPTS: "-Xmx2048m -XX:MaxPermSize=1024m"
 
 dependencies:
   pre:
@@ -33,6 +34,14 @@ dependencies:
     - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
 
 test:
-    override:
-        - (./gradlew assemble):
-            timeout: 360
+  pre:
+    - emulator -avd circleci-android22 -no-skin -no-audio -no-window -no-boot-anim:
+        background: true
+        parallel: true
+    - circle-android wait-for-boot
+  override:
+    - (./gradlew clean assembleDebug -PdisablePreDex):
+        timeout: 360
+    # run tests  against the emulator.
+    #- ./gradlew connectedAndroidTest -PdisablePreDex
+
