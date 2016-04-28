@@ -22,6 +22,8 @@ android {
         //testInstrumentationRunner "com.mycompany.servicetime.MockTestRunner"
         // prohibit uploading analytics data to google
         testInstrumentationRunnerArguments disableAnalytics: 'true'
+        // CI emulator test
+        //com.android.ddmlib.DdmPreferences.setTimeOut(60000)
     }
     buildTypes {
         debug {
@@ -62,6 +64,10 @@ android {
         enable ''
         checkReleaseBuilds false
     }
+//    // CI emulator test
+//    adbOptions {
+//        timeOutInMs 600000
+//    }
     configurations {
         // Resolved 'com.android.support:support-annotations' versions for app (23.2.1) and test
         // app (23.1.0) differ.

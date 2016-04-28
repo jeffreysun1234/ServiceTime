@@ -12,7 +12,7 @@ machine:
         JAVA_OPTS: "-Xmx2048m -XX:MaxPermSize=1024m"
         GRADLE_OPTS: "-Xmx1024m"
         TERM: "dumb"
-        ADB_INSTALL_TIMEOUT: "10"
+        ADB_INSTALL_TIMEOUT: "15"
 
 dependencies:
   pre:
@@ -48,5 +48,5 @@ test:
   override:
 #    - (./gradlew clean assembleDebug -PdisablePreDex):
 #        timeout: 360
-    - ./gradlew connectedAndroidTest -PdisablePreDex #-PcircleCi
+    - ./gradlew connectedAndroidTest -PdisablePreDex --stacktrace #-PcircleCi
 
