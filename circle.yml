@@ -44,6 +44,13 @@ test:
     - circle-android wait-for-boot
     # unlock the emulator screen
     - adb shell input keyevent 82
+    ###### get screenshots of the emulator
+    # First download the bash script
+    - wget http://imgur.com/tools/imgurbash.sh
+    - chmod a+x imgurbash.sh
+    - adb shell screencap -p | sed 's/\r$//' > bootscreen.png
+    - ./imgurbash.sh bootscreen.png
+    #######
     - adb shell svc power stayon true
     - adb shell settings put global window_animation_scale 0
     - adb shell settings put global transition_animation_scale 0
@@ -51,6 +58,6 @@ test:
   override:
 #    - (./gradlew clean assembleDebug -PdisablePreDex):
 #        timeout: 360
-    - ./gradlew connectedAndroidTest --continue #-PdisablePreDex --stacktrace: #-PcircleCi
+    - ./gradlew connectedAndroidTest --continue: #-PdisablePreDex --stacktrace: #-PcircleCi
         timeout: 900
 #    - ./gradlew testDebugUnitTest
