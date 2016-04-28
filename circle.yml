@@ -10,6 +10,7 @@ machine:
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
         JAVA_OPTS: "-Xmx2048m -XX:MaxPermSize=1024m"
+        GRADLE_OPTS: "-Xmx1024m"
 
 dependencies:
   pre:
@@ -40,8 +41,7 @@ test:
         parallel: true
     - circle-android wait-for-boot
   override:
-    - (./gradlew clean assembleDebug -PdisablePreDex):
-        timeout: 360
-    # run tests  against the emulator.
-    #- ./gradlew connectedAndroidTest -PdisablePreDex
+#    - (./gradlew clean assembleDebug -PdisablePreDex):
+#        timeout: 360
+    - ./gradlew connectedAndroidTest -PcircleCi -PdisablePreDex
 
