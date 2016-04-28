@@ -11,6 +11,11 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- For espresso testing purposes, this is removed in live builds, but not in dev builds -->
+    <uses-permission android:name="android.permission.SET_ANIMATION_SCALE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:name=".CHApplication"
         android:allowBackup="true"
