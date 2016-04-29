@@ -1,5 +1,9 @@
 package com.mycompany.servicetime.ui;
 
+import android.app.Activity;
+import android.app.KeyguardManager;
+import android.content.Context;
+import android.support.test.annotation.UiThreadTest;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
@@ -7,6 +11,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.view.WindowManager;
 
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.util.EspressoIdlingResource;
@@ -64,8 +69,30 @@ public class MainActivityTest {
      * idle state. This helps Espresso to synchronize your test actions, which makes tests significantly
      * more reliable.
      */
+    @UiThreadTest
     @Before
     public void setUp() throws Exception {
+        mActivity = mActivityRule.getActivity();
+        try {
+            mActivityRule.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    KeyguardManager mKG = (KeyguardManager) mActivity.getSystemService(Context.KEYGUARD_SERVICE);
+                    KeyguardManager.KeyguardLock mLock = mKG.newKeyguardLock(Context.KEYGUARD_SERVICE);
+                    mLock.disableKeyguard();
+
+                    //turn the screen on
+                    mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                            | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                            | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                            | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                            | WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
+                }
+            });
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+
         Espresso.registerIdlingResources(mActivityRule.getActivity().getCountingIdlingResource());
 
         closeSoftKeyboard();

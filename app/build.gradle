@@ -18,11 +18,13 @@ android {
         versionCode 3
         versionName "1.2"
 
-        //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunner "com.mycompany.servicetime.CustomTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //testInstrumentationRunner "com.mycompany.servicetime.CustomTestRunner"
         //testInstrumentationRunner "com.mycompany.servicetime.MockTestRunner"
+
         // prohibit uploading analytics data to google
         testInstrumentationRunnerArguments disableAnalytics: 'true'
+
         // CI emulator test
         //com.android.ddmlib.DdmPreferences.setTimeOut(60000)
     }
