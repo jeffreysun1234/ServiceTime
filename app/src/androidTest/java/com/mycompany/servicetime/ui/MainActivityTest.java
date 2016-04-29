@@ -67,6 +67,8 @@ public class MainActivityTest {
     @Before
     public void setUp() throws Exception {
         Espresso.registerIdlingResources(mActivityRule.getActivity().getCountingIdlingResource());
+
+        closeSoftKeyboard();
     }
 
     /**
