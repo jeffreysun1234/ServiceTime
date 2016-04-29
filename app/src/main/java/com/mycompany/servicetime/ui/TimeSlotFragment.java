@@ -25,6 +25,7 @@ import android.widget.ToggleButton;
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.model.TimeSlot;
 import com.mycompany.servicetime.provider.CHServiceTimeDAO;
+import com.mycompany.servicetime.util.EspressoIdlingResource;
 
 import java.util.Calendar;
 
@@ -93,6 +94,10 @@ public class TimeSlotFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mActivity = this.getActivity();
         initViews();
+
+//        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+            EspressoIdlingResource.decrement(); // Set app as idle.
+//        }
     }
 
     // cancel login/logout menu item

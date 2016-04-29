@@ -110,33 +110,22 @@ public class MainActivityTest {
         // swipe
         onView(withId(R.id.nameTextView)).perform(swipeLeft());
 
+        // click Edit icon
+        onView(withId(R.id.edit_item_button)).perform(click());
+
+        // change the name of the item
+        onView(withId(R.id.timeSlotNameEditText)).perform(clearText(), replaceText("Name Changed"));
+        onView(withId(R.id.time_slot_save)).perform(click());
+
+        // verify the name of the item to be changed
+        onView(withId(R.id.timeSlotListRecyclerView)).perform(RecyclerViewActions.scrollToPosition(0));
+        onView(withId(R.id.nameTextView)).check(matches(withText("Name Changed")));
+
+        // swipe again and click Delete icon
+        onView(withId(R.id.nameTextView)).perform(swipeLeft());
         onView(withId(R.id.delete_item_button)).perform(click());
 
         // verify the item to be deleted.
         onView(withId(R.id.empty_tv)).check(matches(withText("No Time Slots.")));
-
-//        //EspressoIdlingResource.increment();
-//
-//        // click Edit icon
-//        onView(withId(R.id.edit_item_button)).perform(click());
-//
-////        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-////            EspressoIdlingResource.decrement(); // Set app as idle.
-////        }
-//
-//        // change the name of the item
-//        onView(withId(R.id.timeSlotNameEditText)).perform(clearText(), replaceText("Name Changed"));
-//        onView(withId(R.id.time_slot_save)).perform(click());
-//
-//        // verify the name of the item to be changed
-//        onView(withId(R.id.timeSlotListRecyclerView)).perform(RecyclerViewActions.scrollToPosition(0));
-//        onView(withId(R.id.nameTextView)).check(matches(withText("Name Changed")));
-//
-//        // swipe again and click Delete icon
-//        onView(withId(R.id.nameTextView)).perform(swipeLeft());
-//        onView(withId(R.id.delete_item_button)).perform(click());
-//
-//        // verify the item to be deleted.
-//        onView(withId(R.id.empty_tv)).check(matches(withText("No Time Slots.")));
     }
 }

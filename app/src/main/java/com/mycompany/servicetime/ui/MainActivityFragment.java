@@ -29,6 +29,7 @@ import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
 import com.mycompany.servicetime.provider.CHServiceTimeDAO;
 import com.mycompany.servicetime.schedule.InitAlarmIntentService;
 import com.mycompany.servicetime.support.PreferenceSupport;
+import com.mycompany.servicetime.util.EspressoIdlingResource;
 
 import java.io.IOException;
 
@@ -114,6 +115,9 @@ public class MainActivityFragment extends Fragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.time_slot_list_add: {
+
+                EspressoIdlingResource.increment();
+
                 TimeSlotFragment timeSlotFragment = new TimeSlotFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction()
@@ -234,6 +238,8 @@ public class MainActivityFragment extends Fragment implements
     @Override
     public void onItemLongClicked(String timeSlotId) {
         LOGD(TAG, "onItemLongClicked(): timeSlotId=" + timeSlotId);
+
+        EspressoIdlingResource.increment();
 
         TimeSlotFragment timeSlotFragment = TimeSlotFragment.newInstance(timeSlotId);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
