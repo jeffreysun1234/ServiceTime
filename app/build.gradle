@@ -127,7 +127,7 @@ dependencies {
     androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestCompile "com.android.support.test.espresso:espresso-contrib:$rootProject.espressoVersion"
     //androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2.2'
-    //androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
+    androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
 }
 
 // Grant animation permissions to avoid test failure because of ui sync.
