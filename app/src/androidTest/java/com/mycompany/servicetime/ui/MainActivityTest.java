@@ -150,7 +150,7 @@ public class MainActivityTest {
         onView(withId(R.id.edit_item_button)).perform(click());
 
         //Wait for the root view of the TimeSlot fragment.
-        onView(isRoot()).perform(waitForMatch(withId(R.id.timeSlotNameEditText), UI_TEST_TIMEOUT));
+        onView(isRoot()).perform(waitForMatch(withId(R.id.time_slot_root_view), UI_TEST_TIMEOUT));
 
         // change the name of the item
         onView(withId(R.id.timeSlotNameEditText)).perform(clearText(), replaceText("Name Changed"));
