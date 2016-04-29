@@ -36,27 +36,31 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.isTouchable;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.mycompany.servicetime.util.CustomViewActions.waitForMatch;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.not;
 
 /**
  * Created by szhx on 4/1/2016.
- * <p/>
+ * <p>
  * This test class uses the actual DB
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MainActivityTest {
 
+    private static final long UI_TEST_TIMEOUT = 5 * 1000; //5 seconds
+
     private MainActivity mActivity;
 
     /**
      * {@link IntentsTestRule} is an {@link ActivityTestRule} which inits and releases Espresso
      * Intents before and after each test run.
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
      * Rules are interceptors which are executed for each test method and are important building
      * blocks of Junit tests.
      */
@@ -73,6 +77,7 @@ public class MainActivityTest {
     @Before
     public void setUp() throws Exception {
         mActivity = mActivityRule.getActivity();
+
         try {
             mActivityRule.runOnUiThread(new Runnable() {
                 @Override
@@ -143,6 +148,9 @@ public class MainActivityTest {
 
         // click Edit icon
         onView(withId(R.id.edit_item_button)).perform(click());
+
+        //Wait for the root view of the TimeSlot fragment.
+        onView(isRoot()).perform(waitForMatch(withId(R.id.timeSlotNameEditText), UI_TEST_TIMEOUT));
 
         // change the name of the item
         onView(withId(R.id.timeSlotNameEditText)).perform(clearText(), replaceText("Name Changed"));
