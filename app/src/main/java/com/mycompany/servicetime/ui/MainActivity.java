@@ -1,12 +1,15 @@
 package com.mycompany.servicetime.ui;
 
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mycompany.servicetime.R;
+import com.mycompany.servicetime.util.EspressoIdlingResource;
 
 public class MainActivity extends BaseActivity {
 
@@ -54,5 +57,10 @@ public class MainActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @VisibleForTesting
+    public IdlingResource getCountingIdlingResource() {
+        return EspressoIdlingResource.getIdlingResource();
     }
 }

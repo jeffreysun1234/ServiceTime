@@ -1,7 +1,9 @@
 package com.mycompany.servicetime.ui;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -45,17 +47,34 @@ public class MainActivityTest {
 
     private MainActivity mActivity;
 
+    /**
+     * {@link IntentsTestRule} is an {@link ActivityTestRule} which inits and releases Espresso
+     * Intents before and after each test run.
+     * <p/>
+     * <p/>
+     * Rules are interceptors which are executed for each test method and are important building
+     * blocks of Junit tests.
+     */
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
+    public IntentsTestRule<MainActivity> mActivityRule = new IntentsTestRule<>(MainActivity.class);
 
+    /**
+     * Prepare your test fixture for this test. In this case we register an IdlingResources with
+     * Espresso. IdlingResource resource is a great way to tell Espresso when your app is in an
+     * idle state. This helps Espresso to synchronize your test actions, which makes tests significantly
+     * more reliable.
+     */
     @Before
     public void setUp() throws Exception {
-
+        Espresso.registerIdlingResources(mActivityRule.getActivity().getCountingIdlingResource());
     }
 
+    /**
+     * Unregister your Idling Resource so it can be garbage collected and does not leak any memory.
+     */
     @After
     public void tearDown() throws Exception {
-
+        Espresso.unregisterIdlingResources(mActivityRule.getActivity().getCountingIdlingResource());
     }
 
     @Test
@@ -71,6 +90,7 @@ public class MainActivityTest {
         // add TimeSlot dat
         onView(withId(R.id.timeSlotNameEditText)).perform(typeText("Espresso Test"), closeSoftKeyboard());
         //onView(withId(R.id.timeSlotNameEditText)).perform(replaceText("Espresso Test\n"));
+
         onView(withId(R.id.beginTimePicker)).perform(PickerActions.setTime(9, 30));
         onView(withId(R.id.endTimePicker)).perform(PickerActions.setTime(17, 0));
         onView(withId(R.id.day3InWeekToggleButton)).perform(click());
@@ -88,20 +108,14 @@ public class MainActivityTest {
         // swipe
         onView(withId(R.id.nameTextView)).perform(swipeLeft());
 
-        EspressoIdlingResource.increment();
+        //EspressoIdlingResource.increment();
 
         // click Edit icon
         onView(withId(R.id.edit_item_button)).perform(click());
 
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
+//        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+//            EspressoIdlingResource.decrement(); // Set app as idle.
 //        }
-
-        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-            EspressoIdlingResource.decrement(); // Set app as idle.
-        }
 
         // change the name of the item
         onView(withId(R.id.timeSlotNameEditText)).perform(clearText(), replaceText("Name Changed"));
