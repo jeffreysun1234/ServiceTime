@@ -239,8 +239,6 @@ public class MainActivityFragment extends Fragment implements
     public void onItemLongClicked(String timeSlotId) {
         LOGD(TAG, "onItemLongClicked(): timeSlotId=" + timeSlotId);
 
-        EspressoIdlingResource.increment();
-
         TimeSlotFragment timeSlotFragment = TimeSlotFragment.newInstance(timeSlotId);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
