@@ -2,64 +2,66 @@
 # Build configuration for Circle CI
 #
 
-general:
-    artifacts:
-        - /home/ubuntu/ServiceTime/app/build/outputs/apk/
-
 machine:
-    environment:
-        ANDROID_HOME: /usr/local/android-sdk-linux
-        JAVA_OPTS: "-Xmx2048m -XX:MaxPermSize=1024m"
-        GRADLE_OPTS: "-Xmx1024m"
-        TERM: "dumb"
-        ADB_INSTALL_TIMEOUT: "15"
+  java:
+    version: oraclejdk7
+
+  environment:
+    #PATH: "~/$CIRCLE_PROJECT_REPONAME/gradle-2.10/bin:$PATH"
+    TERM: "dumb"
+    ADB_INSTALL_TIMEOUT: "10"
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xms1024m -Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError"'
 
 dependencies:
   pre:
-    - sudo chmod +x gradlew
-
-#  pre:
-#    - if ! $(grep -q "Revision=24.4.1" $ANDROID_HOME/tools/source.properties); then echo y | android update sdk -u -a -t "tools"; fi
-#    - if [ ! -e $ANDROID_HOME/build-tools/23.0.2 ]; then echo y | android update sdk -u -a -t "build-tools-23.0.2"; fi
-#
-#  cache_directories:
-#    - "/usr/local/android-sdk-linux/tools"
-#    - "/usr/local/android-sdk-linux/build-tools/23.0.2"
-  override:
+    #- wget "https://services.gradle.org/distributions/gradle-2.10-bin.zip"; unzip gradle-2.10-bin.zip
+    #- source scripts/environmentSetup.sh && getAndroidSDK
     - echo y | android update sdk --no-ui --all --filter "tools"
     - echo y | android update sdk --no-ui --all --filter "platform-tools"
     - echo y | android update sdk --no-ui --all --filter "extra-google-m2repository"
     - echo y | android update sdk --no-ui --all --filter "extra-android-m2repository"
-    - echo y | android update sdk --no-ui --all --filter "extra-google-google_play_services"
     - echo y | android update sdk --no-ui --all --filter "extra-android-support"
+    - echo y | android update sdk --no-ui --all --filter "extra-google-google_play_services"
     - echo y | android update sdk --no-ui --all --filter "android-23"
     - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.2"
-    - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
+    #- echo y | android update sdk --no-ui --all --filter sys-img-x86-android-22
+    #- echo y | android update sdk -u -a -t addon-google_apis-google-19 &&
+    #- echo no | android create avd -n testAVD -f -t android-22 --abi default/x86
+
+  override:
+    # Enable Gradle daemon to speedup all gradle command after the 1st one
+    - echo "org.gradle.daemon=true" >> ~/.gradle/gradle.properties
+    - echo "org.gradle.parallel=true" >> ~/.gradle/gradle.properties
+    - ./gradlew dependencies
+
+#  cache_directories:
+#    - ~/.android
+#    - ~/android
 
 test:
   pre:
-    - emulator -avd circleci-android22 -no-skin -no-audio -no-window -no-boot-anim:
+    # start the emulator
+    - emulator -avd circleci-android22 -no-audio -no-window:
+    #- emulator -avd testAVD -no-skin -no-audio -no-window:
         background: true
         parallel: true
-    - circle-android wait-for-boot
-    # unlock the emulator screen
-    - adb shell input keyevent 82
-    ###### get screenshots of the emulator
-    # First download the bash script
-    - wget http://imgur.com/tools/imgurbash.sh
-    - chmod a+x imgurbash.sh
-    - adb shell screencap -p | sed 's/\r$//' > bootscreen.png
-    - ./imgurbash.sh bootscreen.png
-    #######
-    - adb shell svc power stayon true
-    # Not execute successfully.
-#    - adb shell su -cn u:r:system_app:s0
-#    - adb shell settings put global window_animation_scale 0
-#    - adb shell settings put global transition_animation_scale 0
-#    - adb shell settings put global animator_duration_scale 0
+
   override:
-#    - (./gradlew clean assembleDebug -PdisablePreDex):
-#        timeout: 360
-    - ./gradlew connectedAndroidTest --continue: #-PdisablePreDex --stacktrace: #-PcircleCi
-        timeout: 900
-#    - ./gradlew testDebugUnitTest
+    # Build the code
+    - ./gradlew assembleDebug
+    # Execute Unit Tests
+    #- ./gradlew test
+    # ensure that the emulator is ready to use, wait for it to have booted
+    - circle-android wait-for-boot
+    # the necessary sleep duration may change with time and depends on the pre tasks length.
+    # When all pre tasks are run long enough then waiting will not be necessary anymore.
+    # This sleep should avoid the com.android.builder.testing.api.DeviceException: com.android.ddmlib.ShellCommandUnresponsiveException
+    # unlock the emulator screen
+    #- sleep 30
+    - adb shell input keyevent 82
+    # run tests  against the emulator.
+    - ./gradlew connectedAndroidTest -PdisablePreDex
+    # copy the build outputs to artifacts
+    - cp -r app/build/outputs $CIRCLE_ARTIFACTS
+    # copy the test results to the test results directory.
+    - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
