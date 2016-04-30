@@ -50,7 +50,6 @@ test:
   override:
     # Build the code
     - ./gradlew assembleDebug -PdisablePreDex
-    - ./gradlew assembleAndroidTest -PdisablePreDex
     # Execute Unit Tests
     #- ./gradlew test
     # ensure that the emulator is ready to use, wait for it to have booted
@@ -62,6 +61,11 @@ test:
     #- sleep 30
     - adb shell input keyevent 82
     - adb shell svc power stayon true
+    - adb shell settings put system window_animation_scale 0
+    - adb shell settings put system transition_animation_scale 0
+    - adb shell settings put system animator_duration_scale 0
+    # an alternative to above command. Make replacements as appropriat
+    #- adb shell content update --uri content://settings/system --bind value:s:0 --where 'name="window_animation_scale"'
     # run tests  against the emulator.
     - ./gradlew connectedAndroidTest -PdisablePreDex
     # copy the build outputs to artifacts
