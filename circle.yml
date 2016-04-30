@@ -33,6 +33,7 @@ dependencies:
     # Enable Gradle daemon to speedup all gradle command after the 1st one
     - echo "org.gradle.daemon=true" >> ~/.gradle/gradle.properties
     - echo "org.gradle.parallel=true" >> ~/.gradle/gradle.properties
+    - echo "org.gradle.configureondemand=true" >> ~/.gradle/gradle.properties
     - ./gradlew dependencies
 
 #  cache_directories:
