@@ -51,6 +51,7 @@ test:
     # Build the code
     - ./gradlew assembleDebug -PdisablePreDex
     # Execute Unit Tests
+    - ./gradlew testDebugUnitTest
     #- ./gradlew test
     # ensure that the emulator is ready to use, wait for it to have booted
     - circle-android wait-for-boot
