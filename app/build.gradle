@@ -26,7 +26,7 @@ android {
         testInstrumentationRunnerArguments disableAnalytics: 'true'
 
         // CI emulator test
-        //com.android.ddmlib.DdmPreferences.setTimeOut(60000)
+        com.android.ddmlib.DdmPreferences.setTimeOut(60000)
     }
     buildTypes {
         debug {

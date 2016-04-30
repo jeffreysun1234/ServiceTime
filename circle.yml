@@ -49,7 +49,8 @@ test:
 
   override:
     # Build the code
-    - ./gradlew assembleDebug
+    - ./gradlew assembleDebug -PdisablePreDex
+    - ./gradlew assembleAndroidTest -PdisablePreDex
     # Execute Unit Tests
     #- ./gradlew test
     # ensure that the emulator is ready to use, wait for it to have booted
@@ -60,6 +61,7 @@ test:
     # unlock the emulator screen
     #- sleep 30
     - adb shell input keyevent 82
+    - adb shell svc power stayon true
     # run tests  against the emulator.
     - ./gradlew connectedAndroidTest -PdisablePreDex
     # copy the build outputs to artifacts
