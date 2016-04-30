@@ -63,10 +63,6 @@ android {
         maxProcessCount = 4
         dexInProcess false
     }
-    lintOptions {
-        enable ''
-        checkReleaseBuilds false
-    }
 //    // CI emulator test
 //    adbOptions {
 //        timeOutInMs 600000
@@ -129,6 +125,13 @@ dependencies {
     androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestCompile "com.android.support.test.espresso:espresso-contrib:$rootProject.espressoVersion"
     androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
+}
+
+// skip the lint check
+tasks.whenTaskAdded { task ->
+    if (task.name.equals("lint")) {
+        task.enabled = false
+    }
 }
 
 // Grant animation permissions to avoid test failure because of ui sync.
