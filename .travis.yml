@@ -2,7 +2,7 @@ sudo: false
 
 language: android
 
-jdk: oraclejdk7
+jdk: oraclejdk8
 
 cache: false
 #before_cache:
