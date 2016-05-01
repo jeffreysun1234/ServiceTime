@@ -26,17 +26,22 @@ public class EspressoIdlingResource {
 
     private static final String RESOURCE = "GLOBAL";
 
-    private static CountingIdlingResource mCountingIdlingResource = new CountingIdlingResource(RESOURCE);
+    /**
+     * {@link CountingIdlingResource} of Espresso uses some methods from Android lib, so it is NOT used in
+     * mock test. We have to write a custom CountingIdlingResource.
+     */
+    private static final SimpleCountingIdlingResource DEFAULT_INSTANCE =
+            new SimpleCountingIdlingResource(RESOURCE);
 
     public static void increment() {
-        mCountingIdlingResource.increment();
+        DEFAULT_INSTANCE.increment();
     }
 
     public static void decrement() {
-        mCountingIdlingResource.decrement();
+        DEFAULT_INSTANCE.decrement();
     }
 
     public static IdlingResource getIdlingResource() {
-        return mCountingIdlingResource;
+        return DEFAULT_INSTANCE;
     }
 }

@@ -29,6 +29,8 @@ android {
         com.android.ddmlib.DdmPreferences.setTimeOut(60000)
     }
     buildTypes {
+        // Shrink and Proguard are expensive to time and cpu, so prohibit them at development.
+        // ture them on when need to release a produce version.
         debug {
             minifyEnabled false
             useProguard false
