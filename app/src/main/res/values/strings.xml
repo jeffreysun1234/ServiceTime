@@ -136,4 +136,13 @@
     <string name="custom_swipe_enabled">custom swipe</string>
     <string name="swipe">swipe me</string>
     <string name="swiping">swiping</string>
+    <string name="title_activity_add_edit_time_slot">AddEditTimeSlotActivity</string>
+    <string name="input_name_error">You must input a Name.</string>
+    <string name="input_time_error">Begin Time must be less than End Time.</string>
+    <string name="input_day_error">You must set at least one day.</string>
+    <string name="fail_get_time_slot_error">Fail to get TimeSlot List.</string>
+    <string name="time_slot_unknown_error">Unknown error in TimeSlot.</string>
+    <string name="add_timeSlot">New TimeSlot</string>
+    <string name="edit_timeSlot">Edit TimeSlot</string>
+    <string name="fail_save_time_slot_error">Fail to save data.</string>
 </resources>

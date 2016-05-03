@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mycompany.servicetime" >
+          package="com.mycompany.servicetime">
 
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".CHApplication"
@@ -17,58 +17,62 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter android:label="@string/app_name" >
-                <action android:name="android.intent.action.MAIN" />
+            android:screenOrientation="portrait">
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+            <intent-filter android:label="@string/app_name">
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.SettingsActivity"
-            android:label="@string/title_activity_settings" >
+            android:label="@string/title_activity_settings">
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
         </activity>
         <activity
             android:name=".ui.login.CreateAccountActivity"
             android:label="@string/title_activity_create_account"
-            android:parentActivityName=".ui.login.LoginActivity" >
+            android:parentActivityName=".ui.login.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.login.LoginActivity" />
+                android:value=".ui.login.LoginActivity"/>
         </activity>
 
         <provider
             android:name=".provider.CHServiceTimeProvider"
             android:authorities="com.mycompany.servicetime"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
         </provider>
 
-        <service android:name=".schedule.RingerModeIntentService" />
-        <service android:name=".schedule.SchedulingIntentService" />
+        <service android:name=".schedule.RingerModeIntentService"/>
+        <service android:name=".schedule.SchedulingIntentService"/>
 
         <receiver
             android:name=".schedule.BootReceiver"
-            android:enabled="false" >
+            android:enabled="false">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".schedule.AlarmReceiver" />
+        <receiver android:name=".schedule.AlarmReceiver"/>
 
         <service
             android:name=".schedule.InitAlarmIntentService"
-            android:exported="false" >
+            android:exported="false">
         </service>
+
+        <activity
+            android:name=".presentation.addedittimeslot.AddEditTimeSlotActivity">
+        </activity>
     </application>
 
 </manifest>

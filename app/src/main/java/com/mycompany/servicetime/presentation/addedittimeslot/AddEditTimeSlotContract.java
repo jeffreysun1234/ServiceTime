@@ -12,7 +12,7 @@ import com.mycompany.servicetime.model.TimeSlot;
 public class AddEditTimeSlotContract {
     interface View extends BaseView<Presenter> {
 
-        void showVerifyTimeSlotError(String error);
+        void showError(int error);
 
         void finishView();
 

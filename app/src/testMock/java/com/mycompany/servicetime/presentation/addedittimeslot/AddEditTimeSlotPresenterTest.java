@@ -74,7 +74,7 @@ public class AddEditTimeSlotPresenterTest {
         mAddEditTimeSlotPresenter.createTimeSlot("", 9, 0, 17, 0, "0111110", true);
 
         // Then an empty not error is shown in the UI
-        verify(mAddEditTimeSlotView).showVerifyTimeSlotError(any(String.class));
+        verify(mAddEditTimeSlotView).showError(any(Integer.class));
     }
 
     @Test
@@ -83,7 +83,7 @@ public class AddEditTimeSlotPresenterTest {
         mAddEditTimeSlotPresenter = givenAddEditTimeSlotPresenter("1");
 
         // When the presenter is asked to save an existing timeSlot
-        mAddEditTimeSlotPresenter.updateTimeSlot("", 9, 0, 17, 0, "0111110", true);
+        mAddEditTimeSlotPresenter.updateTimeSlot("Test", 9, 0, 17, 0, "0111110", true);
 
         // Then a timeSlot is saved in the repository and the view updated
         verify(mTimeSlotRepository).saveTimeSlot(any(TimeSlot.class)); // saved to the model
