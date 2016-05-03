@@ -97,7 +97,6 @@ public class AddEditTimeSlotFragment extends Fragment implements AddEditTimeSlot
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.time_slot_fragment, menu);
     }
 
@@ -179,7 +178,7 @@ public class AddEditTimeSlotFragment extends Fragment implements AddEditTimeSlot
 
     @Override
     public boolean isActive() {
-        return false;
+        return isAdded();
     }
 
     private void setTimeSlotIdIfAny() {
