@@ -45,7 +45,7 @@ public interface TimeSlotDataSource {
 
     //void clearCompletedTimeSlots();
 
-    void refreshTimeSlots();
+    //void refreshTimeSlots();
 
     void deleteAllTimeSlots();
 

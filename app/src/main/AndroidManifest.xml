@@ -74,6 +74,10 @@
             android:name=".presentation.addedittimeslot.AddEditTimeSlotActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".presentation.timeslots.TimeSlotsActivity"
+            android:label="@string/title_activity_time_slots">
+        </activity>
     </application>
 
 </manifest>

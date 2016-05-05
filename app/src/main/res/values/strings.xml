@@ -145,4 +145,5 @@
     <string name="add_timeSlot">New TimeSlot</string>
     <string name="edit_timeSlot">Edit TimeSlot</string>
     <string name="fail_save_time_slot_error">Fail to save data.</string>
+    <string name="title_activity_time_slots">TimeSlotsActivity</string>
 </resources>

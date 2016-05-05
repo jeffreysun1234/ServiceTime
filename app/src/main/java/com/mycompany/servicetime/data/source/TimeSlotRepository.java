@@ -64,11 +64,6 @@ public class TimeSlotRepository implements TimeSlotDataSource {
     }
 
     @Override
-    public void refreshTimeSlots() {
-
-    }
-
-    @Override
     public void deleteAllTimeSlots() {
 
     }
