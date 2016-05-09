@@ -27,6 +27,7 @@ import com.mycompany.servicetime.base.usecase.UseCase;
 import com.mycompany.servicetime.base.usecase.UseCaseHandler;
 import com.mycompany.servicetime.data.source.TimeSlotDataSource;
 import com.mycompany.servicetime.domain.usecase.ActivateTimeSlot;
+import com.mycompany.servicetime.domain.usecase.DeleteTimeSlot;
 import com.mycompany.servicetime.domain.usecase.GetTimeSlots;
 import com.mycompany.servicetime.model.TimeSlot;
 import com.mycompany.servicetime.presentation.addedittimeslot.AddEditTimeSlotActivity;
@@ -46,6 +47,7 @@ public class TimeSlotsPresenter implements TimeSlotsContract.Presenter {
     private final TimeSlotsContract.View mTimeSlotsView;
 
     private final ActivateTimeSlot mActivateTimeSlot;
+    private final DeleteTimeSlot mDeleteTimeSlot;
 
     private boolean mFirstLoad = true;
 
@@ -54,10 +56,12 @@ public class TimeSlotsPresenter implements TimeSlotsContract.Presenter {
     public TimeSlotsPresenter(@NonNull UseCaseHandler useCaseHandler,
                               @NonNull TimeSlotsContract.View timeSlotsView,
                               @NonNull ActivateTimeSlot activateTimeSlot,
+                              @NonNull DeleteTimeSlot deleteTimeSlot,
                               @NonNull LoaderManager loaderManager) {
         mUseCaseHandler = checkNotNull(useCaseHandler, "usecaseHandler cannot be null");
         mTimeSlotsView = checkNotNull(timeSlotsView, "timeSlotsView cannot be null!");
         mActivateTimeSlot = checkNotNull(activateTimeSlot, "activateTimeSlot cannot be null!");
+        mDeleteTimeSlot = checkNotNull(deleteTimeSlot, "deleteTimeSlot cannot be null!");
         mLoaderManager = checkNotNull(loaderManager, "loader manager cannot be null");
 
         mTimeSlotsView.setPresenter(this);
@@ -109,6 +113,22 @@ public class TimeSlotsPresenter implements TimeSlotsContract.Presenter {
                     @Override
                     public void onError() {
                         mTimeSlotsView.showLoadingTimeSlotsError();
+                    }
+                });
+    }
+
+    @Override
+    public void deleteTimeSlot(@NonNull String requestedTimeSlotId) {
+        mUseCaseHandler.execute(mDeleteTimeSlot, new DeleteTimeSlot.RequestValues(requestedTimeSlotId),
+                new UseCase.UseCaseCallback<DeleteTimeSlot.ResponseValue>() {
+                    @Override
+                    public void onSuccess(DeleteTimeSlot.ResponseValue response) {
+                        mTimeSlotsView.showTimeSlotDeleted();
+                    }
+
+                    @Override
+                    public void onError() {
+                        // TODO: Show error, log, etc.
                     }
                 });
     }

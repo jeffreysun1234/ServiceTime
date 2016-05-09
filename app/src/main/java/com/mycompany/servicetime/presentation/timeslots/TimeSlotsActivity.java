@@ -39,6 +39,7 @@ public class TimeSlotsActivity extends AppCompatActivity {
                 Injection.provideUseCaseHandler(),
                 timeSlotsFragment,
                 Injection.provideActivateTimeSlot(getApplicationContext()),
+                Injection.provideDeleteTimeSlot(getApplicationContext()),
                 getSupportLoaderManager()
         );
 

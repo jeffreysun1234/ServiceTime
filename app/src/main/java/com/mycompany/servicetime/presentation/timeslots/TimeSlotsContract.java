@@ -42,6 +42,8 @@ public interface TimeSlotsContract {
 
         void showTimeSlotMarkedActive();
 
+        void showTimeSlotDeleted();
+
         void showLoadingTimeSlotsError();
 
         void showNoTimeSlots();
@@ -62,5 +64,7 @@ public interface TimeSlotsContract {
         void openTimeSlotDetail(@NonNull String requestedTimeSlotId);
 
         void activateTimeSlot(@NonNull TimeSlot activeTimeSlot);
+
+        void deleteTimeSlot(@NonNull String requestedTimeSlotId);
     }
 }

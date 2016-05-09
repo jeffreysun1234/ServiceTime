@@ -272,6 +272,11 @@ public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.Vie
     }
 
     @Override
+    public void showTimeSlotDeleted() {
+        showMessage(getString(R.string.timeslot_deleted));
+    }
+
+    @Override
     public void showLoadingTimeSlotsError() {
         showMessage(getString(R.string.loading_timeslots_error));
     }

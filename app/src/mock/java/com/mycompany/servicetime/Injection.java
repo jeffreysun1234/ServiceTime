@@ -8,6 +8,7 @@ import com.mycompany.servicetime.data.source.FakeTimeSlotDataSource;
 import com.mycompany.servicetime.data.source.TimeSlotDataSource;
 import com.mycompany.servicetime.data.source.TimeSlotRepository;
 import com.mycompany.servicetime.domain.usecase.ActivateTimeSlot;
+import com.mycompany.servicetime.domain.usecase.DeleteTimeSlot;
 import com.mycompany.servicetime.domain.usecase.GetTimeSlot;
 import com.mycompany.servicetime.domain.usecase.GetTimeSlots;
 import com.mycompany.servicetime.domain.usecase.SaveTimeSlot;
@@ -46,8 +47,8 @@ public abstract class Injection {
         return new ActivateTimeSlot(Injection.provideTimeSlotsRepository(context));
     }
 
-    //
-//    public static DeleteTimeSlot provideDeleteTimeSlot(@NonNull Context context) {
-//        return new DeleteTimeSlot(Injection.provideTimeSlotsRepository(context));
-//    }
+
+    public static DeleteTimeSlot provideDeleteTimeSlot(@NonNull Context context) {
+        return new DeleteTimeSlot(Injection.provideTimeSlotsRepository(context));
+    }
 }

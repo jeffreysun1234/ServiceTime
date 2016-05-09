@@ -51,7 +51,7 @@ public class TimeSlotsQueryLoaderCallbacks implements LoaderManager.LoaderCallba
         }
 
         //check if show empty view
-        if (data.getCount() == 0) {
+        if (data == null || data.getCount() == 0) {
             mTimeSlotsView.showNoTimeSlots();
         } else {
             mTimeSlotsView.showTimeSlots(data);

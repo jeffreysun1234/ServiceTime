@@ -149,4 +149,5 @@
     <string name="timeslot_marked_active">TimeSlot marked active</string>
     <string name="loading_timeslots_error">Error while loading TimeSlots</string>
     <string name="successfully_saved_timeslot">TimeSlot saved</string>
+    <string name="timeslot_deleted">TimeSlot is deleted.</string>
 </resources>

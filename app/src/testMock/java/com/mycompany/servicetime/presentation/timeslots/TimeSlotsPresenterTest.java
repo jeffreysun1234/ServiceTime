@@ -16,26 +16,47 @@
 
 package com.mycompany.servicetime.presentation.timeslots;
 
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.Build;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+
+import com.mycompany.servicetime.BuildConfig;
 import com.mycompany.servicetime.base.usecase.TestUseCaseScheduler;
 import com.mycompany.servicetime.base.usecase.UseCaseHandler;
 import com.mycompany.servicetime.data.source.TimeSlotDataSource;
 import com.mycompany.servicetime.data.source.TimeSlotRepository;
 import com.mycompany.servicetime.domain.usecase.ActivateTimeSlot;
+import com.mycompany.servicetime.domain.usecase.DeleteTimeSlot;
 import com.mycompany.servicetime.domain.usecase.GetTimeSlots;
 import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.schedule.InitAlarmIntentService;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.doNothing;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.robolectric.ParameterizedRobolectricTestRunner;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +64,23 @@ import java.util.List;
 /**
  * Unit tests for the implementation of {@link TimeSlotsPresenter}
  */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(InitAlarmIntentService.class)
 public class TimeSlotsPresenterTest {
 
     private static List<TimeSlot> TIMESLOTS;
+
+    @Mock
+    private CursorLoader mTimeSlotsLoader;
+
+    @Mock
+    private Context mContext;
+
+    @Mock
+    private Cursor mCursor;
+
+    @Mock
+    private LoaderManager mLoaderManager;
 
     @Mock
     private TimeSlotRepository mTimeSlotRepository;
@@ -79,34 +114,39 @@ public class TimeSlotsPresenterTest {
         TIMESLOTS.add(new TimeSlot("1", "Work", 9, 0, 17, 0, "0111110", true));
         TIMESLOTS.add(new TimeSlot("2", "Test", 11, 0, 13, 0, "0110000", true));
         TIMESLOTS.add(new TimeSlot("3", "School", 8, 0, 15, 30, "0111110", true));
+
+        // Mock static method
+        PowerMockito.mockStatic(InitAlarmIntentService.class);
+        try {
+            PowerMockito.doNothing().when(InitAlarmIntentService.class, "startActionInit", mContext);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private TimeSlotsPresenter givenTimeSlotsPresenter() {
         UseCaseHandler useCaseHandler = new UseCaseHandler(new TestUseCaseScheduler());
-        GetTimeSlots getTimeSlots = new GetTimeSlots(mTimeSlotRepository);
         ActivateTimeSlot activateTimeSlot = new ActivateTimeSlot(mTimeSlotRepository);
+        DeleteTimeSlot deleteTimeSlot = new DeleteTimeSlot(mTimeSlotRepository);
 
-        //return new TimeSlotsPresenter(useCaseHandler, mTimeSlotsView, getTimeSlots, activateTimeSlot);
-        return null;
+        return new TimeSlotsPresenter(useCaseHandler, mTimeSlotsView, activateTimeSlot, deleteTimeSlot,
+                mLoaderManager);
     }
 
     @Test
     public void loadAllTimeSlotsFromRepositoryAndLoadIntoView() {
-        // Given an initialized TimeSlotsPresenter with initialized timeSlots
-        // When loading of TimeSlots is requested
-        mTimeSlotsPresenter.loadTimeSlots(true);
+        when(mCursor.getCount()).thenReturn(3);
 
-        // Callback is captured and invoked with stubbed timeSlots
-        verify(mTimeSlotRepository).getTimeSlots(mLoadTimeSlotsCallbackCaptor.capture());
-        mLoadTimeSlotsCallbackCaptor.getValue().onTimeSlotsLoaded(TIMESLOTS);
+        TimeSlotsQueryLoaderCallbacks loaderCallBack = new TimeSlotsQueryLoaderCallbacks(mContext,
+                mTimeSlotsView, true);
+        // When the loader finishes with TimeSlots.
+        loaderCallBack.onLoadFinished(mTimeSlotsLoader, mCursor);
 
-        // Then progress indicator is shown
-        verify(mTimeSlotsView).setLoadingIndicator(true);
         // Then progress indicator is hidden and all timeSlots are shown in UI
         verify(mTimeSlotsView).setLoadingIndicator(false);
-        ArgumentCaptor<List> showTimeSlotsArgumentCaptor = ArgumentCaptor.forClass(List.class);
-        //verify(mTimeSlotsView).showTimeSlots(showTimeSlotsArgumentCaptor.capture());
-        assertTrue(showTimeSlotsArgumentCaptor.getValue().size() == 3);
+        ArgumentCaptor<Cursor> showTimeSlotsArgumentCaptor = ArgumentCaptor.forClass(Cursor.class);
+        verify(mTimeSlotsView).showTimeSlots(showTimeSlotsArgumentCaptor.capture());
+        assertTrue(showTimeSlotsArgumentCaptor.getValue().getCount() == 3);
     }
 
     @Test
@@ -124,17 +164,16 @@ public class TimeSlotsPresenterTest {
         TimeSlot requestedTimeSlot = new TimeSlot("2", "Test", 11, 0, 13, 0, "0110000", true);
 
         // When open timeSlot details is requested
-        //mTimeSlotsPresenter.openTimeSlotDetail(requestedTimeSlot);
+        mTimeSlotsPresenter.openTimeSlotDetail(requestedTimeSlot.timeSlotId);
 
         // Then timeSlot detail UI is shown
-        //verify(mTimeSlotsView).showEditTimeSlotUi(any(TimeSlot.class));
+        verify(mTimeSlotsView).showEditTimeSlotUi(any(String.class));
     }
 
     @Test
     public void activateTimeSlot_ShowsTimeSlotMarkedActive() {
         // Given a stubbed completed timeSlot
-        TimeSlot timeSlot =  new TimeSlot("2", "Test", 11, 0, 13, 0, "0110000", true);
-        mTimeSlotsPresenter.loadTimeSlots(true);
+        TimeSlot timeSlot = new TimeSlot("2", "Test", 11, 0, 13, 0, "0110000", true);
 
         // When timeSlot is marked as activated
         mTimeSlotsPresenter.activateTimeSlot(timeSlot);
@@ -145,15 +184,25 @@ public class TimeSlotsPresenterTest {
     }
 
     @Test
-    public void unavailableTimeSlots_ShowsError() {
-        // When timeSlots are loaded
-        mTimeSlotsPresenter.loadTimeSlots(true);
+    public void deleteTimeSlot() {
+        // Given a stubbed completed timeSlot
+        TimeSlot timeSlot = new TimeSlot("2", "Test", 11, 0, 13, 0, "0110000", true);
 
-        // And the timeSlots aren't available in the repository
-        verify(mTimeSlotRepository).getTimeSlots(mLoadTimeSlotsCallbackCaptor.capture());
-        mLoadTimeSlotsCallbackCaptor.getValue().onDataNotAvailable();
+        mTimeSlotsPresenter.deleteTimeSlot(timeSlot.timeSlotId);
+
+        // Then the repository and the view are notified
+        verify(mTimeSlotRepository).deleteTimeSlot(timeSlot.timeSlotId);
+        verify(mTimeSlotsView).showTimeSlotDeleted();
+    }
+
+    @Test
+    public void unavailableTimeSlots_ShowsError() {
+        TimeSlotsQueryLoaderCallbacks loaderCallBack = new TimeSlotsQueryLoaderCallbacks(mContext,
+                mTimeSlotsView, true);
+        // When the loader finishes with TimeSlots which is empty or error.
+        loaderCallBack.onLoadFinished(mTimeSlotsLoader, null);
 
         // Then an error message is shown
-        verify(mTimeSlotsView).showLoadingTimeSlotsError();
+        verify(mTimeSlotsView).showNoTimeSlots();
     }
 }
