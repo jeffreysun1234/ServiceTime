@@ -37,7 +37,7 @@ public interface TimeSlotsContract {
 
         void showAddTimeSlotUI();
 
-        void showEditTimeSlotUi(TimeSlot timeSlot);
+        void showEditTimeSlotUi(String timeSlotId);
 
         void showTimeSlotMarkedActive();
 
@@ -58,7 +58,7 @@ public interface TimeSlotsContract {
 
         void addNewTimeSlot();
 
-        void openTimeSlotDetail(@NonNull TimeSlot requestedTimeSlot);
+        void openTimeSlotDetail(@NonNull String requestedTimeSlotId);
 
         void activateTimeSlot(@NonNull TimeSlot activeTimeSlot);
     }

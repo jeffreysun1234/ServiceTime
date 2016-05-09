@@ -28,6 +28,8 @@ import com.mycompany.servicetime.CHApplication;
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.firebase.FirebaseRestDAO;
 import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.presentation.addedittimeslot.AddEditTimeSlotActivity;
+import com.mycompany.servicetime.presentation.addedittimeslot.AddEditTimeSlotFragment;
 import com.mycompany.servicetime.provider.CHServiceTimeContract;
 import com.mycompany.servicetime.provider.CHServiceTimeDAO;
 import com.mycompany.servicetime.schedule.InitAlarmIntentService;
@@ -255,13 +257,7 @@ public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.Vie
     @Override
     public void onItemLongClicked(String timeSlotId) {
         LOGD(TAG, "onItemLongClicked(): timeSlotId=" + timeSlotId);
-
-        TimeSlotFragment timeSlotFragment = TimeSlotFragment.newInstance(timeSlotId);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment, timeSlotFragment)
-                .addToBackStack(null)
-                .commit();
+        mPresenter.openTimeSlotDetail(timeSlotId);
     }
 
     @Override
@@ -302,24 +298,24 @@ public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.Vie
 
     @Override
     public void showTimeSlots(List<TimeSlot> timeSlots) {
-        mListAdapter.replaceData(tasks);
+        mListAdapter.replaceData(timeSlots);
 
-        mTasksView.setVisibility(View.VISIBLE);
-        mNoTasksView.setVisibility(View.GONE);
+        mTimeSlotsView.setVisibility(View.VISIBLE);
+        mNoTimeSlotsView.setVisibility(View.GONE);
     }
 
     @Override
     public void showAddTimeSlotUI() {
-        Intent intent = new Intent(getContext(), AddEditTaskActivity.class);
-        startActivityForResult(intent, AddEditTaskActivity.REQUEST_ADD_TASK);
+        Intent intent = new Intent(getContext(), AddEditTimeSlotActivity.class);
+        startActivityForResult(intent, AddEditTimeSlotActivity.REQUEST_ADD_TIME_SLOT);
     }
 
     @Override
-    public void showEditTimeSlotUi(TimeSlot timeSlot) {
+    public void showEditTimeSlotUi(String timeSlotId) {
         // in it's own Activity, since it makes more sense that way and it gives us the flexibility
         // to show some Intent stubbing.
-        Intent intent = new Intent(getContext(), TaskDetailActivity.class);
-        intent.putExtra(TaskDetailActivity.EXTRA_TASK_ID, taskId);
+        Intent intent = new Intent(getContext(), AddEditTimeSlotActivity.class);
+        intent.putExtra(AddEditTimeSlotFragment.ARGUMENT_EDIT_TIME_SLOT_ID, timeSlotId);
         startActivity(intent);
     }
 
@@ -335,8 +331,8 @@ public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.Vie
 
     @Override
     public void showNoTimeSlots() {
-        mTasksView.setVisibility(View.GONE);
-        mNoTasksView.setVisibility(View.VISIBLE);
+        mTimeSlotsView.setVisibility(View.GONE);
+        mNoTimeSlotsView.setVisibility(View.VISIBLE);
     }
 
     @Override

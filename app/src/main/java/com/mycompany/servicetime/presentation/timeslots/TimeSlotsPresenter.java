@@ -138,9 +138,9 @@ public class TimeSlotsPresenter implements TimeSlotsContract.Presenter {
     }
 
     @Override
-    public void openTimeSlotDetail(@NonNull TimeSlot requestedTimeSlot) {
-        checkNotNull(requestedTimeSlot, "requestedTimeSlot cannot be null!");
-        mTimeSlotsView.showEditTimeSlotUi(requestedTimeSlot);
+    public void openTimeSlotDetail(@NonNull String requestedTimeSlotId) {
+        checkNotNull(requestedTimeSlotId, "requestedTimeSlotId cannot be null!");
+        mTimeSlotsView.showEditTimeSlotUi(requestedTimeSlotId);
     }
 
     @Override
