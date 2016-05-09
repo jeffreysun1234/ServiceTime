@@ -146,4 +146,7 @@
     <string name="edit_timeSlot">Edit TimeSlot</string>
     <string name="fail_save_time_slot_error">Fail to save data.</string>
     <string name="title_activity_time_slots">TimeSlotsActivity</string>
+    <string name="timeslot_marked_active">TimeSlot marked active</string>
+    <string name="loading_timeslots_error">Error while loading TimeSlots</string>
+    <string name="successfully_saved_timeslot">TimeSlot saved</string>
 </resources>

@@ -16,6 +16,7 @@
 
 package com.mycompany.servicetime.presentation.timeslots;
 
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import com.mycompany.servicetime.base.presentation.BasePresenter;
@@ -33,7 +34,7 @@ public interface TimeSlotsContract {
 
         void setLoadingIndicator(boolean active);
 
-        void showTimeSlots(List<TimeSlot> timeSlots);
+        void showTimeSlots(Cursor cursor);
 
         void showAddTimeSlotUI();
 

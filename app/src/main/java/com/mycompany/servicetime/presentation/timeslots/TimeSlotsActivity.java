@@ -38,8 +38,8 @@ public class TimeSlotsActivity extends AppCompatActivity {
         mTimeSlotsPresenter = new TimeSlotsPresenter(
                 Injection.provideUseCaseHandler(),
                 timeSlotsFragment,
-                Injection.provideGetTimeSlots(getApplicationContext()),
-                Injection.provideActivateTimeSlot(getApplicationContext())
+                Injection.provideActivateTimeSlot(getApplicationContext()),
+                getSupportLoaderManager()
         );
 
         // Add AdView

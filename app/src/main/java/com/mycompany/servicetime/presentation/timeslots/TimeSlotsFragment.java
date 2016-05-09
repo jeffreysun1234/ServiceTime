@@ -7,10 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,25 +18,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mycompany.servicetime.CHApplication;
 import com.mycompany.servicetime.R;
-import com.mycompany.servicetime.firebase.FirebaseRestDAO;
 import com.mycompany.servicetime.model.TimeSlot;
 import com.mycompany.servicetime.presentation.addedittimeslot.AddEditTimeSlotActivity;
 import com.mycompany.servicetime.presentation.addedittimeslot.AddEditTimeSlotFragment;
-import com.mycompany.servicetime.provider.CHServiceTimeContract;
 import com.mycompany.servicetime.provider.CHServiceTimeDAO;
-import com.mycompany.servicetime.schedule.InitAlarmIntentService;
 import com.mycompany.servicetime.support.PreferenceSupport;
-import com.mycompany.servicetime.ui.AccessFirebaseAsyn;
-import com.mycompany.servicetime.ui.BaseActivity;
-import com.mycompany.servicetime.ui.TimeSlotFragment;
-import com.mycompany.servicetime.util.EspressoIdlingResource;
-
-import java.io.IOException;
-import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.mycompany.servicetime.util.LogUtils.LOGD;
@@ -50,9 +35,7 @@ import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
  * Display a grid of {@link TimeSlot}s. User can choose to view all TimeSlots.
  */
 public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.View,
-        TimeSlotCursorRecyclerAdapter.ItemActionListener,
-        SharedPreferences.OnSharedPreferenceChangeListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = makeLogTag(TimeSlotsFragment.class);
 
@@ -82,18 +65,12 @@ public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.Vie
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_time_slots, container, false);
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_time_slots, container, false);
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        initViews();
+        initViews(root);
 
-        // Prepare the loader.  Either re-connect with an existing one, or start a new one.
-        getLoaderManager().initLoader(0, null, this);
+        return root;
     }
 
     @Override
@@ -114,15 +91,15 @@ public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.Vie
         mPresenter.result(requestCode, resultCode);
     }
 
-    private void initViews() {
-        mEmptyView = (LinearLayout) getActivity().findViewById(R.id.empty_layout);
-        mNextAlarmTextView = (TextView) getActivity().findViewById(R.id.nextOperationTextView);
+    private void initViews(View root) {
+        mEmptyView = (LinearLayout) root.findViewById(R.id.empty_layout);
+        mNextAlarmTextView = (TextView) root.findViewById(R.id.nextOperationTextView);
 
-        mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.timeSlotListRecyclerView);
+        mRecyclerView = (RecyclerView) root.findViewById(R.id.timeSlotListRecyclerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(getLayoutManager());
 
-        mAdapter = new TimeSlotCursorRecyclerAdapter(this, null);
+        mAdapter = new TimeSlotCursorRecyclerAdapter(mItemListener, null);
         mRecyclerView.setAdapter(mAdapter);
 
         // add item animation
@@ -215,32 +192,6 @@ public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.Vie
 //    }
 
     /******
-     * Cursor loader interface's implements
-     ******/
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getContext(), CHServiceTimeContract.TimeSlots.CONTENT_URI,
-                CHServiceTimeContract.TimeSlots.DEFAULT_PROJECTION, null, null, null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        //mAdapter.swapCursor(data);
-        mAdapter.changeCursor(data);
-
-        // check if show empty view
-        checkAdapterIsEmpty();
-
-        // Send the open and close sound alarms based on the current data.
-        InitAlarmIntentService.startActionInit(getContext());
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
-    }
-
-    /******
      * Preference Listener's method
      ******/
     @Override
@@ -252,56 +203,52 @@ public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.Vie
     }
 
     /******
-     * Custom RecyclerAdapter Callback interface's implements
+     * Custom RecyclerAdapter Callback interface's implements. It is a listener for operations on TimeSlots
+     * in the RecyclerView.
      ******/
-    @Override
-    public void onItemLongClicked(String timeSlotId) {
-        LOGD(TAG, "onItemLongClicked(): timeSlotId=" + timeSlotId);
-        mPresenter.openTimeSlotDetail(timeSlotId);
-    }
+    TimeSlotCursorRecyclerAdapter.ItemActionListener mItemListener = new TimeSlotCursorRecyclerAdapter.ItemActionListener() {
+        @Override
+        public void onItemLongClicked(String timeSlotId) {
+            LOGD(TAG, "onItemLongClicked(): timeSlotId=" + timeSlotId);
+            mPresenter.openTimeSlotDetail(timeSlotId);
+        }
 
-    @Override
-    public void onActiveFlagSwitchClicked(String timeSlotId, boolean activeFlag) {
-        LOGD(TAG, "onActiveFlagSwitchClicked(): timeSlotId=" + timeSlotId + " ; activeFlag=" + activeFlag);
-        CHServiceTimeDAO.create(CHApplication.getContext()).updateServiceFlag(timeSlotId, activeFlag);
-    }
+        @Override
+        public void onActiveFlagSwitchClicked(String timeSlotId, boolean activeFlag) {
+            LOGD(TAG, "onActiveFlagSwitchClicked(): timeSlotId=" + timeSlotId + " ; activeFlag=" + activeFlag);
+            CHServiceTimeDAO.create(CHApplication.getContext()).updateServiceFlag(timeSlotId, activeFlag);
+        }
 
-    @Override
-    public void deleteItem(String timeSlotId) {
-        LOGD(TAG, "deleteItem(): timeSlotId=" + timeSlotId);
-        CHServiceTimeDAO.create(CHApplication.getContext()).deleteTimeSlot(timeSlotId);
-    }
+        @Override
+        public void deleteItem(String timeSlotId) {
+            LOGD(TAG, "deleteItem(): timeSlotId=" + timeSlotId);
+            CHServiceTimeDAO.create(CHApplication.getContext()).deleteTimeSlot(timeSlotId);
+        }
+    };
 
     // Here is the method we extract to override in our testable subclass
     public LinearLayoutManager getLayoutManager() {
         return new LinearLayoutManager(getContext());
     }
 
-    /**
-     * show an empty view with a RecyclerView
-     */
-    private void checkAdapterIsEmpty() {
-        if (mAdapter.getItemCount() == 0) {
-            mEmptyView.setVisibility(View.VISIBLE);
-        } else {
-            mEmptyView.setVisibility(View.GONE);
-        }
-    }
-
-
     ////// Implements of Contract interface //////
 
     @Override
     public void setLoadingIndicator(boolean active) {
+        if (getView() == null) {
+            return;
+        }
+
+        // TODO: show indicator.
 
     }
 
     @Override
-    public void showTimeSlots(List<TimeSlot> timeSlots) {
-        mListAdapter.replaceData(timeSlots);
+    public void showTimeSlots(Cursor cursor) {
+        mAdapter.changeCursor(cursor);
 
-        mTimeSlotsView.setVisibility(View.VISIBLE);
-        mNoTimeSlotsView.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mEmptyView.setVisibility(View.GONE);
     }
 
     @Override
@@ -331,13 +278,13 @@ public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.Vie
 
     @Override
     public void showNoTimeSlots() {
-        mTimeSlotsView.setVisibility(View.GONE);
-        mNoTimeSlotsView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showSuccessfullySavedMessage() {
-
+        showMessage(getString(R.string.successfully_saved_timeslot));
     }
 
     @Override

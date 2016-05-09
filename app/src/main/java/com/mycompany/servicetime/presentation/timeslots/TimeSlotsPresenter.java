@@ -20,7 +20,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.v4.app.LoaderManager;
 
+import com.mycompany.servicetime.CHApplication;
 import com.mycompany.servicetime.base.usecase.UseCase;
 import com.mycompany.servicetime.base.usecase.UseCaseHandler;
 import com.mycompany.servicetime.data.source.TimeSlotDataSource;
@@ -37,8 +39,12 @@ import java.util.List;
  */
 public class TimeSlotsPresenter implements TimeSlotsContract.Presenter {
 
+    private final static int TIME_SLOTS_QUERY = 1;
+
+    private final LoaderManager mLoaderManager;
+
     private final TimeSlotsContract.View mTimeSlotsView;
-    private final GetTimeSlots mGetTimeSlots;
+
     private final ActivateTimeSlot mActivateTimeSlot;
 
     private boolean mFirstLoad = true;
@@ -47,19 +53,19 @@ public class TimeSlotsPresenter implements TimeSlotsContract.Presenter {
 
     public TimeSlotsPresenter(@NonNull UseCaseHandler useCaseHandler,
                               @NonNull TimeSlotsContract.View timeSlotsView,
-                              @NonNull GetTimeSlots getTimeSlots,
-                              @NonNull ActivateTimeSlot activateTimeSlot) {
+                              @NonNull ActivateTimeSlot activateTimeSlot,
+                              @NonNull LoaderManager loaderManager) {
         mUseCaseHandler = checkNotNull(useCaseHandler, "usecaseHandler cannot be null");
         mTimeSlotsView = checkNotNull(timeSlotsView, "timeSlotsView cannot be null!");
-        mGetTimeSlots = checkNotNull(getTimeSlots, "getTimeSlots cannot be null!");
         mActivateTimeSlot = checkNotNull(activateTimeSlot, "activateTimeSlot cannot be null!");
+        mLoaderManager = checkNotNull(loaderManager, "loader manager cannot be null");
 
         mTimeSlotsView.setPresenter(this);
     }
 
     @Override
     public void start() {
-        loadTimeSlots(false);
+        loadTimeSlots(true);
     }
 
     @Override
@@ -75,62 +81,9 @@ public class TimeSlotsPresenter implements TimeSlotsContract.Presenter {
      */
     @Override
     public void loadTimeSlots(final boolean showLoadingIndicator) {
-        if (showLoadingIndicator) {
-            mTimeSlotsView.setLoadingIndicator(true);
-        }
-
-        GetTimeSlots.RequestValues requestValue = new GetTimeSlots.RequestValues();
-
-        mUseCaseHandler.execute(mGetTimeSlots, requestValue,
-                new UseCase.UseCaseCallback<GetTimeSlots.ResponseValue>() {
-                    @Override
-                    public void onSuccess(GetTimeSlots.ResponseValue response) {
-                        List<TimeSlot> timeSlots = response.getTimeSlots();
-                        // The view may not be able to handle UI updates anymore
-                        if (!mTimeSlotsView.isActive()) {
-                            return;
-                        }
-                        if (showLoadingIndicator) {
-                            mTimeSlotsView.setLoadingIndicator(false);
-                        }
-
-                        processTimeSlots(timeSlots);
-                    }
-
-                    @Override
-                    public void onError() {
-                        // The view may not be able to handle UI updates anymore
-                        if (!mTimeSlotsView.isActive()) {
-                            return;
-                        }
-                        mTimeSlotsView.showLoadingTimeSlotsError();
-                    }
-                });
+        mLoaderManager.initLoader(TIME_SLOTS_QUERY, null,
+                new TimeSlotsQueryLoaderCallbacks(CHApplication.getContext(), mTimeSlotsView, showLoadingIndicator));
     }
-
-    private void processTimeSlots(List<TimeSlot> timeSlots) {
-        if (timeSlots.isEmpty()) {
-            // Show a message indicating there are no timeSlots.
-            //processEmptyTimeSlots();
-        } else {
-            // Show the list of timeSlots
-            mTimeSlotsView.showTimeSlots(timeSlots);
-        }
-    }
-
-//    private void processEmptyTimeSlots() {
-//        switch (mCurrentFiltering) {
-//            case ACTIVE_TASKS:
-//                mTimeSlotsView.showNoActiveTimeSlots();
-//                break;
-//            case COMPLETED_TASKS:
-//                mTimeSlotsView.showNoCompletedTimeSlots();
-//                break;
-//            default:
-//                mTimeSlotsView.showNoTimeSlots();
-//                break;
-//        }
-//    }
 
     @Override
     public void addNewTimeSlot() {
@@ -151,7 +104,6 @@ public class TimeSlotsPresenter implements TimeSlotsContract.Presenter {
                     @Override
                     public void onSuccess(ActivateTimeSlot.ResponseValue response) {
                         mTimeSlotsView.showTimeSlotMarkedActive();
-                        loadTimeSlots(false);
                     }
 
                     @Override
