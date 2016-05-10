@@ -9,7 +9,7 @@ import android.test.RenamingDelegatingContext;
 import android.test.mock.MockContentProvider;
 import android.test.mock.MockContentResolver;
 
-import com.mycompany.servicetime.provider.CHServiceTimeContract;
+import com.mycompany.servicetime.data.source.provider.CHServiceTimeContract;
 
 import java.util.HashMap;
 

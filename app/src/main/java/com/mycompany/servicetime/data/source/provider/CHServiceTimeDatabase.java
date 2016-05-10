@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mycompany.servicetime.provider;
+package com.mycompany.servicetime.data.source.provider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,7 +23,7 @@ import android.os.Environment;
 import android.provider.BaseColumns;
 
 import com.mycompany.servicetime.SystemConstants;
-import com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
+import com.mycompany.servicetime.data.source.provider.CHServiceTimeContract.TimeSlots;
 import com.mycompany.servicetime.support.AppSystemSupport;
 
 import java.io.File;

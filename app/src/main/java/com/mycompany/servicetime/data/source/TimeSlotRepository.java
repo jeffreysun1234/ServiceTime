@@ -3,7 +3,7 @@ package com.mycompany.servicetime.data.source;
 import android.support.annotation.NonNull;
 
 import com.mycompany.servicetime.model.TimeSlot;
-import com.mycompany.servicetime.provider.CHServiceTimeDAO;
+import com.mycompany.servicetime.data.source.provider.CHServiceTimeDAO;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

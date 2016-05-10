@@ -14,6 +14,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import android.view.WindowManager;
 
 import com.mycompany.servicetime.R;
+import com.mycompany.servicetime.presentation.timeslots.TimeSlotsActivity;
 import com.mycompany.servicetime.util.EspressoIdlingResource;
 
 import org.junit.After;
@@ -45,7 +46,7 @@ import static org.hamcrest.Matchers.not;
 
 /**
  * Created by szhx on 4/1/2016.
- * <p>
+ * <p/>
  * This test class uses the actual DB
  */
 @RunWith(AndroidJUnit4.class)
@@ -54,18 +55,18 @@ public class MainActivityTest {
 
     private static final long UI_TEST_TIMEOUT = 5 * 1000; //5 seconds
 
-    private MainActivity mActivity;
+    private TimeSlotsActivity mActivity;
 
     /**
      * {@link IntentsTestRule} is an {@link ActivityTestRule} which inits and releases Espresso
      * Intents before and after each test run.
-     * <p>
-     * <p>
+     * <p/>
+     * <p/>
      * Rules are interceptors which are executed for each test method and are important building
      * blocks of Junit tests.
      */
     @Rule
-    public IntentsTestRule<MainActivity> mActivityRule = new IntentsTestRule<>(MainActivity.class);
+    public IntentsTestRule<TimeSlotsActivity> mActivityRule = new IntentsTestRule<>(TimeSlotsActivity.class);
 
     /**
      * Prepare your test fixture for this test. In this case we register an IdlingResources with
@@ -119,15 +120,15 @@ public class MainActivityTest {
         onView(withId(R.id.empty_tv)).check(matches(withText("No Time Slots.")));
 
         // click add icon
-        onView(withId(R.id.time_slot_list_add)).perform(click());
+        onView(withId(R.id.add_time_slot)).perform(click());
 
         // add TimeSlot dat
         onView(withId(R.id.timeSlotNameEditText)).perform(typeText("Espresso Test"), closeSoftKeyboard());
         //onView(withId(R.id.timeSlotNameEditText)).perform(replaceText("Espresso Test\n"));
 
-        EspressoIdlingResource.increment();
-        closeSoftKeyboard();
-        EspressoIdlingResource.decrement();
+        //EspressoIdlingResource.increment();
+        //closeSoftKeyboard();
+        //EspressoIdlingResource.decrement();
 
         onView(withId(R.id.beginTimePicker)).perform(PickerActions.setTime(9, 30));
         onView(withId(R.id.endTimePicker)).perform(PickerActions.setTime(17, 0));

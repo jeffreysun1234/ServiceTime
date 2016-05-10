@@ -4,8 +4,8 @@ import android.database.Cursor;
 
 import com.mycompany.servicetime.firebase.model.TimeSlotItem;
 import com.mycompany.servicetime.model.TimeSlot;
-import com.mycompany.servicetime.provider.CHServiceTimeContract;
-import com.mycompany.servicetime.provider.ColumnIndexCache;
+import com.mycompany.servicetime.data.source.provider.CHServiceTimeContract;
+import com.mycompany.servicetime.data.source.provider.ColumnIndexCache;
 
 import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
 

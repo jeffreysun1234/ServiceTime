@@ -5,7 +5,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -24,7 +22,7 @@ import android.widget.ToggleButton;
 
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.model.TimeSlot;
-import com.mycompany.servicetime.provider.CHServiceTimeDAO;
+import com.mycompany.servicetime.data.source.provider.CHServiceTimeDAO;
 import com.mycompany.servicetime.util.EspressoIdlingResource;
 
 import java.util.Calendar;

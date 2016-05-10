@@ -29,7 +29,7 @@ import com.mycompany.servicetime.domain.usecase.DeleteTimeSlot;
 import com.mycompany.servicetime.domain.usecase.GetTimeSlot;
 import com.mycompany.servicetime.domain.usecase.GetTimeSlots;
 import com.mycompany.servicetime.domain.usecase.SaveTimeSlot;
-import com.mycompany.servicetime.provider.CHServiceTimeDAO;
+import com.mycompany.servicetime.data.source.provider.CHServiceTimeDAO;
 
 /**
  * Enables injection of production implementations for

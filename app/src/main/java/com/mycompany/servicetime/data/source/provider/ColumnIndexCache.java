@@ -1,4 +1,4 @@
-package com.mycompany.servicetime.provider;
+package com.mycompany.servicetime.data.source.provider;
 
 import android.database.Cursor;
 import android.support.v4.util.ArrayMap;

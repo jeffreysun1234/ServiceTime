@@ -24,8 +24,9 @@ import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.model.TimeSlot;
 import com.mycompany.servicetime.presentation.addedittimeslot.AddEditTimeSlotActivity;
 import com.mycompany.servicetime.presentation.addedittimeslot.AddEditTimeSlotFragment;
-import com.mycompany.servicetime.provider.CHServiceTimeDAO;
+import com.mycompany.servicetime.data.source.provider.CHServiceTimeDAO;
 import com.mycompany.servicetime.support.PreferenceSupport;
+import com.mycompany.servicetime.util.EspressoIdlingResource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.mycompany.servicetime.util.LogUtils.LOGD;
@@ -259,6 +260,9 @@ public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.Vie
 
     @Override
     public void showEditTimeSlotUi(String timeSlotId) {
+        // for test. App is busy until further notice
+        EspressoIdlingResource.increment();
+
         // in it's own Activity, since it makes more sense that way and it gives us the flexibility
         // to show some Intent stubbing.
         Intent intent = new Intent(getContext(), AddEditTimeSlotActivity.class);

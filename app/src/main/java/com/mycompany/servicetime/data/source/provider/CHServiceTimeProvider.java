@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mycompany.servicetime.provider;
+package com.mycompany.servicetime.data.source.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
@@ -27,13 +27,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 
-import com.mycompany.servicetime.provider.CHServiceTimeDatabase.Tables;
+import com.mycompany.servicetime.data.source.provider.CHServiceTimeDatabase.Tables;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.mycompany.servicetime.provider.CHServiceTimeContract.TimeSlots;
+import static com.mycompany.servicetime.data.source.provider.CHServiceTimeContract.TimeSlots;
 import static com.mycompany.servicetime.util.LogUtils.LOGV;
 import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
 

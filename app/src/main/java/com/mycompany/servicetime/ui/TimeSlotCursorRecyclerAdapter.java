@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -16,7 +15,7 @@ import android.widget.TextView;
 
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.model.TimeSlot;
-import com.mycompany.servicetime.provider.ColumnIndexCache;
+import com.mycompany.servicetime.data.source.provider.ColumnIndexCache;
 import com.mycompany.servicetime.ui.helper.CustomCardView;
 import com.mycompany.servicetime.util.DisplayUtils;
 import com.mycompany.servicetime.util.EspressoIdlingResource;

@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.model.TimeSlot;
-import com.mycompany.servicetime.provider.ColumnIndexCache;
+import com.mycompany.servicetime.data.source.provider.ColumnIndexCache;
 import com.mycompany.servicetime.ui.helper.CustomCardView;
 import com.mycompany.servicetime.util.DisplayUtils;
 import com.mycompany.servicetime.util.EspressoIdlingResource;
@@ -111,9 +111,6 @@ public class TimeSlotCursorRecyclerAdapter extends RecyclerView.Adapter<TimeSlot
                 @Override
                 public void onClick(View v) {
                     if (itemActionListener != null) {
-
-                        EspressoIdlingResource.increment();
-
                         itemActionListener.onItemLongClicked(currentTimeSlotId);
                     }
                 }

@@ -52,6 +52,11 @@ public class AddEditTimeSlotActivity extends AppCompatActivity {
                 Injection.provideGetTimeSlot(getApplicationContext()),
                 Injection.provideSaveTimeSlot(getApplicationContext())
         );
+
+        // for test
+        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+            EspressoIdlingResource.decrement(); // Set app as idle.
+        }
     }
 
     @Override

@@ -6,9 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.view.View;
 
-import com.mycompany.servicetime.provider.CHServiceTimeContract;
+import com.mycompany.servicetime.data.source.provider.CHServiceTimeContract;
 import com.mycompany.servicetime.schedule.InitAlarmIntentService;
 
 /**

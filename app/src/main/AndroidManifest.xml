@@ -42,7 +42,7 @@
         </activity>
 
         <provider
-            android:name=".provider.CHServiceTimeProvider"
+            android:name=".data.source.provider.CHServiceTimeProvider"
             android:authorities="com.mycompany.servicetime"
             android:enabled="true"
             android:exported="false">
