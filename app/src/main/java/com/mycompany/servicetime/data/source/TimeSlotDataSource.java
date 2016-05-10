@@ -1,10 +1,9 @@
 package com.mycompany.servicetime.data.source;
 
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import com.mycompany.servicetime.model.TimeSlot;
-
-import java.util.List;
 
 /**
  * Main entry point for accessing TimeSlot data.
@@ -17,7 +16,7 @@ import java.util.List;
 public interface TimeSlotDataSource {
     interface LoadTimeSlotsCallback {
 
-        void onTimeSlotsLoaded(List<TimeSlot> timeSlots);
+        void onTimeSlotsLoaded(Cursor timeSlots);
 
         void onDataNotAvailable();
     }
@@ -35,13 +34,7 @@ public interface TimeSlotDataSource {
 
     void saveTimeSlot(@NonNull TimeSlot timeSlot);
 
-    //void completeTimeSlot(@NonNull TimeSlot timeSlot);
-
-    //void completeTimeSlot(@NonNull String timeSlotId);
-
-    //void activateTimeSlot(@NonNull TimeSlot timeSlot);
-
-    void activateTimeSlot(@NonNull String timeSlotId);
+    void activateTimeSlot(@NonNull String timeSlotId, boolean serviceFlag);
 
     //void clearCompletedTimeSlots();
 

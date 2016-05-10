@@ -29,6 +29,7 @@ import com.mycompany.servicetime.domain.usecase.DeleteTimeSlot;
 import com.mycompany.servicetime.domain.usecase.GetTimeSlot;
 import com.mycompany.servicetime.domain.usecase.GetTimeSlots;
 import com.mycompany.servicetime.domain.usecase.SaveTimeSlot;
+import com.mycompany.servicetime.provider.CHServiceTimeDAO;
 
 /**
  * Enables injection of production implementations for
@@ -38,9 +39,7 @@ public class Injection {
 
     public static TimeSlotRepository provideTimeSlotsRepository(@NonNull Context context) {
         checkNotNull(context);
-        // TODO: DAO replace.
-        //return TimeSlotRepository.getInstance();
-        return null;
+        return TimeSlotRepository.getInstance(CHServiceTimeDAO.create(context));
     }
 
     public static Context provideApplicationContext(@NonNull Context context) {

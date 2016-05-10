@@ -103,7 +103,8 @@ public class TimeSlotsPresenter implements TimeSlotsContract.Presenter {
     @Override
     public void activateTimeSlot(@NonNull TimeSlot activeTimeSlot) {
         checkNotNull(activeTimeSlot, "activeTimeSlot cannot be null!");
-        mUseCaseHandler.execute(mActivateTimeSlot, new ActivateTimeSlot.RequestValues(activeTimeSlot.timeSlotId),
+        mUseCaseHandler.execute(mActivateTimeSlot,
+                new ActivateTimeSlot.RequestValues(activeTimeSlot.timeSlotId, activeTimeSlot.serviceFlag),
                 new UseCase.UseCaseCallback<ActivateTimeSlot.ResponseValue>() {
                     @Override
                     public void onSuccess(ActivateTimeSlot.ResponseValue response) {

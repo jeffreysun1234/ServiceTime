@@ -18,6 +18,7 @@ package com.mycompany.servicetime.domain.usecase;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import com.mycompany.servicetime.base.usecase.UseCase;
@@ -29,6 +30,7 @@ import java.util.List;
 
 /**
  * Fetches the list of timeSlots.
+ * It is replaced by a Loader. UI directly accesses DataSource using a loader.
  */
 public class GetTimeSlots extends UseCase<GetTimeSlots.RequestValues, GetTimeSlots.ResponseValue> {
 
@@ -43,7 +45,7 @@ public class GetTimeSlots extends UseCase<GetTimeSlots.RequestValues, GetTimeSlo
 
         mTimeSlotRepository.getTimeSlots(new TimeSlotDataSource.LoadTimeSlotsCallback() {
             @Override
-            public void onTimeSlotsLoaded(List<TimeSlot> timeSlots) {
+            public void onTimeSlotsLoaded(Cursor timeSlots) {
                 ResponseValue responseValue = new ResponseValue(timeSlots);
                 getUseCaseCallback().onSuccess(responseValue);
             }
@@ -61,13 +63,13 @@ public class GetTimeSlots extends UseCase<GetTimeSlots.RequestValues, GetTimeSlo
 
     public static final class ResponseValue implements UseCase.ResponseValue {
 
-        private final List<TimeSlot> mTimeSlots;
+        private final Cursor mTimeSlots;
 
-        public ResponseValue(@NonNull List<TimeSlot> timeSlots) {
+        public ResponseValue(@NonNull Cursor timeSlots) {
             mTimeSlots = checkNotNull(timeSlots, "timeSlots cannot be null!");
         }
 
-        public List<TimeSlot> getTimeSlots() {
+        public Cursor getTimeSlots() {
             return mTimeSlots;
         }
     }

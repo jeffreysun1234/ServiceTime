@@ -36,21 +36,28 @@ public class ActivateTimeSlot extends UseCase<ActivateTimeSlot.RequestValues, Ac
 
     @Override
     protected void executeUseCase(final RequestValues values) {
-        String activeTimeSlot = values.getActivateTimeSlot();
-        mTimeSlotRepository.activateTimeSlot(activeTimeSlot);
+        String timeSlotId = values.getTimeSlotId();
+        boolean activateFlag = values.getActivateFlag();
+        mTimeSlotRepository.activateTimeSlot(timeSlotId, activateFlag);
         getUseCaseCallback().onSuccess(new ResponseValue());
     }
 
     public static final class RequestValues implements UseCase.RequestValues {
 
-        private final String mActivateTimeSlot;
+        private final String mTimeSlotId;
+        private final boolean mActivateFlag;
 
-        public RequestValues(@NonNull String activateTimeSlot) {
-            mActivateTimeSlot = checkNotNull(activateTimeSlot, "activateTimeSlot cannot be null!");
+        public RequestValues(@NonNull String activateTimeSlot, boolean activateFlag) {
+            mTimeSlotId = checkNotNull(activateTimeSlot, "activateTimeSlot cannot be null!");
+            mActivateFlag = activateFlag;
         }
 
-        public String getActivateTimeSlot() {
-            return mActivateTimeSlot;
+        public String getTimeSlotId() {
+            return mTimeSlotId;
+        }
+
+        public boolean getActivateFlag() {
+            return mActivateFlag;
         }
     }
 

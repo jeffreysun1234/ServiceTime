@@ -29,6 +29,7 @@ public class CHServiceTimeDAO {
         mContext = context;
     }
 
+    // TODO: refactor the Single Pattern
     public static CHServiceTimeDAO create(Context context) {
         return new CHServiceTimeDAO(context);
     }
