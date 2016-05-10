@@ -76,6 +76,7 @@
         </activity>
         <activity
             android:name=".presentation.timeslots.TimeSlotsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_time_slots">
         </activity>
     </application>

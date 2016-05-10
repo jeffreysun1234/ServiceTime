@@ -31,10 +31,10 @@ public class CHApplication extends Application {
     private static Context context = null;
 
     /**
-     * If you want to mock context, then override this method in your mock subclass off CHApplication.
+     * If you want to mock context, then override this method in your mock subclass of CHApplication.
      */
     protected Context createContext() {
-        return this.getApplicationContext();
+        return Injection.provideApplicationContext(this.getApplicationContext());
     }
 
     public static Context getContext() {
