@@ -18,15 +18,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mycompany.servicetime.CHApplication;
 import com.mycompany.servicetime.R;
+import com.mycompany.servicetime.base.presentation.BaseActivity;
+import com.mycompany.servicetime.data.firebase.AccessFirebaseAsyn;
+import com.mycompany.servicetime.data.firebase.FirebaseRestDAO;
 import com.mycompany.servicetime.model.TimeSlot;
 import com.mycompany.servicetime.presentation.addedittimeslot.AddEditTimeSlotActivity;
 import com.mycompany.servicetime.presentation.addedittimeslot.AddEditTimeSlotFragment;
 import com.mycompany.servicetime.data.source.provider.CHServiceTimeDAO;
 import com.mycompany.servicetime.support.PreferenceSupport;
 import com.mycompany.servicetime.util.EspressoIdlingResource;
+
+import java.io.IOException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.mycompany.servicetime.util.LogUtils.LOGD;
@@ -124,11 +130,11 @@ public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.Vie
                 return true;
             }
             case R.id.backup_time_slot_list: {
-                //backupTimeSlotList();
+                backupTimeSlotList();
                 return true;
             }
             case R.id.restore_time_slot_list: {
-                //restoreTimeSlotList();
+                restoreTimeSlotList();
                 return true;
             }
             default:
@@ -136,61 +142,61 @@ public class TimeSlotsFragment extends Fragment implements TimeSlotsContract.Vie
         }
     }
 
-//    private void backupTimeSlotList() {
-//        if (((BaseActivity) getActivity()).isLogin) {
-//            new AccessFirebaseAsyn(getContext(), new AccessFirebaseAsyn.BackgroundAction() {
-//
-//                @Override
-//                public void doActionInBackground() {
-//                    try {
-//                        String encodedUserEmail = PreferenceSupport.getEncodedEmail(getContext());
-//                        String authToken = PreferenceSupport.getAuthToken(getContext());
-//
-//                        FirebaseRestDAO.create().backupTimeSlotItemList(
-//                                encodedUserEmail,
-//                                authToken,
-//                                CHServiceTimeDAO.create(getContext()).backupAllTimeSlots());
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                @Override
-//                public void doOnPostExecute() {
-//                    Toast.makeText(getContext(), "Backup done.", Toast.LENGTH_SHORT).show();
-//                }
-//            }).execute();
-//        } else {
-//            ((BaseActivity) getActivity()).showLoginHint();
-//        }
-//    }
+    private void backupTimeSlotList() {
+        if (((BaseActivity) getActivity()).isLogin) {
+            new AccessFirebaseAsyn(getContext(), new AccessFirebaseAsyn.BackgroundAction() {
 
-//    private void restoreTimeSlotList() {
-//        if (((BaseActivity) getActivity()).isLogin) {
-//            new AccessFirebaseAsyn(getContext(), new AccessFirebaseAsyn.BackgroundAction() {
-//
-//                @Override
-//                public void doActionInBackground() {
-//                    try {
-//                        String encodedUserEmail = PreferenceSupport.getEncodedEmail(getContext());
-//                        String authToken = PreferenceSupport.getAuthToken(getContext());
-//                        CHServiceTimeDAO.create(getContext()).restoreAllTimeSlots(
-//                                FirebaseRestDAO.create().restoreTimeSlotItemList(
-//                                        encodedUserEmail, authToken));
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                @Override
-//                public void doOnPostExecute() {
-//                    Toast.makeText(getContext(), "Restore done.", Toast.LENGTH_SHORT).show();
-//                }
-//            }).execute();
-//        } else {
-//            ((BaseActivity) getActivity()).showLoginHint();
-//        }
-//    }
+                @Override
+                public void doActionInBackground() {
+                    try {
+                        String encodedUserEmail = PreferenceSupport.getEncodedEmail(getContext());
+                        String authToken = PreferenceSupport.getAuthToken(getContext());
+
+                        FirebaseRestDAO.create().backupTimeSlotItemList(
+                                encodedUserEmail,
+                                authToken,
+                                CHServiceTimeDAO.create(getContext()).backupAllTimeSlots());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void doOnPostExecute() {
+                    Toast.makeText(getContext(), "Backup done.", Toast.LENGTH_SHORT).show();
+                }
+            }).execute();
+        } else {
+            ((BaseActivity) getActivity()).showLoginHint();
+        }
+    }
+
+    private void restoreTimeSlotList() {
+        if (((BaseActivity) getActivity()).isLogin) {
+            new AccessFirebaseAsyn(getContext(), new AccessFirebaseAsyn.BackgroundAction() {
+
+                @Override
+                public void doActionInBackground() {
+                    try {
+                        String encodedUserEmail = PreferenceSupport.getEncodedEmail(getContext());
+                        String authToken = PreferenceSupport.getAuthToken(getContext());
+                        CHServiceTimeDAO.create(getContext()).restoreAllTimeSlots(
+                                FirebaseRestDAO.create().restoreTimeSlotItemList(
+                                        encodedUserEmail, authToken));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void doOnPostExecute() {
+                    Toast.makeText(getContext(), "Restore done.", Toast.LENGTH_SHORT).show();
+                }
+            }).execute();
+        } else {
+            ((BaseActivity) getActivity()).showLoginHint();
+        }
+    }
 
     /******
      * Preference Listener's method

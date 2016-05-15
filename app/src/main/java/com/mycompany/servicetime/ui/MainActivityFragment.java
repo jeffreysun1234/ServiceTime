@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.mycompany.servicetime.CHApplication;
 import com.mycompany.servicetime.R;
-import com.mycompany.servicetime.firebase.FirebaseRestDAO;
+import com.mycompany.servicetime.data.firebase.FirebaseRestDAO;
 import com.mycompany.servicetime.data.source.provider.CHServiceTimeContract.TimeSlots;
 import com.mycompany.servicetime.data.source.provider.CHServiceTimeDAO;
 import com.mycompany.servicetime.schedule.InitAlarmIntentService;

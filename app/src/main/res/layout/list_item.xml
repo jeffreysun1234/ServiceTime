@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.mycompany.servicetime.ui.helper.CustomCardView
+<com.mycompany.servicetime.presentation.timeslots.CustomCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -100,4 +100,4 @@
 
 
     </LinearLayout>
-</com.mycompany.servicetime.ui.helper.CustomCardView>
+</com.mycompany.servicetime.presentation.timeslots.CustomCardView>

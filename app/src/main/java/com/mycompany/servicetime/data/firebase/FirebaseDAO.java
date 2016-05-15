@@ -1,9 +1,9 @@
-package com.mycompany.servicetime.firebase;
+package com.mycompany.servicetime.data.firebase;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.mycompany.servicetime.firebase.model.TimeSlotList;
+import com.mycompany.servicetime.data.firebase.model.TimeSlotList;
 
 import java.util.ArrayList;
 import java.util.HashMap;

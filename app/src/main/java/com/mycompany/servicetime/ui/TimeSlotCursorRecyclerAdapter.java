@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.model.TimeSlot;
 import com.mycompany.servicetime.data.source.provider.ColumnIndexCache;
-import com.mycompany.servicetime.ui.helper.CustomCardView;
+import com.mycompany.servicetime.presentation.timeslots.CustomCardView;
 import com.mycompany.servicetime.util.DisplayUtils;
 import com.mycompany.servicetime.util.EspressoIdlingResource;
 import com.mycompany.servicetime.util.ModelConverter;

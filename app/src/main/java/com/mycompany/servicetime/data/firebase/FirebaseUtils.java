@@ -1,4 +1,4 @@
-package com.mycompany.servicetime.firebase;
+package com.mycompany.servicetime.data.firebase;
 
 import android.content.Context;
 

@@ -10,10 +10,11 @@ import android.view.MenuItem;
 
 import com.mycompany.servicetime.Injection;
 import com.mycompany.servicetime.R;
+import com.mycompany.servicetime.base.presentation.BaseActivity;
 import com.mycompany.servicetime.util.ActivityUtils;
 import com.mycompany.servicetime.util.EspressoIdlingResource;
 
-public class TimeSlotsActivity extends AppCompatActivity {
+public class TimeSlotsActivity extends BaseActivity {
 
     private TimeSlotsPresenter mTimeSlotsPresenter;
 

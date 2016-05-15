@@ -1,8 +1,8 @@
-package com.mycompany.servicetime.firebase;
+package com.mycompany.servicetime.data.firebase;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mycompany.servicetime.firebase.model.TimeSlotItem;
-import com.mycompany.servicetime.firebase.model.TimeSlotList;
+import com.mycompany.servicetime.data.firebase.model.TimeSlotItem;
+import com.mycompany.servicetime.data.firebase.model.TimeSlotList;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

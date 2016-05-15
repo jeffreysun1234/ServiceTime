@@ -1,4 +1,4 @@
-package com.mycompany.servicetime.firebase.model;
+package com.mycompany.servicetime.data.firebase.model;
 
 /**
  * Created by szhx on 3/24/2016.

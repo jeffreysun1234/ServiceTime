@@ -1,5 +1,8 @@
-package com.mycompany.servicetime.ui;
+package com.mycompany.servicetime.base.presentation;
 
+/**
+ * Created by szhx on 5/15/2016.
+ */
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +14,9 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.data.firebase.FirebaseConstants;
+import com.mycompany.servicetime.presentation.login.CreateAccountActivity;
+import com.mycompany.servicetime.presentation.login.LoginActivity;
 import com.mycompany.servicetime.support.PreferenceSupport;
-import com.mycompany.servicetime.ui.login.CreateAccountActivity;
-import com.mycompany.servicetime.ui.login.LoginActivity;
 
 /**
  * BaseActivity class is used as a base class for all activities in the app
@@ -24,7 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected String mProvider, mEncodedEmail;
     protected Firebase.AuthStateListener mAuthListener;
     protected Firebase mFirebaseRef;
-    protected boolean isLogin;
+    public boolean isLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,9 +131,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         finish();
     }
 
-    protected void showLoginHint() {
+    public void showLoginHint() {
         if (!isLogin)
             Toast.makeText(BaseActivity.this, "Please Login at first.", Toast.LENGTH_SHORT).show();
     }
 
 }
+

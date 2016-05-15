@@ -1,4 +1,4 @@
-package com.mycompany.servicetime.ui.helper;
+package com.mycompany.servicetime.presentation.timeslots;
 
 import android.content.Context;
 import android.support.v4.view.ViewCompat;

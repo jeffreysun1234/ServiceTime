@@ -1,9 +1,9 @@
-package com.mycompany.servicetime.firebase.model;
+package com.mycompany.servicetime.data.firebase.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.firebase.client.ServerValue;
-import com.mycompany.servicetime.firebase.FirebaseConstants;
-import com.mycompany.servicetime.firebase.FirebaseUtils;
+import com.mycompany.servicetime.data.firebase.FirebaseConstants;
+import com.mycompany.servicetime.data.firebase.FirebaseUtils;
 
 import java.util.HashMap;
 

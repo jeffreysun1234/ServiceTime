@@ -1,4 +1,4 @@
-package com.mycompany.servicetime.firebase.model;
+package com.mycompany.servicetime.data.firebase.model;
 
 import java.util.HashMap;
 

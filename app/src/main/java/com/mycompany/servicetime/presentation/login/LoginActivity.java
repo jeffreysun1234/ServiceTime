@@ -1,4 +1,4 @@
-package com.mycompany.servicetime.ui.login;
+package com.mycompany.servicetime.presentation.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,12 +17,12 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.mycompany.servicetime.R;
+import com.mycompany.servicetime.base.presentation.BaseActivity;
 import com.mycompany.servicetime.data.firebase.FirebaseConstants;
 import com.mycompany.servicetime.data.firebase.FirebaseUtils;
 import com.mycompany.servicetime.data.firebase.model.User;
+import com.mycompany.servicetime.presentation.timeslots.TimeSlotsActivity;
 import com.mycompany.servicetime.support.PreferenceSupport;
-import com.mycompany.servicetime.ui.BaseActivity;
-import com.mycompany.servicetime.ui.MainActivity;
 
 import static com.mycompany.servicetime.util.LogUtils.LOGD;
 import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
@@ -92,7 +92,7 @@ public class LoginActivity extends BaseActivity {
                  * already holds userName/provider data from the latest session
                  */
                 if (authData != null) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, TimeSlotsActivity.class);
                     intent.setFlags(
                             Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
@@ -232,7 +232,7 @@ public class LoginActivity extends BaseActivity {
                 PreferenceSupport.setAuthToken(LoginActivity.this, authData.getToken());
 
                 /* Go to main activity */
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, TimeSlotsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();

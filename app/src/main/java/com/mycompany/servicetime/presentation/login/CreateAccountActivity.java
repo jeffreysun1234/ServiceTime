@@ -1,4 +1,4 @@
-package com.mycompany.servicetime.ui.login;
+package com.mycompany.servicetime.presentation.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,11 +12,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.mycompany.servicetime.R;
+import com.mycompany.servicetime.base.presentation.BaseActivity;
 import com.mycompany.servicetime.data.firebase.FirebaseConstants;
 import com.mycompany.servicetime.data.firebase.FirebaseUtils;
 import com.mycompany.servicetime.data.firebase.model.User;
 import com.mycompany.servicetime.support.PreferenceSupport;
-import com.mycompany.servicetime.ui.BaseActivity;
 
 import java.security.SecureRandom;
 import java.util.HashMap;

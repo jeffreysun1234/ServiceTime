@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import com.mycompany.servicetime.firebase.model.TimeSlotItem;
+import com.mycompany.servicetime.data.firebase.model.TimeSlotItem;
 import com.mycompany.servicetime.model.TimeSlot;
 import com.mycompany.servicetime.data.source.provider.CHServiceTimeContract.TimeSlots;
 import com.mycompany.servicetime.util.ModelConverter;

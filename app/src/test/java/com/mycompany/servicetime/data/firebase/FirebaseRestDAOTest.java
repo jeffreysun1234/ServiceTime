@@ -1,16 +1,8 @@
-package com.mycompany.servicetime.firebase;
+package com.mycompany.servicetime.data.firebase;
 
-import android.os.Build;
+import com.mycompany.servicetime.data.firebase.model.TimeSlotItem;
+import com.mycompany.servicetime.data.firebase.model.TimeSlotList;
 
-import com.mycompany.servicetime.BuildConfig;
-import com.mycompany.servicetime.firebase.model.TimeSlotItem;
-import com.mycompany.servicetime.firebase.model.TimeSlotList;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 
 import java.util.ArrayList;
