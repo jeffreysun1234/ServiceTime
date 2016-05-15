@@ -21,9 +21,7 @@ import android.support.annotation.NonNull;
 
 import com.mycompany.servicetime.base.presentation.BasePresenter;
 import com.mycompany.servicetime.base.presentation.BaseView;
-import com.mycompany.servicetime.model.TimeSlot;
-
-import java.util.List;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 
 /**
  * This specifies the contract between the view and the presenter.

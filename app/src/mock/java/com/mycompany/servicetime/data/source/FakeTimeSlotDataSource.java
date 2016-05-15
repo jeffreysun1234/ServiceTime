@@ -19,7 +19,7 @@ package com.mycompany.servicetime.data.source;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
-import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;

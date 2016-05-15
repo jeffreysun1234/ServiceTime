@@ -20,7 +20,7 @@ import android.support.annotation.NonNull;
 
 import com.mycompany.servicetime.base.usecase.UseCase;
 import com.mycompany.servicetime.data.source.TimeSlotRepository;
-import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

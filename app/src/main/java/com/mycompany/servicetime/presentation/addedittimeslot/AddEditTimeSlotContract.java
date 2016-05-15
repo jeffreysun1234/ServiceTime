@@ -2,7 +2,7 @@ package com.mycompany.servicetime.presentation.addedittimeslot;
 
 import com.mycompany.servicetime.base.presentation.BasePresenter;
 import com.mycompany.servicetime.base.presentation.BaseView;
-import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 
 /**
  * Created by szhx on 5/1/2016.

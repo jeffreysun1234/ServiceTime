@@ -7,7 +7,7 @@ import com.mycompany.servicetime.base.usecase.UseCase;
 import com.mycompany.servicetime.base.usecase.UseCaseHandler;
 import com.mycompany.servicetime.domain.usecase.GetTimeSlot;
 import com.mycompany.servicetime.domain.usecase.SaveTimeSlot;
-import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

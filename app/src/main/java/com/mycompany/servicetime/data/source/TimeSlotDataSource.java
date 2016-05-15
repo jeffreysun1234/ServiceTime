@@ -3,7 +3,7 @@ package com.mycompany.servicetime.data.source;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 
 /**
  * Main entry point for accessing TimeSlot data.

@@ -25,7 +25,7 @@ import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.base.presentation.BaseActivity;
 import com.mycompany.servicetime.data.firebase.AccessFirebaseAsyn;
 import com.mycompany.servicetime.data.firebase.FirebaseRestDAO;
-import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 import com.mycompany.servicetime.presentation.addedittimeslot.AddEditTimeSlotActivity;
 import com.mycompany.servicetime.presentation.addedittimeslot.AddEditTimeSlotFragment;
 import com.mycompany.servicetime.data.source.provider.CHServiceTimeDAO;

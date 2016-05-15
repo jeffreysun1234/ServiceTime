@@ -3,6 +3,7 @@ package com.mycompany.servicetime.support;
 import android.os.Build;
 
 import com.mycompany.servicetime.BuildConfig;
+import com.mycompany.servicetime.domain.business.TimeSlotRule;
 import com.mycompany.servicetime.util.DateUtil;
 
 import org.junit.After;
@@ -24,13 +25,13 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(ParameterizedRobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class TimeSlotSupportTest {
+public class TimeSlotRuleTest {
 
     private int currentTime;
     private long expected;
 
     //parameters pass via this constructor
-    public TimeSlotSupportTest(int currentTime, long expected) {
+    public TimeSlotRuleTest(int currentTime, long expected) {
         this.currentTime = currentTime;
         this.expected = expected;
     }
@@ -75,6 +76,6 @@ public class TimeSlotSupportTest {
 
     @Test
     public void testGetNextAlarmTime() throws Exception {
-        assertEquals(expected, TimeSlotSupport.getNextAlarmTime(originalTimeSectors, true, currentTime) / 1000);
+        assertEquals(expected, TimeSlotRule.getNextAlarmTime(originalTimeSectors, true, currentTime) / 1000);
     }
 }

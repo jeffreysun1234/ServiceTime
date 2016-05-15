@@ -6,8 +6,8 @@ import android.content.Intent;
 
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.data.source.provider.CHServiceTimeDAO;
+import com.mycompany.servicetime.domain.business.TimeSlotRule;
 import com.mycompany.servicetime.support.PreferenceSupport;
-import com.mycompany.servicetime.support.TimeSlotSupport;
 import com.mycompany.servicetime.util.DateUtil;
 
 import java.text.ParseException;
@@ -98,7 +98,7 @@ public class SchedulingIntentService extends IntentService {
     private void handleActionSetAlarm(boolean silentFlag) {
         long timePoint = 0;
         try {
-            timePoint = TimeSlotSupport.getNextAlarmTime(
+            timePoint = TimeSlotRule.getNextAlarmTime(
                     CHServiceTimeDAO.create(getApplicationContext()).getNextAlarmTime(silentFlag),
                     silentFlag, DateUtil.getHHmm(System.currentTimeMillis()));
         } catch (ParseException e) {

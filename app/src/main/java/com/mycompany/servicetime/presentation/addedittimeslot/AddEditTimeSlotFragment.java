@@ -18,7 +18,7 @@ import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
 import com.mycompany.servicetime.R;
-import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 
 import java.util.Calendar;
 

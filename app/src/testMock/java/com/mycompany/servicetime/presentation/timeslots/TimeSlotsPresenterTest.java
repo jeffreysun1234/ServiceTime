@@ -31,7 +31,7 @@ import com.mycompany.servicetime.data.source.TimeSlotRepository;
 import com.mycompany.servicetime.domain.usecase.ActivateTimeSlot;
 import com.mycompany.servicetime.domain.usecase.DeleteTimeSlot;
 import com.mycompany.servicetime.domain.usecase.GetTimeSlots;
-import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 import com.mycompany.servicetime.schedule.InitAlarmIntentService;
 
 import static org.junit.Assert.assertTrue;

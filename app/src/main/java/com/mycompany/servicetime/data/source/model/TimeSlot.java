@@ -1,4 +1,4 @@
-package com.mycompany.servicetime.model;
+package com.mycompany.servicetime.data.source.model;
 
 /**
  * Created by szhx on 12/13/2015.

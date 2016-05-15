@@ -25,14 +25,10 @@ import android.support.v4.app.LoaderManager;
 import com.mycompany.servicetime.CHApplication;
 import com.mycompany.servicetime.base.usecase.UseCase;
 import com.mycompany.servicetime.base.usecase.UseCaseHandler;
-import com.mycompany.servicetime.data.source.TimeSlotDataSource;
 import com.mycompany.servicetime.domain.usecase.ActivateTimeSlot;
 import com.mycompany.servicetime.domain.usecase.DeleteTimeSlot;
-import com.mycompany.servicetime.domain.usecase.GetTimeSlots;
-import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 import com.mycompany.servicetime.presentation.addedittimeslot.AddEditTimeSlotActivity;
-
-import java.util.List;
 
 /**
  * Listens to user actions from the UI ({@link TimeSlotsFragment}), retrieves the data and updates the

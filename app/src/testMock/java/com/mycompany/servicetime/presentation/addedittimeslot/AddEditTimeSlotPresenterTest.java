@@ -6,7 +6,7 @@ import com.mycompany.servicetime.data.source.TimeSlotDataSource;
 import com.mycompany.servicetime.data.source.TimeSlotRepository;
 import com.mycompany.servicetime.domain.usecase.GetTimeSlot;
 import com.mycompany.servicetime.domain.usecase.SaveTimeSlot;
-import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.mycompany.servicetime.support;
+package com.mycompany.servicetime.domain.business;
 
 import com.mycompany.servicetime.util.DateUtil;
 
@@ -13,8 +13,8 @@ import static com.mycompany.servicetime.util.LogUtils.makeLogTag;
 /**
  * Created by szhx on 4/6/2016.
  */
-public class TimeSlotSupport {
-    private static final String TAG = makeLogTag(TimeSlotSupport.class);
+public class TimeSlotRule {
+    private static final String TAG = makeLogTag(TimeSlotRule.class);
 
     /**
      * @param originalTimeSectors TimeSlot is ordered by begintime and endtime ascending

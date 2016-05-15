@@ -1,9 +1,9 @@
-package com.mycompany.servicetime.util;
+package com.mycompany.servicetime.data;
 
 import android.database.Cursor;
 
 import com.mycompany.servicetime.data.firebase.model.TimeSlotItem;
-import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 import com.mycompany.servicetime.data.source.provider.CHServiceTimeContract;
 import com.mycompany.servicetime.data.source.provider.ColumnIndexCache;
 

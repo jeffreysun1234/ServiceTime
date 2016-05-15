@@ -36,7 +36,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import com.mycompany.servicetime.R;
 import com.mycompany.servicetime.data.source.FakeTimeSlotDataSource;
 import com.mycompany.servicetime.data.source.TimeSlotRepository;
-import com.mycompany.servicetime.model.TimeSlot;
+import com.mycompany.servicetime.data.source.model.TimeSlot;
 import com.mycompany.servicetime.data.source.provider.CHServiceTimeContract;
 
 import org.junit.Before;
