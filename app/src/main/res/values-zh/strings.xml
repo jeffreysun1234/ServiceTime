@@ -1,16 +1,16 @@
 <resources>
-    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="ad_test_device_id" translatable="false"></string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ad_test_device_id"></string>
 
-    <string name="app_name" translatable="false">ServiceTime</string>
-    <string name="action_settings">Settings</string>
-    <string name="service_current_status">Service current status :</string>
-    <string name="next_operation">Next operation :</string>
+    <string name="app_name">ServiceTime</string>
+    <string name="action_settings">设置</string>
+    <string name="service_current_status">服务当前状态 :</string>
+    <string name="next_operation">下一个操作 :</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="time_slot_name">Name :</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="time_slot_name">名称 :</string>
+    <string name="title_activity_settings">设置</string>
 
     <!-- Strings related to Settings -->
 
@@ -70,7 +70,7 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="no_time_slot">No Time Slots.</string>
     <string name="alert_message">Change ringer mode</string>
-    <string name="next_operation_no">No more alarms today.</string>
+    <string name="next_operation_no">没有下一个操作.</string>
 
     <!--
 
@@ -83,8 +83,8 @@
     <string name="log_error_occurred">"Error occurred: "</string>
 
     <!-- Menu Strings -->
-    <string name="action_logout">Logout</string>
-    <string name="action_login">Login</string>
+    <string name="action_logout">退出</string>
+    <string name="action_login">登录</string>
 
     <!--
 
@@ -92,29 +92,29 @@
 
     -->
     <!-- Activity Titles  -->
-    <string name="title_activity_create_account">Create Account</string>
+    <string name="title_activity_create_account">创建账号</string>
 
     <!-- Login and Create Account Screen  -->
     <string name="text_dont_have_account">Don\'t have an account?</string>
     <string name="text_already_have_account">Already have an account?</string>
-    <string name="button_create_account">Sign Up</string>
-    <string name="button_sign_in">Sign In</string>
+    <string name="button_create_account">创建</string>
+    <string name="button_sign_in">登录</string>
     <string name="button_signin_with_google">SIGN IN WITH GOOGLE</string>
     <string name="button_signin_with_password">SIGN IN</string>
-    <string name="hint_enter_email">Enter your email</string>
-    <string name="hint_enter_username">Enter your name</string>
-    <string name="hint_enter_password">Enter password</string>
+    <string name="hint_enter_email">Email</string>
+    <string name="hint_enter_username">名称</string>
+    <string name="hint_enter_password">密码</string>
     <string name="image_view_logo_image">Logo Image</string>
 
     <!-- Instructions and Loading Text -->
     <string name="progress_dialog_loading">Loading…</string>
     <string name="progress_dialog_authenticating_with_firebase">Authenticating with Firebase…</string>
-    <string name="progress_dialog_creating_user_with_firebase">Attempting to create account…</string>
+    <string name="progress_dialog_creating_user_with_firebase">正在创建账号…</string>
     <string name="progress_dialog_check_inbox">Please check your inbox for your password</string>
-    <string name="progress_dialog_access_firebase">Accessing Firebase</string>
+    <string name="progress_dialog_access_firebase">正在访问 Firebase</string>
 
     <!-- Errors -->
-    <string name="dialog_title_error">Error</string>
+    <string name="dialog_title_error">错误</string>
     <string name="error_message_failed_sign_in_no_network">There was a problem with the network connection.\nAre you sure you\'re connected to the internet?</string>
     <string name="log_error_invalid_provider">"Invalid provider: "</string>
     <string name="log_error_failed_to_change_password">"Failed to change the password: "</string>
@@ -137,13 +137,13 @@
     <string name="swipe">swipe me</string>
     <string name="swiping">swiping</string>
     <string name="title_activity_add_edit_time_slot">AddEditTimeSlotActivity</string>
-    <string name="input_name_error">You must input a Name.</string>
-    <string name="input_time_error">Begin Time must be less than End Time.</string>
-    <string name="input_day_error">You must set at least one day.</string>
+    <string name="input_name_error">名称不能为空.</string>
+    <string name="input_time_error">开始时间必须大于结束时间.</string>
+    <string name="input_day_error">必须至少选择一天.</string>
     <string name="fail_get_time_slot_error">Fail to get TimeSlot List.</string>
     <string name="time_slot_unknown_error">Unknown error in TimeSlot.</string>
-    <string name="add_timeSlot">New TimeSlot</string>
-    <string name="edit_timeSlot">Edit TimeSlot</string>
+    <string name="add_timeSlot">新时间段</string>
+    <string name="edit_timeSlot">编辑时间段</string>
     <string name="fail_save_time_slot_error">Fail to save data.</string>
     <string name="title_activity_time_slots">TimeSlotsActivity</string>
     <string name="timeslot_marked_active">TimeSlot marked active</string>
